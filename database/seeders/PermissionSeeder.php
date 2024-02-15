@@ -94,6 +94,8 @@ class PermissionSeeder extends Seeder
                 'name' => 'filter-restaurant',
                 'group_menu'    => '0',
             ],
+
+
             // permission users
             [
                 'name' => 'filter-restaurant',
@@ -103,6 +105,40 @@ class PermissionSeeder extends Seeder
                 'name' => 'create-restaurant',
                 'group_menu'    => '1',
             ],
+
+            [
+                'name' => 'list-users',
+                'group_menu'    => '0',
+            ],
+            [
+                'name' => 'create-users',
+                'group_menu'    => '0',
+            ],
+            [
+                'name' => 'edit-users',
+                'group_menu'    => '0',
+            ],
+            [
+                'name' => 'delete-users',
+                'group_menu'    => '0',
+            ],
+            [
+                'name' => 'list-role',
+                'group_menu'    => '0',
+            ],
+            [
+                'name' => 'create-role',
+                'group_menu'    => '0',
+            ],
+            [
+                'name' => 'edit-role',
+                'group_menu'    => '0',
+            ],
+            [
+                'name' => 'delete-role',
+                'group_menu'    => '0',
+            ],
+
         ];
 
         foreach ($permissions as $permission) {

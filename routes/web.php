@@ -1,7 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\{
+    UserController,
+    RoleController,
+    FoodVariatyController
+};
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,5 +24,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::group(['middleware' => ['auth:web']], function() {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home',                  [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::resource('users',             UserController::class);
+    Route::post('get-users',             [UserController::class, 'getUsers'])->name('get.users');
+    Route::resource('roles',             RoleController::class);
+    Route::resource('food-variaties',    FoodVariatyController::class);
+
 });

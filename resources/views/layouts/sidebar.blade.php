@@ -6,9 +6,7 @@
         <div class="sidebar-brand-text mx-3">Project Name</div>
     </a>
     <hr class="sidebar-divider my-0">
-    @if (auth()->user()->can('dashboard') ||
-            auth()->user()->can('dasboard-v1') ||
-            auth()->user()->can('dashboard-realtime'))
+    @if (auth()->user()->can('dashboard'))
         <li class="nav-item {{ $page == 'dashboard' ? 'active' : '' }}">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDashboard"
                 aria-expanded="true" aria-controls="collapseDashboard">
@@ -39,28 +37,41 @@
                 aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Data Master</h6>
+                    <a class="collapse-item {{ request()->is('food-variaties*') ? 'active' : '' }}"
+                        href="{{ route('food-variaties.index') }}">Food Variatys</a>
                     <a class="collapse-item"
-                        href="">Tes</a>
+                        href="">Facilitys</a>
+                    <a class="collapse-item"
+                        href="">Flavors</a>
+                    <a class="collapse-item"
+                        href="">Menu</a>
                 </div>
             </div>
         </li>
+    @if (auth()->user()->can('list-users') ||
+    auth()->user()->can('list-role'))
         <li class="nav-item {{ $page == 'management-users' ? 'active' : '' }}">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable"
                 aria-expanded="true" aria-controls="collapseTable">
                 <i class="fa fa-users"></i>
                 <span>Management Users</span>
             </a>
-            <div id="collapseTable" class="collapse"
+            <div id="collapseTable" class="collapse {{ $page == 'management-users' ? 'show' : '' }}"
                 aria-labelledby="headingPage" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">List Management Users</h6>
-                    @can('users-list')
-                        <a class="collapse-item"
-                            href="">Users</a>
+                    @can('list-users')
+                     <a class="collapse-item {{ request()->is('users*') ? 'active' : '' }}"
+                        href="{{ route('users.index') }}">Users</a>
+                    @endcan
+                    @can('list-role')
+                        <a class="collapse-item {{ request()->is('roles*') ? 'active' : '' }}"
+                            href="{{ route('roles.index') }}">Role</a>
                     @endcan
                 </div>
             </div>
         </li>
+    @endif
     <li class="nav-item {{ $page == 'settings' ? 'active' : '' }}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSettings"
             aria-expanded="true" aria-controls="collapseSettings">

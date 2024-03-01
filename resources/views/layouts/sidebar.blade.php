@@ -27,7 +27,37 @@
     <div class="sidebar-heading">
         Features
     </div>
-        <li class="nav-item {{ $page == 'master' ? 'active' : '' }}">
+    @if (auth()->user()->can('list-kriteria'))
+        <li class="nav-item {{ request()->is('kriterias*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('kriterias.index') }}">
+                <i class="far fa-fw fa-window-maximize"></i>
+                <span>Kriteria</span>
+            </a>
+        </li>
+    @endif
+    @if (auth()->user()->can('list-restaurant'))
+        <li class="nav-item {{ $page == 'restaurants' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('restaurants.index') }}">
+                <i class="fa fa-building"></i>
+                <span>Restaurants</span>
+            </a>
+        </li>
+    @endif
+    {{-- @if (auth()->user()->can('list-alternatif')) --}}
+        <li class="nav-item {{ request()->is('alternatif*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('alternatif.index') }}">
+                <i class="far fa-fw fa-window-maximize"></i>
+                <span>Alternatif</span>
+            </a>
+        </li>
+    {{-- @endif --}}
+    <li class="nav-item {{ request()->is('perhitungan.saw*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('perhitungan.saw') }}">
+            <i class="far fa-fw fa-window-maximize"></i>
+            <span>Perhitungan SAE</span>
+        </a>
+    </li>
+        {{-- <li class="nav-item {{ $page == 'master' ? 'active' : '' }}">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
                 aria-expanded="true" aria-controls="collapseBootstrap">
                 <i class="far fa-fw fa-window-maximize"></i>
@@ -39,15 +69,11 @@
                     <h6 class="collapse-header">Data Master</h6>
                     <a class="collapse-item {{ request()->is('food-variaties*') ? 'active' : '' }}"
                         href="{{ route('food-variaties.index') }}">Food Variatys</a>
-                    <a class="collapse-item"
-                        href="">Facilitys</a>
-                    <a class="collapse-item"
-                        href="">Flavors</a>
-                    <a class="collapse-item"
-                        href="">Menu</a>
+                    <a class="collapse-item {{ request()->is('facilities*') ? 'active' : '' }}"
+                        href="{{ route('facilities.index') }}">Facilities</a>
                 </div>
             </div>
-        </li>
+        </li> --}}
     @if (auth()->user()->can('list-users') ||
     auth()->user()->can('list-role'))
         <li class="nav-item {{ $page == 'management-users' ? 'active' : '' }}">

@@ -64,11 +64,9 @@ class RoleController extends Controller
 
     public function create(){
         $page = 'management-users';
+        $permissions = Permission::get();
 
-        $s_permissions = Permission::whereIn('group_menu',['0'])->get();
-        $o_permissions = Permission::whereIn('group_menu',['1'])->get();
-
-        return view('pages.roles.create',compact('s_permissions','o_permissions','page'));
+        return view('pages.roles.create',compact('permissions','page'));
     }
 
     public function store(Request $request){
@@ -110,12 +108,12 @@ class RoleController extends Controller
         $page = 'management-users';
 
         $role               = Role::findOrFail($id);
+        $permissions        = Permission::get();
         $rolePermissions    = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
                                 ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
                                 ->all();
-        $a_permissions = Permission::whereIn('group_menu',['0'])->get();
-        $u_permissions = Permission::whereIn('group_menu',['1'])->get();
-        return view('pages.roles.edit',compact('rolePermissions','role','a_permissions','u_permissions','page'));
+
+        return view('pages.roles.edit',compact('rolePermissions','role','page','permissions'));
     }
 
     public function update(Request $request, $id){

@@ -53,35 +53,7 @@
                             </div>
                             <br>
                             <div class="row">
-                                <h6>Admin:</h6>
-                                <hr>
-                                @foreach ($s_permissions as $item)
-                                    <div class="col-lg-3 col-md-6 col-sm-6">
-                                        <table class="table-hover">
-                                            <tr>
-                                                <td class="align-top">
-                                                    <div class="form-check">
-                                                        <input type="checkbox" name="permission[]"
-                                                            value="{{ $item->id }}" id="permission_{{ $item->id }}"
-                                                            class="form-check-input">
-                                                    </div>
-                                                </td>
-                                                <td class="align-middle">
-                                                    <div class="form-group">
-                                                        <label class="form-check-label">
-                                                            {{ $item->name }}
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <h6>Users:</h6>
-                                @foreach ($o_permissions as $item)
+                                @foreach ($permissions as $item)
                                     <div class="col-lg-3 col-md-6 col-sm-6">
                                         <table class="table-hover">
                                             <tr>

@@ -1,35 +1,38 @@
 @extends('layouts.main-content')
-@section('title','Food Variaties')
+@section('title','Facilities')
 @section('content')
 <div class="container-fluid" id="container-wrapper">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Food Variaties</h1>
+        <h1 class="h3 mb-0 text-gray-800">Facilities</h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="./">Master</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Food Variaties</li>
+            <li class="breadcrumb-item active" aria-current="page">Facilities</li>
         </ol>
     </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Data Food Variaties</h6>
-                    <a class="btn btn-sm btn-success text-white" href="javascript:void(0)" style="cursor: pointer"
-                        id="add-btn"> <span><i class="fa fa-plus"></i>&nbsp;Tambah </span> </a>
+                    <h6 class="m-0 font-weight-bold text-primary">Data Facilities</h6>
+                    <a class="btn btn-sm btn-success text-white" href="{{ route('facilities.create') }}"> <span><i class="fa fa-plus"></i>&nbsp;Tambah </span> </a>
                 </div>
                 <div class="table-responsive p-3">
-                    <table class="table align-items-center table-flush" width="100%" id="food_variaties_table">
+                    <table class="table align-items-center table-flush" width="100%" id="facilties_table">
                         <thead class="thead-light">
                             <tr>
                                 <th>No</th>
-                                <th>Variasi / Jenis Makanan</th>
+                                <th>Restaurant</th>
+                                <th>Fasilitas</th>
+                                <th>Image</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th>No</th>
-                                <th>Variasi / Jenis Makanan</th>
+                                <th>Restaurant</th>
+                                <th>Fasilitas</th>
+                                <th>Image</th>
                                 <th>Action</th>
                             </tr>
                         </tfoot>
@@ -39,15 +42,38 @@
         </div>
     </div>
 </div>
-@include('pages.food_variaties.modal')
+@include('pages.facilities.modal')
 </div>
 <script type="application/javascript">
     $(document).ready(function () {
-        $('#food_variaties_table').DataTable({
+        $('#restaurant').select2({
+            placeholder: "cari restaurant",
+            allowClear: true,
+            ajax: {
+                url: "{{ route('get-restaurant') }}",
+                dataType: 'json',
+                type: "POST",
+                delay: 250,
+                data: function(params) {
+                    return {
+                        "_token": "{{ csrf_token() }}",
+                        search: params.term // search term
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: false
+            }
+        });
+
+        $('#facilties_table').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('food-variaties.index') }}",
+                url: "{{ route('facilities.index') }}",
                 type: 'GET',
             },
             "responsive": false,
@@ -63,7 +89,13 @@
                     data: 'DT_RowIndex',
                 },
                 {
+                    data: 'restaurant',
+                },
+                {
                     data: 'name',
+                },
+                {
+                    data: 'image',
                 },
                 {
                     data: 'action',
@@ -74,7 +106,7 @@
 
         $('#add-btn').click(function () {
             $('#form-create').trigger("reset"); //mereset semua input dll didalamnya
-            $('#modal-judul').html("Tamba Variasi Makanan");
+            $('#modal-judul').html("Tambah Variasi Makanan");
             $('#create-modal').modal('show'); //
         });
 
@@ -84,7 +116,7 @@
             let formData = new FormData(this);
 
             $.ajax({
-                url: "{{ route('food-variaties.store')}}",
+                url: "{{ route('facilities.store')}}",
                 type: "POST",
                 data: formData,
                 cache: false,
@@ -95,7 +127,7 @@
                         toastr.success(response.message);
                         $("#form-create")[0].reset();
                         $('#create-modal').modal('hide'); //modal hide
-                        var oTable = $('#food_variaties_table').DataTable(); //inialisasi datatable
+                        var oTable = $('#facilties_table').DataTable(); //inialisasi datatable
                         oTable.ajax.reload(); //reset datatable
                     } else if(response.success == false) {
                         toastr.error(response.message);
@@ -103,6 +135,7 @@
                 },
                 error: function (response) {
                     $('#error_name').text(response.responseJSON.errors.name);
+                    $('#error_image').text(response.responseJSON.errors.image);
                 },
             });
         });
@@ -113,7 +146,7 @@
             let id = $('#id').val();
 
             $.ajax({
-                url: 'food-variaties/' + id,
+                url: 'facilities/' + id,
                 type: "POST",
                 data: formData,
                 cache: false,
@@ -124,7 +157,7 @@
                         toastr.success(response.message);
                         $("#form-edit")[0].reset();
                         $('#edit-modal').modal('hide'); //modal hide
-                        var oTable = $('#food_variaties_table').DataTable(); //inialisasi datatable
+                        var oTable = $('#facilties_table').DataTable(); //inialisasi datatable
                         oTable.ajax.reload(); //reset datatable
                     } else if(response.success == false) {
                         toastr.error(response.message);
@@ -134,19 +167,52 @@
                     $('#error_edit_name').text(response.responseJSON.errors.name);
                 },
             });
-        })
+        });
+
+        $('#foto').empty();
+
+        $('#foto').change(function() {
+            var file = this.files[0];
+
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imagePreview').attr('src', e.target.result);
+                    $('#imagePreview').show();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        $('#foto_edit').empty();
+
+        $('#foto_edit').change(function() {
+            var file = this.files[0];
+
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imagePreviewEdit').attr('src', e.target.result);
+                    $('#imagePreviewEdit').show();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
     });
 
     function updateItem(e) {
         let id = e.getAttribute('data-id');
+        let image = e.getAttribute('dataa-image');
         let name = e.getAttribute('data-name');
 
         $.ajax({
             type: 'GET',
-            url:  '/food-variaties/' + id + '/edit',
+            url:  '/facilities/' + id + '/edit',
             success: function (response) {
                 $('#id').val(response.id);
                 $('#edit_name').val(response.name);
+                var image = response.image;
+                $('#imagePreviewEdit').attr('src', "{{ Storage::url('public/images/facilities/') }}" + '/' + image);
                 $('#edit-modal').modal('show');
             }
         })
@@ -168,14 +234,14 @@
             if (result.isConfirmed) {
                 $.ajax({
                     type: 'DELETE',
-                    url:  'food-variaties/' + id,
+                    url:  'facilities/' + id,
                     data: {
                         "_token": "{{ csrf_token() }}",
                     },
                     success: function (response) {
                         if (response.success == true) {
                             toastr.success(response.message);
-                            var oTable = $('#food_variaties_table').DataTable(); //inialisasi datatable
+                            var oTable = $('#facilties_table').DataTable(); //inialisasi datatable
                             oTable.ajax.reload(); //reset datatable
                         }
                     }

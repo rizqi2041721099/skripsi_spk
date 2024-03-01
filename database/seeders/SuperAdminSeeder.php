@@ -22,7 +22,7 @@ class SuperAdminSeeder extends Seeder
         ],[
             'name' => 'ADMIN'
         ]);
-        $permissions = Permission::whereIn('group_menu',['0'])->pluck('id','id')->all();
+        $permissions = Permission::pluck('id','id')->all();
 
         $role->syncPermissions($permissions);
         $user->assignRole([$role->id]);

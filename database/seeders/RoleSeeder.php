@@ -16,7 +16,7 @@ class RoleSeeder extends Seeder
             'name' => 'ADMIN',
         ]);
 
-        $super_perm = Permission::whereIn('group_menu',['1'])->pluck('id','id')->all();
+        $super_perm = Permission::pluck('id','id')->all();
         $super->syncPermissions($super_perm);
 
         $user = Role::updateOrCreate([
@@ -25,7 +25,7 @@ class RoleSeeder extends Seeder
             'name' => 'USER',
         ]);
 
-        $user_perm = Permission::whereIn('group_menu',['0'])->pluck('id','id')->all();
+        $user_perm = Permission::whereIn('id',[14,17])->pluck('id','id')->all();
         $user->syncPermissions($user_perm);
 
     }

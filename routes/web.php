@@ -4,7 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     UserController,
     RoleController,
-    FoodVariatyController
+    FoodVariatyController,
+    FacilityController,
+    RestaurantController,
+    KriteriaController,
+    AlternatifController,
 };
 /*
 |--------------------------------------------------------------------------
@@ -29,5 +33,12 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::post('get-users',             [UserController::class, 'getUsers'])->name('get.users');
     Route::resource('roles',             RoleController::class);
     Route::resource('food-variaties',    FoodVariatyController::class);
-
+    Route::resource('facilities',        FacilityController::class);
+    Route::resource('restaurants',       RestaurantController::class);
+    Route::post('get-restaurant',        [RestaurantController::class, 'getRestaurant'])->name('get-restaurant');
+    Route::resource('kriterias',         KriteriaController::class);
+    Route::resource('alternatif',        AlternatifController::class);
+    Route::get('perhitungan-saw',        [AlternatifController::class, 'perhitunganSaw'])->name('perhitungan.saw');
+    Route::get('normalisasi-alternatif',        [AlternatifController::class, 'normalisasiAlternatif'])->name('normalisasi.alternatif');
+    Route::get('data-ranking',          [AlternatifController::class, 'dataRanking'])->name('data.ranking');
 });

@@ -27,10 +27,10 @@
         <div class="row justify-content-center mt-5">
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-8 text-center">
                 <div class="card shadow-sm my-4 border-bottom-primary">
-                    <div class="card-header">
+                    {{-- <div class="card-header">
                         <img src="" class="card-img-bottom mt-2"
                             style="max-width: 100px" alt="Photo">
-                    </div>
+                    </div> --}}
                     <div class="card-body p-0">
                         <div class="row">
                             <div class="col-lg-12">

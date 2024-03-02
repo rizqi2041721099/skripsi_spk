@@ -109,6 +109,7 @@ class PermissionSeeder extends Seeder
             [
                 'name' => 'delete-alternatif',
             ],
+            ['name'  => 'cleaner'],
 
         ];
 

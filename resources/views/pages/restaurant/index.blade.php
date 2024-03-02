@@ -21,12 +21,12 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>No</th>
-                                <th>Nama Restoran</th>
+                                <th>Nama</th>
                                 <th>Alamat</th>
                                 <th>Jarak</th>
                                 <th>Image</th>
                                 <th>Fasilitas</th>
-                                <th>Jumlah Variasi Makanan</th>
+                                <th>Qty Variasi Makanan</th>
                                 <th>Rata-Rata Harga Makanan</th>
                                 <th>Action</th>
                             </tr>
@@ -34,12 +34,12 @@
                         <tfoot>
                             <tr>
                                 <th>No</th>
-                                <th>Nama Restoran</th>
+                                <th>Nama</th>
                                 <th>Alamat</th>
                                 <th>Jarak</th>
                                 <th>Image</th>
                                 <th>Fasilitas</th>
-                                <th>Jumlah Variasi Makanan</th>
+                                <th>Qty Variasi Makanan</th>
                                 <th>Rata-Rata Harga Makanan</th>
                                 <th>Action</th>
                             </tr>
@@ -134,6 +134,7 @@
                     $('#error_name').text(response.responseJSON.errors.name);
                     $('#error_distance').text(response.responseJSON.errors.distance);
                     $('#error_facility').text(response.responseJSON.errors.facility);
+                    $('#error_qty_variasi_makanan').text(response.responseJSON.errors.qty_variasi_makanan);
                     $('#error_image').text(response.responseJSON.errors.image);
                 },
             });
@@ -166,6 +167,7 @@
                     $('#error_edit_name').text(response.responseJSON.errors.name);
                     $('#error_edit_distance').text(response.responseJSON.errors.distance);
                     $('#error_edit_facility').text(response.responseJSON.errors.facility);
+                    $('#error_edit_qty_variasi_makanan').text(response.responseJSON.errors.qty_variasi_makanan);
                     $('#error_edit_image').text(response.responseJSON.errors.image);
                 },
             });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -25,5 +26,12 @@ class HomeController extends Controller
     {
         $page = 'dashboard';
         return view('home',compact('page'));
+    }
+
+    public function profile()
+    {
+        $page = 'profile';
+        $data = User::where('id',auth()->user()->id)->first();
+        return view('pages.profile.index', compact('page','data'));
     }
 }

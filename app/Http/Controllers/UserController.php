@@ -132,6 +132,41 @@ class UserController extends Controller
         return view('pages.users.edit',compact('page','roles','userRole','user'));
     }
 
+    public function editProfile(int $id)
+    {
+        $page = 'profile';
+        $data = User::where('id',auth()->user()->id)->first();
+
+        return view('pages.profile.edit',compact('page','data'));
+    }
+
+    public function updateProfile(Request $request, int $id)
+    {
+        $request->validate([
+            'name'          => 'nullable|unique:users,name,'.$id,
+            'email'         => 'nullable|email|unique:users,email,'.$id,
+        ],[
+            'name.unique'   => 'Nama sudah ada',
+            'email.unique' => 'Email sudah ada',
+        ]);
+
+        $validated = $request->all();
+        if(!empty($validated['password'])){
+            $validated['password'] = Hash::make($validated['password']);
+        }else{
+            $validated = Arr::except($validated,array('password'));
+        }
+
+        $user = User::find($id);
+        $user->update($validated);
+
+        return response()->json([
+            'success'   => true,
+            'message'   => "profile user berhasil diupdate"
+        ],200);
+    }
+
+
     public function update(Request $request, int $id)
     {
         $request->validate([

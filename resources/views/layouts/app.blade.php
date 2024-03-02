@@ -7,9 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+{{--
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('assets/img/logo/bca_logo.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('assets/img/logo/bca_logo.png') }}" type="image/png"> --}}
 
 
     {{-- <link rel="stylesheet" href="{{ asset('css/loader.css') }}"> --}}

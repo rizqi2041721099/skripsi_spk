@@ -79,9 +79,9 @@
             <span class="ml-2 d-none d-lg-inline text-white small">{{ auth()->user()->name }}</span>
           </a>
           <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="#">
-              <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-              Profile
+            <a class="dropdown-item" href="{{ route('profile') }}">
+                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                Profile
             </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item logout" href="{{ route('logout') }}" onclick="event.preventDefault();

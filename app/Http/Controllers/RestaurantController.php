@@ -34,7 +34,7 @@ class RestaurantController extends Controller
                     return Str::limit($row->address, 20);
                 })
                 ->addColumn('distance', function ($row) {
-                    return $row->distance;
+                    return $row->distance.' Km';
                 })
                 ->addColumn('image', function($row){
                     if (is_null($row->images) || $row->images == "") {
@@ -90,11 +90,12 @@ class RestaurantController extends Controller
             'images'            => 'nullable',
             'address'           => 'nullable',
             'facility'          => 'nullable',
-            'qty_variasi_makanan'    => 'nullable',
+            'qty_variasi_makanan'    => 'nullable|integer',
             'average'           => 'nullable',
         ],[
             'name.required'           => 'Nama restaurant harus diisi.',
             'distance.required'       => 'Jarak restaurant harus diisi.',
+            'qty_variasi_makanan'       => 'Qty food variaty harus berupa angka.',
         ]);
 
         if(isset($request->images))
@@ -144,11 +145,12 @@ class RestaurantController extends Controller
             'image'     => 'nullable|image',
             'address'   => 'nullable',
             'facility'   => 'nullable',
-            'qty_variasi_makanan'    => 'nullable',
+            'qty_variasi_makanan'    => 'nullable|integer',
             'average'           => 'nullable',
         ], [
             'name.unique' => 'Restaurant sudah ada.',
             'image.image' => 'File yang diunggah harus berupa gambar.',
+            'qty_variasi_makanan.integer' => 'Qty food variaty harus berupa angka.',
         ]);
 
         $average     = (int)str_replace([",","."], "",$request['average']);

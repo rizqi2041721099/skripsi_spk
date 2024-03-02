@@ -9,6 +9,7 @@ use App\Http\Controllers\{
     RestaurantController,
     KriteriaController,
     AlternatifController,
+    HomeController,
 };
 /*
 |--------------------------------------------------------------------------
@@ -22,10 +23,10 @@ use App\Http\Controllers\{
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::group(['middleware' => ['auth:web']], function() {
     Route::get('/home',                  [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -41,4 +42,12 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::get('perhitungan-saw',        [AlternatifController::class, 'perhitunganSaw'])->name('perhitungan.saw');
     Route::get('normalisasi-alternatif',        [AlternatifController::class, 'normalisasiAlternatif'])->name('normalisasi.alternatif');
     Route::get('data-ranking',          [AlternatifController::class, 'dataRanking'])->name('data.ranking');
+
+    // Profile
+    Route::get('/profile',             [HomeController::class, 'profile'])->name('profile');
+    Route::post('get-users',            [UserController::class, 'getUsers'])->name('get.users');
+    Route::get('/profile/{id}/edit',   [UserController::class, 'editProfile'])->name('profile.edit');
+    Route::put('/profile-update/{id}',        [UserController::class, 'updateProfile'])->name('profile.update');
+
+    Route::get('clear', [CacheController::class, 'clear'])->name('clear');
 });

@@ -23,7 +23,7 @@
                             <small class="text-danger" id="error_address"></small>
                         </div>
                         <div class="col-md-12 col-xs-12 mb-2">
-                            <label class="form-label">Distance <span class="text-danger">Input Jarak format angka*</span></label>
+                            <label class="form-label">Distance <span class="text-danger">Input Jarak format angka (Km)*</span></label>
                             <input type="text" class="form-control" id="distance" name="distance">
                             <small class="text-danger" id="error_distance"></small>
                         </div>
@@ -87,7 +87,7 @@
                             <small class="text-danger" id="error_address"></small>
                         </div>
                         <div class="col-md-12 col-xs-12 mb-2">
-                            <label class="form-label">Distance  <span class="text-danger">Input Jarak format angka*</span></label>
+                            <label class="form-label">Distance  <span class="text-danger">Input Jarak format angka (Km)*</span></label>
                             <input type="text" class="form-control" id="edit_distance" name="distance">
                             <small class="text-danger" id="error_edit_distance"></small>
                         </div>

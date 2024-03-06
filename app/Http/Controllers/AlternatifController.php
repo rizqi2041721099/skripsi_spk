@@ -190,7 +190,7 @@ class AlternatifController extends Controller
                 })
                 ->addColumn('v_fasilitas', function ($row) {
                     if ($row->v_fasilitas != 0) {
-                        $v_fasilitas =  1 / $row->v_fasilitas;
+                        $v_fasilitas =  5 / $row->v_fasilitas;
                          return round($v_fasilitas,2);
                     }
                 })
@@ -238,8 +238,8 @@ class AlternatifController extends Controller
                 })
                 ->addColumn('v_fasilitas', function ($row) {
                     if ($row->v_fasilitas != 0) {
-                        $v_fasilitas =  1 / $row->v_fasilitas;
-                        return '1 / '. $row->v_fasilitas.' = '.round($v_fasilitas,2);
+                        $v_fasilitas =  5 / $row->v_fasilitas;
+                        return '5 / '. $row->v_fasilitas.' = '.round($v_fasilitas,2);
                     }
                 })
                 ->addColumn('v_rasa_makanan', function ($row) {
@@ -289,7 +289,7 @@ class AlternatifController extends Controller
             $v_variasi_makanan = 5 / $item->v_variasi_makanan;
             $v_rasa_makanan = 5 / $item->v_rasa_makanan;
             $v_jarak = 1 / $item->v_jarak;
-            $v_fasilitas = 1 / $item->v_fasilitas;
+            $v_fasilitas = 5 / $item->v_fasilitas;
 
             $bobot_v_harga = $sum_v_harga_makanan != 0 ? round($v_harga_makanan,2) * $sum_v_harga_makanan : 0;
             $bobot_v_variasi = $sum_v_variasi_makanan != 0 ? round($v_variasi_makanan,2) * $sum_v_variasi_makanan : 0;

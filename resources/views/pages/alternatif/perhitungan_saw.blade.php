@@ -58,13 +58,12 @@
                         </thead>
                         <tfoot>
                             <tr>
-                                <th>No</th>
-                                <th>Restaurant</th>
-                                <th>Harga Makanan</th>
-                                <th>Variasi Makanan</th>
-                                <th>Rasa Makanan</th>
-                                <th>Jarak</th>
-                                <th>Fasilitas</th>
+                                <th colspan="2">Bobot</th>
+                                <th id="sum_v_harga"></th>
+                                <th id="sum_v_variasi"></th>
+                                <th id="sum_v_rasa"></th>
+                                <th id="sum_v_jarak"></th>
+                                <th id="sum_v_fasilitas"></th>
                             </tr>
                         </tfoot>
                     </table>
@@ -96,7 +95,7 @@
                                 <td>0</td>
                             </tr>
                         </table>
-                        <table class="table table-bordered" width="100%" id="normalisasi_alternatif_table">
+                        <table class="table table-bordered" width="100%" id="normalisasi_table">
                             <thead>
                                 <tr>
                                     <th rowspan="2" width="15%">No</th>
@@ -189,7 +188,7 @@
                     data: 'v_harga_makanan',
                 },
                 {
-                    data: 'v_variasi_makanan',
+                    data: 'v_variasi_makan',
                 },
                 {
                     data: 'v_rasa_makanan',
@@ -201,9 +200,55 @@
                     data: 'v_fasilitas',
                 },
             ],
+
+            "footerCallback": function(row, data, start, end, display) {
+                    var api = this.api();
+
+                    sum_v_harga = api
+                        .column(2)
+                        .data()
+                        .reduce(function(a, b) {
+                            return parseFloat(a) + parseFloat(b);
+                        }, 0);
+                    $('#sum_v_harga').html(sum_v_harga);
+
+                    sum_v_variasi = api
+                        .column(3)
+                        .data()
+                        .reduce(function(a, b) {
+                            return parseFloat(a) + parseFloat(b);
+                        }, 0);
+                    $('#sum_v_variasi').html(sum_v_variasi);
+
+                    var sum_v_rasa = api
+                        .column(4)
+                        .data()
+                        .toArray();
+                    var totalSum = sum_v_rasa.reduce(function(total, num) {
+                        return total + parseFloat(num);
+                    }, 0);
+                    $('#sum_v_rasa').html(totalSum);
+
+                    sum_v_jarak = api
+                        .column(5)
+                        .data()
+                        .reduce(function(a, b) {
+                            return parseFloat(a) + parseFloat(b);
+                        }, 0);
+                    $('#sum_v_jarak').html(sum_v_jarak);
+
+                    sum_v_fasilitas = api
+                        .column(6)
+                        .data()
+                        .reduce(function(a, b) {
+                            return parseFloat(a) + parseFloat(b);
+                        }, 0);
+                    $('#sum_v_fasilitas').html(sum_v_fasilitas);
+
+                }
         });
 
-        $('#normalisasi_alternatif_table').DataTable({
+        $('#normalisasi_table').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
@@ -241,6 +286,10 @@
                 },
             ],
         });
+
+        function getSum(total, num) {
+           return total + Math.round(num);
+        }
 
         $('#data_ranking_table').DataTable({
             processing: true,

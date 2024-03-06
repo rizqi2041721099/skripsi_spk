@@ -31,17 +31,17 @@ class AlternatifController extends Controller
                 ->addColumn('v_harga_makanan', function ($row) {
                     return $row->v_harga_makanan;
                 })
-                ->addColumn('v_variasi_makan', function ($row) {
-                    return $row->v_variasi_makan;
-                })
-                ->addColumn('v_rasa_makanan', function ($row) {
-                    return $row->v_rasa_makanan;
-                })
                 ->addColumn('v_jarak', function ($row) {
                     return $row->v_jarak;
                 })
                 ->addColumn('v_fasilitas', function ($row) {
                     return $row->v_fasilitas;
+                })
+                ->addColumn('v_rasa_makanan', function ($row) {
+                    return $row->v_rasa_makanan;
+                })
+                ->addColumn('v_variasi_makan', function ($row) {
+                    return $row->v_variasi_makan;
                 })
                 ->addColumn('action', function ($row)use($auth) {
                     $btn = '';
@@ -170,46 +170,71 @@ class AlternatifController extends Controller
         $data = Alternatif::orderBy('created_at')->get();
 
         $auth  = auth()->user();
+        $alternatif_hasil = [];
+        $sum_v_harga_makanan = [];
+        $sum_v_variasi_makanan = [];
+        $sum_v_rasa_makanan = [];
+        $sum_v_jarak = [];
+        $sum_v_fasilitas = [];
+
+        foreach ($data as $item) {
+            // $v_harga_makanan = 1 / $item->v_harga_makanan;
+            // $v_variasi_makanan = 5 / $item->v_variasi_makanan;
+            // $v_rasa_makanan = 5 / $item->v_rasa_makanan;
+            // $v_jarak = 1 / $item->v_jarak;
+            // $v_fasilitas = 1 / $item->v_fasilitas;
+
+            $v_harga_makanan = round($item->v_harga_makanan, 2);
+            $sum_v_harga_makanan[] = $v_harga_makanan;
+
+            $v_variasi_makanan = round($item->v_variasi_makanan, 2);
+            $sum_v_variasi_makanan[] = $v_variasi_makanan;
+
+            $v_rasa_makanan = round($item->v_rasa_makanan, 2);
+            $sum_v_rasa_makanan[] = $v_rasa_makanan;
+
+            $v_jarak = round($item->v_jarak, 2);
+            $sum_v_jarak[] = $v_jarak;
+
+            $v_fasilitas = round($item->v_fasilitas, 2);
+            $sum_v_fasilitas[] = $v_fasilitas;
+        }
+
+        $min_v_harga_makanan = min($sum_v_harga_makanan);
+        $min_v_jarak = min($sum_v_jarak);
+        $max_v_fasilitas = max($sum_v_fasilitas);
+        $max_v_rasa_makanan = max($sum_v_rasa_makanan);
+        $max_v_variasi_makanan = max($sum_v_variasi_makanan);
 
         if ($request->ajax()) {
             return DataTables::of($data)
                 ->addColumn('restaurant', function ($row) {
                     return $row->restaurant->name;
                 })
-                ->addColumn('v_harga_makanan', function ($row) {
-                    if ($row->v_harga_makanan != 0) {
-                        $v_harga_makanan =  1 / $row->v_harga_makanan;
-                         return round($v_harga_makanan,2);
-                     }
+                ->addColumn('v_harga_makanan', function ($row) use ($min_v_harga_makanan) {
+                    $v_harga_makanan = $min_v_harga_makanan / $row->v_harga_makanan;
+                    return round($v_harga_makanan,2);
                 })
-                ->addColumn('v_jarak', function ($row) {
-                    if ($row->v_jarak != 0) {
-                       $v_jarak =  1 / $row->v_jarak;
-                        return round($v_jarak,2);
-                    }
+                ->addColumn('v_jarak', function ($row) use ($min_v_jarak){
+                    $v_jarak = $min_v_jarak / $row->v_jarak;
+                    return round($v_jarak,2);
                 })
-                ->addColumn('v_fasilitas', function ($row) {
-                    if ($row->v_fasilitas != 0) {
-                        $v_fasilitas =  5 / $row->v_fasilitas;
-                         return round($v_fasilitas,2);
-                    }
+                ->addColumn('v_fasilitas', function ($row) use ($max_v_fasilitas) {
+                    $v_fasilitas = $row->v_fasilitas/ $max_v_fasilitas;
+                    return round($v_fasilitas,2);
                 })
-                ->addColumn('v_rasa_makanan', function ($row) {
-                    if ($row->v_rasa_makanan != 0) {
-                        $v_rasa_makanan =  5 / $row->v_rasa_makanan;
-                        return round($v_rasa_makanan,2);
-                    }
+                ->addColumn('v_rasa_makanan', function ($row) use ($max_v_rasa_makanan) {
+                    $v_rasa_makanan = $row->v_rasa_makanan / $max_v_rasa_makanan;
+                    return round($v_rasa_makanan,2);
                 })
-                ->addColumn('v_variasi_makan', function ($row) {
-                    if ($row->v_variasi_makanan != 0) {
-                        $v_variasi_makanan = 5 / $row->v_variasi_makanan;
-                        return round($v_variasi_makanan,2);
-                    }
+                ->addColumn('v_variasi_makan', function ($row) use ($max_v_variasi_makanan) {
+                    $v_variasi_makanan =  $row->v_variasi_makanan / $max_v_variasi_makanan ;
+                    return round($v_variasi_makanan,2);
                 })
                 ->addIndexColumn()
                 ->make(true);
             }
-            return view('pages.alternatif.perhitungan_saw', compact('page'));
+            return view('pages.alternatif.perhitungan_saw', compact('page','min_v_harga_makanan','min_v_jarak','max_v_fasilitas','max_v_rasa_makanan','max_v_variasi_makanan'));
     }
 
     public function normalisasiAlternatif(Request $request)
@@ -218,41 +243,89 @@ class AlternatifController extends Controller
         $data = Alternatif::orderBy('created_at')->get();
 
         $auth  = auth()->user();
+        $alternatif_hasil = [];
+        $sum_v_harga_makanan = [];
+        $sum_v_variasi_makanan = [];
+        $sum_v_rasa_makanan = [];
+        $sum_v_jarak = [];
+        $sum_v_fasilitas = [];
 
+        foreach ($data as $item) {
+            // $v_harga_makanan = 1 / $item->v_harga_makanan;
+            // $v_variasi_makanan = 5 / $item->v_variasi_makanan;
+            // $v_rasa_makanan = 5 / $item->v_rasa_makanan;
+            // $v_jarak = 1 / $item->v_jarak;
+            // $v_fasilitas = 1 / $item->v_fasilitas;
+
+            $v_harga_makanan = round($item->v_harga_makanan, 2);
+            $sum_v_harga_makanan[] = $v_harga_makanan;
+
+            $v_variasi_makanan = round($item->v_variasi_makanan, 2);
+            $sum_v_variasi_makanan[] = $v_variasi_makanan;
+
+            $v_rasa_makanan = round($item->v_rasa_makanan, 2);
+            $sum_v_rasa_makanan[] = $v_rasa_makanan;
+
+            $v_jarak = round($item->v_jarak, 2);
+            $sum_v_jarak[] = $v_jarak;
+
+            $v_fasilitas = round($item->v_fasilitas, 2);
+            $sum_v_fasilitas[] = $v_fasilitas;
+        }
+
+        $min_v_harga_makanan = min($sum_v_harga_makanan);
+        $min_v_jarak = min($sum_v_jarak);
+        $max_v_fasilitas = max($sum_v_fasilitas);
+        $max_v_rasa_makanan = max($sum_v_rasa_makanan);
+        $max_v_variasi_makanan = max($sum_v_variasi_makanan);
+
+        // dd(['min '.min($min_v_harga_makanan),$sum_v_harga_makanan]);
+        // foreach ($data as $item) {
+        //     $v_harga_makanan = 1 / $item->v_harga_makanan;
+        //     $v_jarak = 1 / $item->v_jarak;
+        //     $v_fasilitas = 5 / $item->v_fasilitas;
+        //     $v_rasa_makanan = 5 / $item->v_rasa_makanan;
+        //     $v_variasi_makanan = 5 / $item->v_variasi_makanan;
+
+        //     $v_harga = $min_v_harga_makanan != 0 ?   $min_v_harga_makanan / round($v_harga_makanan,2)  : 0;
+        //     $v_jarak = $min_v_jarak != 0 ?  $min_v_jarak / round($v_jarak,2) : 0;
+        //     $v_fasilitas = $max_v_fasilitas != 0 ? round($v_fasilitas,2) / $max_v_fasilitas : 0;
+        //     $v_rasa = $max_v_rasa_makanan != 0 ? round($v_rasa_makanan,2) / $max_v_rasa_makanan : 0;
+        //     $v_variasi = $max_v_variasi_makanan != 0 ? round($v_variasi_makanan,2) / $max_v_variasi_makanan : 0;
+
+        //     $alternatif_hasil[] = [
+        //         'alternatif' => $item,
+        //         'v_harga_makanan'   =>  round($v_harga,2),
+        //         'v_variasi_makanan' => round($v_variasi,2),
+        //         'v_rasa_makanan'    => round($v_rasa,2),
+        //         'v_jarak'           => round($v_jarak,2),
+        //         'v_fasilitas'       => round($v_fasilitas,2),
+        //     ];
+        // }
         if ($request->ajax()) {
             return DataTables::of($data)
                 ->addColumn('restaurant', function ($row) {
                     return $row->restaurant->name;
                 })
-                ->addColumn('v_harga_makanan', function ($row) {
-                    if ($row->v_harga_makanan != 0) {
-                        $v_harga_makanan =  1 / $row->v_harga_makanan;
-                        return '1 / ' . $row->v_harga_makanan . ' = '.  round($v_harga_makanan,2);
-                    }
+                ->addColumn('v_harga_makanan', function ($row) use ($min_v_harga_makanan) {
+                    $v_harga_makanan = $min_v_harga_makanan / $row->v_harga_makanan;
+                    return $min_v_harga_makanan.' / '.$row->harga_makanan.' = '.round($v_harga_makanan,2);
                 })
-                ->addColumn('v_jarak', function ($row) {
-                    if ($row->v_jarak != 0) {
-                        $v_jarak =  1 / $row->v_jarak;
-                        return '1 / '. $row->v_jarak .' = '.round($v_jarak,2);
-                    }
+                ->addColumn('v_jarak', function ($row) use ($min_v_jarak){
+                    $v_jarak = $min_v_jarak / $row->v_jarak;
+                    return $min_v_jarak.' / '.$row->v_jarak.' = '.round($v_jarak,2);
                 })
-                ->addColumn('v_fasilitas', function ($row) {
-                    if ($row->v_fasilitas != 0) {
-                        $v_fasilitas =  5 / $row->v_fasilitas;
-                        return '5 / '. $row->v_fasilitas.' = '.round($v_fasilitas,2);
-                    }
+                ->addColumn('v_fasilitas', function ($row) use ($max_v_fasilitas) {
+                    $v_fasilitas = $row->v_fasilitas/ $max_v_fasilitas;
+                    return $row->v_fasilitas.' / '.$max_v_fasilitas.' = '.round($v_fasilitas,2);
                 })
-                ->addColumn('v_rasa_makanan', function ($row) {
-                    if ($row->v_rasa_makanan != 0) {
-                        $v_rasa_makanan =  5 / $row->v_rasa_makanan;
-                        return '5 / '. $row->v_rasa_makanan. ' = '.round($v_rasa_makanan,2);
-                    }
+                ->addColumn('v_rasa_makanan', function ($row) use ($max_v_rasa_makanan) {
+                    $v_rasa_makanan = $row->v_rasa_makanan / $max_v_rasa_makanan;
+                    return $row->v_rasa_makanan.' / '.$max_v_rasa_makanan.' = '.round($v_rasa_makanan,2);
                 })
-                ->addColumn('variasi_makanan', function ($row) {
-                    if ($row->v_variasi_makanan != 0) {
-                        $v_variasi_makanan = 5 / $row->v_variasi_makanan;
-                        return '5 / '. $row->v_variasi_makanan. ' = '.round($v_variasi_makanan,2);
-                    }
+                ->addColumn('variasi_makanan', function ($row) use ($max_v_variasi_makanan) {
+                    $v_variasi_makanan =  $row->v_variasi_makanan / $max_v_variasi_makanan ;
+                    return $row->v_variasi_makanan.' / '.$max_v_variasi_makanan.' = '.round($v_variasi_makanan,2);
                 })
                 ->addIndexColumn()
                 ->make(true);
@@ -264,38 +337,58 @@ class AlternatifController extends Controller
         $page = 'alternatif';
         $data = Alternatif::get();
         $alternatif_hasil = [];
-        $sum_v_harga_makanan = 0.30;
-        $sum_v_variasi_makanan = 0.10;
-        $sum_v_rasa_makanan = 0.10;
-        $sum_v_jarak = 0.25;
-        $sum_v_fasilitas = 0.25;
-
-        // foreach ($data as $item) {
-        //     $v_harga_makanan = 1 / $item->v_harga_makanan;
-        //     $v_variasi_makanan = 5 / $item->v_variasi_makanan;
-        //     $v_rasa_makanan = 5 / $item->v_rasa_makanan;
-        //     $v_jarak = 1 / $item->v_jarak;
-        //     $v_fasilitas = 1 / $item->v_fasilitas;
-
-        //     $sum_v_harga_makanan += round($v_harga_makanan,2);
-        //     $sum_v_variasi_makanan += round($v_variasi_makanan,2);
-        //     $sum_v_rasa_makanan += round($v_rasa_makanan,2);
-        //     $sum_v_jarak += round($v_jarak,2);
-        //     $sum_v_fasilitas += round($v_fasilitas,2);
-        // }
+        $sum_v_harga_makanan = [];
+        $sum_v_variasi_makanan = [];
+        $sum_v_rasa_makanan = [];
+        $sum_v_jarak = [];
+        $sum_v_fasilitas = [];
+        $bobot_v_harga = 0;
+        $bobot_v_jarak = 0;
+        $bobot_v_rasa = 0;
+        $bobot_v_variasi = 0;
+        $bobot_v_fasilitas = 0;
 
         foreach ($data as $item) {
-            $v_harga_makanan = 1 / $item->v_harga_makanan;
-            $v_variasi_makanan = 5 / $item->v_variasi_makanan;
-            $v_rasa_makanan = 5 / $item->v_rasa_makanan;
-            $v_jarak = 1 / $item->v_jarak;
-            $v_fasilitas = 5 / $item->v_fasilitas;
+            // $v_harga_makanan = 1 / $item->v_harga_makanan;
+            // $v_variasi_makanan = 5 / $item->v_variasi_makanan;
+            // $v_rasa_makanan = 5 / $item->v_rasa_makanan;
+            // $v_jarak = 1 / $item->v_jarak;
+            // $v_fasilitas = 1 / $item->v_fasilitas;
 
-            $bobot_v_harga = $sum_v_harga_makanan != 0 ? round($v_harga_makanan,2) * $sum_v_harga_makanan : 0;
-            $bobot_v_variasi = $sum_v_variasi_makanan != 0 ? round($v_variasi_makanan,2) * $sum_v_variasi_makanan : 0;
-            $bobot_v_rasa = $sum_v_rasa_makanan != 0 ? round($v_rasa_makanan,2) * $sum_v_rasa_makanan : 0;
-            $bobot_v_jarak = $sum_v_jarak != 0 ? round($v_jarak,2) * $sum_v_jarak : 0;
-            $bobot_v_fasilitas = $sum_v_jarak != 0 ? round($v_fasilitas,2) * $sum_v_jarak : 0;
+            $v_harga_makanan = round($item->v_harga_makanan, 2);
+            $sum_v_harga_makanan[] = $v_harga_makanan;
+
+            $v_variasi_makanan = round($item->v_variasi_makanan, 2);
+            $sum_v_variasi_makanan[] = $v_variasi_makanan;
+
+            $v_rasa_makanan = round($item->v_rasa_makanan, 2);
+            $sum_v_rasa_makanan[] = $v_rasa_makanan;
+
+            $v_jarak = round($item->v_jarak, 2);
+            $sum_v_jarak[] = $v_jarak;
+
+            $v_fasilitas = round($item->v_fasilitas, 2);
+            $sum_v_fasilitas[] = $v_fasilitas;
+        }
+
+        $min_v_harga_makanan = min($sum_v_harga_makanan);
+        $min_v_jarak = min($sum_v_jarak);
+        $max_v_fasilitas = max($sum_v_fasilitas);
+        $max_v_rasa_makanan = max($sum_v_rasa_makanan);
+        $max_v_variasi_makanan = max($sum_v_variasi_makanan);
+
+        foreach ($data as $item) {
+            $v_harga_makanan = $min_v_harga_makanan / $item->v_harga_makanan;
+            $v_jarak = $min_v_jarak / $item->v_jarak;
+            $v_fasilitas = $item->v_fasilitas / $max_v_fasilitas;
+            $v_rasa_makanan = $item->v_rasa_makanan / $max_v_rasa_makanan;
+            $v_variasi_makanan =  $item->v_variasi_makanan / $max_v_variasi_makanan;
+
+            $bobot_v_harga =  round($v_harga_makanan,2) * 0.30;
+            $bobot_v_variasi = round($v_variasi_makanan,2) * 0.10;
+            $bobot_v_rasa = round($v_rasa_makanan,2) * 0.10;
+            $bobot_v_jarak = round($v_jarak,2) * 0.25;
+            $bobot_v_fasilitas = round($v_fasilitas,2) * 0.25;
 
 
             // $v_bobot_jarak += round($v_jarak,2);

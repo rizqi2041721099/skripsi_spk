@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             SuperAdminSeeder::class,
             KriteriaSeeder::class,
+            RestaurantSeeder::class,
+            AlternatifSeeder::class,
         ]);
     }
 }

@@ -26,11 +26,11 @@
                                 <th rowspan="2" width="15%">Action</th>
                             </tr>
                             <tr>
-                                <th data-dt-order="disable" width="15%">Harga Makanan</th>
-                                <th>Variasi Makanan</th>
-                                <th>Rasa Makanan</th>
+                                <th>Harga Makanan</th>
                                 <th>Jarak</th>
                                 <th>Fasilitas</th>
+                                <th>Rasa Makanan</th>
+                                <th>Variasi Makanan</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -38,10 +38,10 @@
                                 <th>No</th>
                                 <th>Restaurant</th>
                                 <th>Harga Makanan</th>
-                                <th>Variasi Makanan</th>
-                                <th>Rasa Makanan</th>
                                 <th>Jarak</th>
                                 <th>Fasilitas</th>
+                                <th>Rasa Makanan</th>
+                                <th>Variasi Makanan</th>
                                 <th>Action</th>
                             </tr>
                         </tfoot>

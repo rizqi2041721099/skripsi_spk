@@ -26,11 +26,11 @@
                         </tr>
                         <tr>
                             <th scope="row">Nilai Pembagi</th>
-                            <td>1</td>
-                            <td>5</td>
-                            <td>5</td>
-                            <td>1</td>
-                            <td>5</td>
+                            <td>{{ $min_v_harga_makanan }}</td>
+                            <td>{{ $min_v_jarak }}</td>
+                            <td>{{ $max_v_fasilitas }}</td>
+                            <td>{{ $max_v_rasa_makanan }}</td>
+                            <td>{{ $max_v_variasi_makanan }}</td>
                         </tr>
                         <tr>
                             <th scope="row">Bobot</th>
@@ -80,11 +80,11 @@
                             </tr>
                             <tr>
                                 <th scope="row">Nilai Pembagi</th>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>5</td>
-                                <td>5</td>
-                                <td>5</td>
+                                <td>{{ $min_v_harga_makanan }}</td>
+                                <td>{{ $min_v_jarak }}</td>
+                                <td>{{ $max_v_fasilitas }}</td>
+                                <td>{{ $max_v_rasa_makanan }}</td>
+                                <td>{{ $max_v_variasi_makanan }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Bobot</th>
@@ -166,6 +166,7 @@
         $('#alternatif_table').DataTable({
             processing: true,
             serverSide: true,
+            "iDisplayLength": 50,
             ajax: {
                 url: "{{ route('perhitungan.saw') }}",
                 type: 'GET',
@@ -251,6 +252,7 @@
         $('#normalisasi_table').DataTable({
             processing: true,
             serverSide: true,
+            "iDisplayLength": 50,
             ajax: {
                 url: "{{ route('normalisasi.alternatif') }}",
                 type: 'GET',
@@ -294,6 +296,7 @@
         $('#data_ranking_table').DataTable({
             processing: true,
             serverSide: true,
+            "iDisplayLength": 50,
             ajax: {
                 url: "{{ route('data.ranking') }}",
                 type: 'GET',

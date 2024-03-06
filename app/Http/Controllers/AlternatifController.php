@@ -182,18 +182,6 @@ class AlternatifController extends Controller
                          return round($v_harga_makanan,2);
                      }
                 })
-                ->addColumn('v_variasi_makan', function ($row) {
-                    if ($row->v_variasi_makanan != 0) {
-                        $v_variasi_makanan = 5 / $row->v_variasi_makanan;
-                        return round($v_variasi_makanan,2);
-                    }
-                })
-                ->addColumn('v_rasa_makanan', function ($row) {
-                    if ($row->v_rasa_makanan != 0) {
-                        $v_rasa_makanan =  5 / $row->v_rasa_makanan;
-                        return round($v_rasa_makanan,2);
-                    }
-                })
                 ->addColumn('v_jarak', function ($row) {
                     if ($row->v_jarak != 0) {
                        $v_jarak =  1 / $row->v_jarak;
@@ -204,6 +192,18 @@ class AlternatifController extends Controller
                     if ($row->v_fasilitas != 0) {
                         $v_fasilitas =  1 / $row->v_fasilitas;
                          return round($v_fasilitas,2);
+                    }
+                })
+                ->addColumn('v_rasa_makanan', function ($row) {
+                    if ($row->v_rasa_makanan != 0) {
+                        $v_rasa_makanan =  5 / $row->v_rasa_makanan;
+                        return round($v_rasa_makanan,2);
+                    }
+                })
+                ->addColumn('v_variasi_makan', function ($row) {
+                    if ($row->v_variasi_makanan != 0) {
+                        $v_variasi_makanan = 5 / $row->v_variasi_makanan;
+                        return round($v_variasi_makanan,2);
                     }
                 })
                 ->addIndexColumn()
@@ -230,18 +230,6 @@ class AlternatifController extends Controller
                         return '1 / ' . $row->v_harga_makanan . ' = '.  round($v_harga_makanan,2);
                     }
                 })
-                ->addColumn('variasi_makanan', function ($row) {
-                    if ($row->v_variasi_makanan != 0) {
-                        $v_variasi_makanan = 5 / $row->v_variasi_makanan;
-                        return '5 / '. $row->v_variasi_makanan. ' = '.round($v_variasi_makanan,2);
-                    }
-                })
-                ->addColumn('v_rasa_makanan', function ($row) {
-                    if ($row->v_rasa_makanan != 0) {
-                        $v_rasa_makanan =  5 / $row->v_rasa_makanan;
-                        return '5 / '. $row->v_rasa_makanan. ' = '.round($v_rasa_makanan,2);
-                    }
-                })
                 ->addColumn('v_jarak', function ($row) {
                     if ($row->v_jarak != 0) {
                         $v_jarak =  1 / $row->v_jarak;
@@ -254,6 +242,18 @@ class AlternatifController extends Controller
                         return '1 / '. $row->v_fasilitas.' = '.round($v_fasilitas,2);
                     }
                 })
+                ->addColumn('v_rasa_makanan', function ($row) {
+                    if ($row->v_rasa_makanan != 0) {
+                        $v_rasa_makanan =  5 / $row->v_rasa_makanan;
+                        return '5 / '. $row->v_rasa_makanan. ' = '.round($v_rasa_makanan,2);
+                    }
+                })
+                ->addColumn('variasi_makanan', function ($row) {
+                    if ($row->v_variasi_makanan != 0) {
+                        $v_variasi_makanan = 5 / $row->v_variasi_makanan;
+                        return '5 / '. $row->v_variasi_makanan. ' = '.round($v_variasi_makanan,2);
+                    }
+                })
                 ->addIndexColumn()
                 ->make(true);
             }
@@ -264,25 +264,25 @@ class AlternatifController extends Controller
         $page = 'alternatif';
         $data = Alternatif::get();
         $alternatif_hasil = [];
-        $sum_v_harga_makanan = 0;
-        $sum_v_variasi_makanan = 0;
-        $sum_v_rasa_makanan = 0;
-        $sum_v_jarak = 0;
-        $sum_v_fasilitas = 0;
+        $sum_v_harga_makanan = 0.30;
+        $sum_v_variasi_makanan = 0.10;
+        $sum_v_rasa_makanan = 0.10;
+        $sum_v_jarak = 0.25;
+        $sum_v_fasilitas = 0.25;
 
-        foreach ($data as $item) {
-            $v_harga_makanan = 1 / $item->v_harga_makanan;
-            $v_variasi_makanan = 5 / $item->v_variasi_makanan;
-            $v_rasa_makanan = 5 / $item->v_rasa_makanan;
-            $v_jarak = 1 / $item->v_jarak;
-            $v_fasilitas = 1 / $item->v_fasilitas;
+        // foreach ($data as $item) {
+        //     $v_harga_makanan = 1 / $item->v_harga_makanan;
+        //     $v_variasi_makanan = 5 / $item->v_variasi_makanan;
+        //     $v_rasa_makanan = 5 / $item->v_rasa_makanan;
+        //     $v_jarak = 1 / $item->v_jarak;
+        //     $v_fasilitas = 1 / $item->v_fasilitas;
 
-            $sum_v_harga_makanan += round($v_harga_makanan,2);
-            $sum_v_variasi_makanan += round($v_variasi_makanan,2);
-            $sum_v_rasa_makanan += round($v_rasa_makanan,2);
-            $sum_v_jarak += round($v_jarak,2);
-            $sum_v_fasilitas += round($v_fasilitas,2);
-        }
+        //     $sum_v_harga_makanan += round($v_harga_makanan,2);
+        //     $sum_v_variasi_makanan += round($v_variasi_makanan,2);
+        //     $sum_v_rasa_makanan += round($v_rasa_makanan,2);
+        //     $sum_v_jarak += round($v_jarak,2);
+        //     $sum_v_fasilitas += round($v_fasilitas,2);
+        // }
 
         foreach ($data as $item) {
             $v_harga_makanan = 1 / $item->v_harga_makanan;
@@ -326,17 +326,17 @@ class AlternatifController extends Controller
                 ->addColumn('v_harga_makanan', function ($row) {
                   return round($row['v_harga_makanan'],2);
                 })
-                ->addColumn('v_variasi_makanan', function ($row) {
-                    return round($row['v_variasi_makanan'],2);
-                })
-                ->addColumn('v_rasa_makanan', function ($row) {
-                    return round($row['v_rasa_makanan'],2);
-                })
                 ->addColumn('v_jarak', function ($row) {
                     return round($row['v_jarak'],2);
                 })
                 ->addColumn('v_fasilitas', function ($row) {
                     return round($row['v_fasilitas'],2);
+                })
+                ->addColumn('v_rasa_makanan', function ($row) {
+                    return round($row['v_rasa_makanan'],2);
+                })
+                ->addColumn('v_variasi_makanan', function ($row) {
+                    return round($row['v_variasi_makanan'],2);
                 })
                 ->addColumn('jumlah', function ($row) {
                   return round($row['jumlah_nilai'],2);

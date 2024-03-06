@@ -19,9 +19,9 @@
                         <tr>
                             <th>Kategori</th>
                             <th scope="col">Cost</th>
-                            <th scope="col">Benefit</th>
-                            <th scope="col">Benefit</th>
                             <th scope="col">Cost</th>
+                            <th scope="col">Benefit</th>
+                            <th scope="col">Benefit</th>
                             <th scope="col">Benefit</th>
                         </tr>
                         <tr>
@@ -34,11 +34,11 @@
                         </tr>
                         <tr>
                             <th scope="row">Bobot</th>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
+                            <td>0.30</td>
+                            <td>0.25</td>
+                            <td>0.25</td>
+                            <td>0.10</td>
+                            <td>0.10</td>
                         </tr>
                     </table>
                     <table class="table table-bordered" width="100%" id="alternatif_table">
@@ -50,20 +50,20 @@
                             </tr>
                             <tr>
                                 <th>Harga Makanan</th>
-                                <th>Variasi Makanan</th>
-                                <th>Rasa Makanan</th>
                                 <th>Jarak</th>
                                 <th>Fasilitas</th>
+                                <th>Rasa Makanan</th>
+                                <th>Variasi Menu</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th colspan="2">Bobot</th>
-                                <th id="sum_v_harga"></th>
-                                <th id="sum_v_variasi"></th>
-                                <th id="sum_v_rasa"></th>
-                                <th id="sum_v_jarak"></th>
-                                <th id="sum_v_fasilitas"></th>
+                                <th id="sum_v_harga">0.30</th>
+                                <th id="sum_v_jarak">0.25</th>
+                                <th id="sum_v_fasilitas">0.25</th>
+                                <th id="sum_v_rasa">0.10</th>
+                                <th id="sum_v_variasi">0.10</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -73,26 +73,26 @@
                             <tr>
                                 <th>Kategori</th>
                                 <th scope="col">Cost</th>
-                                <th scope="col">Benefit</th>
-                                <th scope="col">Benefit</th>
                                 <th scope="col">Cost</th>
+                                <th scope="col">Benefit</th>
+                                <th scope="col">Benefit</th>
                                 <th scope="col">Benefit</th>
                             </tr>
                             <tr>
                                 <th scope="row">Nilai Pembagi</th>
                                 <td>1</td>
-                                <td>5</td>
-                                <td>5</td>
                                 <td>1</td>
+                                <td>5</td>
+                                <td>5</td>
                                 <td>5</td>
                             </tr>
                             <tr>
                                 <th scope="row">Bobot</th>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>0</td>
+                                <td>0.30</td>
+                                <td>0.25</td>
+                                <td>0.25</td>
+                                <td>0.10</td>
+                                <td>0.10</td>
                             </tr>
                         </table>
                         <table class="table table-bordered" width="100%" id="normalisasi_table">
@@ -104,10 +104,10 @@
                                 </tr>
                                 <tr>
                                     <th>Harga Makanan</th>
-                                    <th>Variasi Makanan</th>
-                                    <th>Rasa Makanan</th>
                                     <th>Jarak</th>
                                     <th>Fasilitas</th>
+                                    <th>Rasa Makanan</th>
+                                    <th>Variasi Makanan</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -115,10 +115,10 @@
                                     <th>No</th>
                                     <th>Restaurant</th>
                                     <th>Harga Makanan</th>
-                                    <th>Variasi Makanan</th>
-                                    <th>Rasa Makanan</th>
                                     <th>Jarak</th>
                                     <th>Fasilitas</th>
+                                    <th>Rasa Makanan</th>
+                                    <th>Variasi Makanan</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -135,10 +135,10 @@
                                 </tr>
                                 <tr>
                                     <th>Harga Makanan</th>
-                                    <th>Variasi Makanan</th>
-                                    <th>Rasa Makanan</th>
                                     <th>Jarak</th>
                                     <th>Fasilitas</th>
+                                    <th>Rasa Makanan</th>
+                                    <th>Variasi Makanan</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -146,10 +146,10 @@
                                     <th>No</th>
                                     <th>Restaurant</th>
                                     <th>Harga Makanan</th>
-                                    <th>Variasi Makanan</th>
-                                    <th>Rasa Makanan</th>
                                     <th>Jarak</th>
                                     <th>Fasilitas</th>
+                                    <th>Rasa Makanan</th>
+                                    <th>Variasi Makanan</th>
                                     <th>Jumlah</th>
                                 </tr>
                             </tfoot>
@@ -188,64 +188,64 @@
                     data: 'v_harga_makanan',
                 },
                 {
-                    data: 'v_variasi_makan',
-                },
-                {
-                    data: 'v_rasa_makanan',
-                },
-                {
                     data: 'v_jarak',
                 },
                 {
                     data: 'v_fasilitas',
                 },
+                {
+                    data: 'v_rasa_makanan',
+                },
+                {
+                    data: 'v_variasi_makan',
+                },
             ],
 
-            "footerCallback": function(row, data, start, end, display) {
-                    var api = this.api();
+            // "footerCallback": function(row, data, start, end, display) {
+            //         var api = this.api();
 
-                    sum_v_harga = api
-                        .column(2)
-                        .data()
-                        .reduce(function(a, b) {
-                            return parseFloat(a) + parseFloat(b);
-                        }, 0);
-                    $('#sum_v_harga').html(sum_v_harga);
+            //         sum_v_harga = api
+            //             .column(2)
+            //             .data()
+            //             .reduce(function(a, b) {
+            //                 return parseFloat(a) + parseFloat(b);
+            //             }, 0);
+            //         $('#sum_v_harga').html(sum_v_harga);
 
-                    sum_v_variasi = api
-                        .column(3)
-                        .data()
-                        .reduce(function(a, b) {
-                            return parseFloat(a) + parseFloat(b);
-                        }, 0);
-                    $('#sum_v_variasi').html(sum_v_variasi);
+            //         sum_v_variasi = api
+            //             .column(3)
+            //             .data()
+            //             .reduce(function(a, b) {
+            //                 return parseFloat(a) + parseFloat(b);
+            //             }, 0);
+            //         $('#sum_v_variasi').html(sum_v_variasi);
 
-                    var sum_v_rasa = api
-                        .column(4)
-                        .data()
-                        .toArray();
-                    var totalSum = sum_v_rasa.reduce(function(total, num) {
-                        return total + parseFloat(num);
-                    }, 0);
-                    $('#sum_v_rasa').html(totalSum);
+            //         var sum_v_rasa = api
+            //             .column(4)
+            //             .data()
+            //             .toArray();
+            //         var totalSum = sum_v_rasa.reduce(function(total, num) {
+            //             return total + parseFloat(num);
+            //         }, 0);
+            //         $('#sum_v_rasa').html(totalSum);
 
-                    sum_v_jarak = api
-                        .column(5)
-                        .data()
-                        .reduce(function(a, b) {
-                            return parseFloat(a) + parseFloat(b);
-                        }, 0);
-                    $('#sum_v_jarak').html(sum_v_jarak);
+            //         sum_v_jarak = api
+            //             .column(5)
+            //             .data()
+            //             .reduce(function(a, b) {
+            //                 return parseFloat(a) + parseFloat(b);
+            //             }, 0);
+            //         $('#sum_v_jarak').html(sum_v_jarak);
 
-                    sum_v_fasilitas = api
-                        .column(6)
-                        .data()
-                        .reduce(function(a, b) {
-                            return parseFloat(a) + parseFloat(b);
-                        }, 0);
-                    $('#sum_v_fasilitas').html(sum_v_fasilitas);
+            //         sum_v_fasilitas = api
+            //             .column(6)
+            //             .data()
+            //             .reduce(function(a, b) {
+            //                 return parseFloat(a) + parseFloat(b);
+            //             }, 0);
+            //         $('#sum_v_fasilitas').html(sum_v_fasilitas);
 
-                }
+            //     }
         });
 
         $('#normalisasi_table').DataTable({
@@ -273,16 +273,16 @@
                     data: 'v_harga_makanan',
                 },
                 {
-                    data: 'variasi_makanan',
+                    data: 'v_jarak',
+                },
+                {
+                    data: 'v_fasilitas',
                 },
                 {
                     data: 'v_rasa_makanan',
                 },
                 {
-                    data: 'v_jarak',
-                },
-                {
-                    data: 'v_fasilitas',
+                    data: 'variasi_makanan',
                 },
             ],
         });
@@ -316,16 +316,16 @@
                     data: 'v_harga_makanan',
                 },
                 {
-                    data: 'v_variasi_makanan',
+                    data: 'v_jarak',
+                },
+                {
+                    data: 'v_fasilitas',
                 },
                 {
                     data: 'v_rasa_makanan',
                 },
                 {
-                    data: 'v_jarak',
-                },
-                {
-                    data: 'v_fasilitas',
+                    data: 'v_variasi_makanan',
                 },
                 {
                     data: 'jumlah',

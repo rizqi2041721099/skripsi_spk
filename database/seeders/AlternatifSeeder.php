@@ -31,7 +31,7 @@ class AlternatifSeeder extends Seeder
                 'v_harga_makanan'   => 5,
                 'v_jarak'   => 4,
                 'v_fasilitas'   => 4,
-                'v_rasa_makanan'   => 1,
+                'v_rasa_makanan'   => 4,
                 'v_variasi_makanan'   => 2,
             ],
             [

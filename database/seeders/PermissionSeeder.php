@@ -110,7 +110,9 @@ class PermissionSeeder extends Seeder
                 'name' => 'delete-alternatif',
             ],
             ['name'  => 'cleaner'],
-
+            ['name'  => 'dashboard'],
+            ['name'  => 'perhitungan-saw'],
+            ['name'  => 'data-master'],
         ];
 
         foreach ($permissions as $permission) {

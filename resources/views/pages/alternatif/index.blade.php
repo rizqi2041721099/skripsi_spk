@@ -30,7 +30,7 @@
                                 <th>Jarak</th>
                                 <th>Fasilitas</th>
                                 <th>Rasa Makanan</th>
-                                <th>Variasi Makanan</th>
+                                <th>Variasi Menu</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -41,7 +41,7 @@
                                 <th>Jarak</th>
                                 <th>Fasilitas</th>
                                 <th>Rasa Makanan</th>
-                                <th>Variasi Makanan</th>
+                                <th>Variasi Menu</th>
                                 <th>Action</th>
                             </tr>
                         </tfoot>
@@ -79,16 +79,16 @@
                     data: 'v_harga_makanan',
                 },
                 {
-                    data: 'v_variasi_makanan',
+                    data: 'v_jarak',
+                },
+                {
+                    data: 'v_fasilitas',
                 },
                 {
                     data: 'v_rasa_makanan',
                 },
                 {
-                    data: 'v_jarak',
-                },
-                {
-                    data: 'v_fasilitas',
+                    data: 'v_variasi_makanan',
                 },
                 {
                     data: 'action',

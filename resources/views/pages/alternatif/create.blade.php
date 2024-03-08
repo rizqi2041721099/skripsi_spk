@@ -37,16 +37,6 @@
                             <small class="text-danger" id="error_v_harga_makanan"></small>
                        </div>
                        <div class="col-md-12 mt-2">
-                            <label class="form-label">Variasi Makanan</label>
-                            <input type="text" class="form-control" id="v_variasi_makanan" name="v_variasi_makanan">
-                            <small class="text-danger" id="error_v_variasi_makanan"></small>
-                       </div>
-                       <div class="col-md-12 mt-2">
-                            <label class="form-label">Rasa Makanan</label>
-                            <input type="text" class="form-control" id="v_rasa_makanan" name="v_rasa_makanan">
-                            <small class="text-danger" id="error_v_rasa_makanan"></small>
-                       </div>
-                       <div class="col-md-12 mt-2">
                             <label class="form-label">Jarak</label>
                             <input type="text" class="form-control" id="v_jarak" name="v_jarak">
                             <small class="text-danger" id="error_v_jarak"></small>
@@ -55,6 +45,16 @@
                             <label class="form-label">Fasilitas</label>
                             <input type="text" class="form-control" id="v_fasilitas" name="v_fasilitas">
                             <small class="text-danger" id="error_v_fasilitas"></small>
+                       </div>
+                       <div class="col-md-12 mt-2">
+                            <label class="form-label">Rasa Makanan</label>
+                            <input type="text" class="form-control" id="v_rasa_makanan" name="v_rasa_makanan">
+                            <small class="text-danger" id="error_v_rasa_makanan"></small>
+                       </div>
+                       <div class="col-md-12 mt-2">
+                            <label class="form-label">Variasi Menu</label>
+                            <input type="text" class="form-control" id="v_variasi_makanan" name="v_variasi_makanan">
+                            <small class="text-danger" id="error_v_variasi_makanan"></small>
                        </div>
                     </div>
                     <div class="row mb-3">

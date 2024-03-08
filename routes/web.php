@@ -49,5 +49,8 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::get('/profile/{id}/edit',   [UserController::class, 'editProfile'])->name('profile.edit');
     Route::put('/profile-update/{id}',        [UserController::class, 'updateProfile'])->name('profile.update');
 
+    Route::get('list-approve',               [RestaurantController::class, 'listApprove'])->name('list.approve');
+    Route::get('approve-restaurant/{id}',    [RestaurantController::class, 'approve'])->name('list.approve.restaurant');
+
     Route::get('clear', [CacheController::class, 'clear'])->name('clear');
 });

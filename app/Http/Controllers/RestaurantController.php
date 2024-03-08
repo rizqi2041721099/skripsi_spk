@@ -22,7 +22,13 @@ class RestaurantController extends Controller
     {
         $page = 'restaurants';
 
-        $data = Restaurant::orderBy('created_at')->get();
+        if(auth()->user()->hasRole('ADMIN'))
+        {
+            $data = Restaurant::orderBy('created_at')->get();
+        } else {
+            $data = [];
+        }
+
         $auth  = auth()->user();
 
         if ($request->ajax()) {
@@ -34,7 +40,7 @@ class RestaurantController extends Controller
                     return Str::limit($row->address, 20);
                 })
                 ->addColumn('distance', function ($row) {
-                    return $row->distance.' Km';
+                    return $row->distance.' m';
                 })
                 ->addColumn('image', function($row){
                     if (is_null($row->images) || $row->images == "") {
@@ -55,24 +61,25 @@ class RestaurantController extends Controller
                 })
                 ->addColumn('action', function ($row)use($auth) {
                     $btn = '';
+                    $btn .= '<div class="btn-group" role="group"/> ';
                     if ($auth->can('edit-restaurant')) {
-                        $btn .= '&nbsp;&nbsp';
-                        $btn .=   '<a href="javascript:void(0)" onclick="updateItem(this)" data-id="'.$row->id.'" data-image="'.$row->images.'" class="btn btn-icon btn-primary btn-icon-only rounded">
+                        // $btn .= '&nbsp;&nbsp';
+                        $btn .=   '<button href="javascript:void(0)" onclick="updateItem(this)" data-id="'.$row->id.'" data-image="'.$row->images.'" class="btn btn-primary">
                                 <span class="btn-inner--icon"><i class="fas fa-pen-square"></i></span>
-                                </a>';
+                                </button>';
                     }
                     if ($auth->can('delete-restaurant')) {
-                        $btn .= '&nbsp;&nbsp';
+                        // $btn .= '&nbsp;&nbsp';
                         $btn .=
-                            '<a class="btn btn-icon btn-danger btn-icon-only" href="#" onclick="deleteItem(this)" data-name="' .
+                            '<button class="btn btn-danger" href="#" onclick="deleteItem(this)" data-name="' .
                             $row->name .
                             '" data-id="' .
                             $row->id .
                             '">
                                 <span class="btn-inner--icon"><i class="fas fa-trash-alt text-white"></i></span>
-                            </a>';
+                            </button>';
                     }
-
+                    $btn .= '</div>';
                     return $btn;
                 })
                 ->rawColumns(['action','image'])
@@ -80,6 +87,78 @@ class RestaurantController extends Controller
                 ->make(true);
         }
         return view('pages.restaurant.index', compact('page'));
+    }
+
+    public function listApprove(Request $request)
+    {
+        $page = 'restaurants';
+
+        $data = Restaurant::where('status','=','0')->get();
+        $auth  = auth()->user();
+
+        if ($request->ajax()) {
+            return DataTables::of($data)
+                ->addColumn('name', function ($row) {
+                    return $row->name;
+                })
+                ->addColumn('address', function ($row) {
+                    return Str::limit($row->address, 20);
+                })
+                ->addColumn('distance', function ($row) {
+                    return $row->distance.' m';
+                })
+                ->addColumn('image', function($row){
+                    if (is_null($row->images) || $row->images == "") {
+                        $url = asset('assets/img/default.png');
+                    } else {
+                        $url = Storage::url('public/images/restaurants/'.$row->images);
+                    }
+                    return $image = '<img src="'. $url . '" class="rounded" style="width: 70px; height: 70px;">';
+                })
+                ->addColumn('facility', function ($row) {
+                    return $row->facility ?? '-';
+                })
+                ->addColumn('qty_variasi_makanan', function ($row) {
+                    return $row->qty_variasi_makanan ?? '-';
+                })
+                ->addColumn('average', function ($row) {
+                    return number_format($row->average) ?? '-';
+                })
+                ->addColumn('action', function ($row)use($auth) {
+                    $btn = '';
+                    $btn .= '<div class="btn-group" role="group"/> ';
+                    if($row->status == '0'){
+                        $btn .= '&nbsp;&nbsp;';
+                        $btn .= '<button onclick="approve(this)" data-status="Y" data-name="setujui '.$row->name.'" data-id="'.$row->id.'" class="btn btn-sm btn-success btn-icon btn-round"><i class="fas fa-check-circle"></i></button>';
+                        $btn .= '&nbsp;&nbsp;';
+                        $btn .= '<button onclick="approve(this)" data-status="N" data-name="tolak '.$row->name.'" data-id="'.$row->id.'" class="btn btn-sm btn-danger btn-icon btn-round"><i class="fas fa-ban"></i></button>';
+                    }
+                    return $btn;
+                })
+                ->rawColumns(['action','image'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+        return view('pages.restaurant.list-approve', compact('page'));
+    }
+
+    public function approve(Request $request, $id){
+        $data = Restaurant::find($id);
+        if($data->status == 1){
+            return response()->json(['code' => 400, 'message' => 'Restaurant telah di otorisasi']);
+        }
+        $data->update([
+            'status'    => $request->status == 'Y' ? 1 : 0,
+            'note'      => $request->note ?? NULL
+        ]);
+
+        return response()->json(['code' => 200, 'message' => 'Approve success']);
+    }
+
+    public function create()
+    {
+        $page = 'restaurant';
+        return view('pages.restaurant.create', compact('page'));
     }
 
     public function store(Request $request)
@@ -108,6 +187,7 @@ class RestaurantController extends Controller
 
         $average     = (int)str_replace([",","."], "",$request['average']);
 
+        $auth = auth()->user();
         $data = Restaurant::create([
             'name'      => $request->name,
             'distance'  => $request->distance,
@@ -115,6 +195,7 @@ class RestaurantController extends Controller
             'address'   => $request->address,
             'facility'   => $request->facility,
             'average'   => $average,
+            'status'    => $auth->hasRole('ADMIN') ? 1 : 0,
             'qty_variasi_makanan'   => $request->qty_variasi_makanan,
             'images'    => isset($request->images) ? $request->images : null,
         ]);

@@ -6,7 +6,6 @@
         <div class="sidebar-brand-text mx-3">Project Name</div>
     </a>
     <hr class="sidebar-divider my-0">
-    @if (auth()->user()->can('dashboard'))
         <li class="nav-item {{ $page == 'dashboard' ? 'active' : '' }}">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDashboard"
                 aria-expanded="true" aria-controls="collapseDashboard">
@@ -17,12 +16,11 @@
                 aria-labelledby="headingPage" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">List Dashboard</h6>
-                        <a class="collapse-item {{ request()->is('management-dashboard-v1*') ? 'active' : '' }}"
-                            href="#">Manajemen Dashboard V1</a>
+                        <a class="collapse-item {{ request()->is('home*') ? 'active' : '' }}"
+                            href="{{ route('home') }}">Dashboard</a>
                 </div>
             </div>
         </li>
-    @endif
     <hr class="sidebar-divider">
     <div class="sidebar-heading">
         Features
@@ -35,7 +33,7 @@
             </a>
         </li>
     @endif
-    @if (auth()->user()->can('list-restaurant'))
+    @if (auth()->user()->can('list-restaurant') && auth()->user()->hasRole('ADMIN'))
         <li class="nav-item {{ $page == 'restaurants' ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('restaurants.index') }}">
                 <i class="fa fa-building"></i>
@@ -43,37 +41,49 @@
             </a>
         </li>
     @endif
-    {{-- @if (auth()->user()->can('list-alternatif')) --}}
+    @if (auth()->user()->can('create-restaurant') && auth()->user()->hasRole('USER') )
+        <li class="nav-item {{ $page == 'restaurants' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('restaurants.create') }}">
+                <i class="fa fa-building"></i>
+                <span>Add Restaurants</span>
+            </a>
+        </li>
+    @endif
+    @if (auth()->user()->can('list-alternatif'))
         <li class="nav-item {{ request()->is('alternatif*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('alternatif.index') }}">
                 <i class="far fa-fw fa-window-maximize"></i>
                 <span>Alternatif</span>
             </a>
         </li>
-    {{-- @endif --}}
+    @endif
+    @if (auth()->user()->can('perhitungan-saw'))
     <li class="nav-item {{ request()->is('perhitungan.saw*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('perhitungan.saw') }}">
             <i class="far fa-fw fa-window-maximize"></i>
             <span>Perhitungan SAE</span>
         </a>
     </li>
-        {{-- <li class="nav-item {{ $page == 'master' ? 'active' : '' }}">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
-                aria-expanded="true" aria-controls="collapseBootstrap">
-                <i class="far fa-fw fa-window-maximize"></i>
-                <span>Master</span>
-            </a>
-            <div id="collapseBootstrap" class="collapse  {{ $page == 'master' ? 'show' : '' }}"
-                aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Data Master</h6>
-                    <a class="collapse-item {{ request()->is('food-variaties*') ? 'active' : '' }}"
-                        href="{{ route('food-variaties.index') }}">Food Variatys</a>
-                    <a class="collapse-item {{ request()->is('facilities*') ? 'active' : '' }}"
-                        href="{{ route('facilities.index') }}">Facilities</a>
-                </div>
+    @endif
+    {{-- @if (auth()->user()->hasRole('ADMIN'))
+    <li class="nav-item {{ $page == 'master' ? 'active' : '' }}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
+            aria-expanded="true" aria-controls="collapseBootstrap">
+            <i class="far fa-fw fa-window-maximize"></i>
+            <span>Master</span>
+        </a>
+        <div id="collapseBootstrap" class="collapse  {{ $page == 'master' ? 'show' : '' }}"
+            aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Data Master</h6>
+                <a class="collapse-item {{ request()->is('food-variaties*') ? 'active' : '' }}"
+                    href="{{ route('food-variaties.index') }}">Food Variatys</a>
+                <a class="collapse-item {{ request()->is('facilities*') ? 'active' : '' }}"
+                    href="{{ route('facilities.index') }}">Facilities</a>
             </div>
-        </li> --}}
+        </div>
+    </li>
+    @endif --}}
     @if (auth()->user()->can('list-users') ||
     auth()->user()->can('list-role'))
         <li class="nav-item {{ $page == 'management-users' ? 'active' : '' }}">
@@ -98,6 +108,7 @@
             </div>
         </li>
     @endif
+    @if (auth()->user()->hasRole('ADMIN'))
     <li class="nav-item {{ $page == 'settings' ? 'active' : '' }}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSettings"
             aria-expanded="true" aria-controls="collapseSettings">
@@ -111,4 +122,5 @@
             </div>
         </div>
     </li>
+    @endif
 </ul>

@@ -18,6 +18,8 @@ class RestaurantSeeder extends Seeder
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 20,
                 'average' => 2,
+                'status' => 1,
+                'added_by'  => 'admin',
             ],
             [
                 'name' => 'Dapur Sedep',
@@ -27,6 +29,8 @@ class RestaurantSeeder extends Seeder
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 20,
                 'average' => 2,
+                'status' => 1,
+                'added_by'  => 'admin',
             ],
             [
                 'name' => 'Lalapan Tosa',
@@ -36,6 +40,8 @@ class RestaurantSeeder extends Seeder
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 20,
                 'average' => 2,
+                'status' => 1,
+                'added_by'  => 'admin',
             ],
             [
                 'name' => 'Warung Mama',
@@ -45,6 +51,8 @@ class RestaurantSeeder extends Seeder
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 20,
                 'average' => 2,
+                'status' => 1,
+                'added_by'  => 'admin',
             ],
             [
                 'name' => 'Ayam Penyet Banyuangi',
@@ -54,6 +62,8 @@ class RestaurantSeeder extends Seeder
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 20,
                 'average' => 2,
+                'status' => 1,
+                'added_by'  => 'admin',
             ],
             [
                 'name' => 'Rawon Cak Wott',
@@ -63,6 +73,8 @@ class RestaurantSeeder extends Seeder
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 20,
                 'average' => 2,
+                'status' => 1,
+                'added_by'  => 'admin',
             ],
             [
                 'name' => 'Warung EWK Lapapan Aneka Sambel',
@@ -72,6 +84,8 @@ class RestaurantSeeder extends Seeder
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 20,
                 'average' => 2,
+                'status' => 1,
+                'added_by'  => 'admin',
             ],
             [
                 'name' => 'Kedai Makcik',
@@ -81,6 +95,8 @@ class RestaurantSeeder extends Seeder
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 20,
                 'average' => 2,
+                'status' => 1,
+                'added_by'  => 'admin',
             ],
             [
                 'name' => 'Lalapan Ayam Qodir',
@@ -90,6 +106,8 @@ class RestaurantSeeder extends Seeder
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 20,
                 'average' => 2,
+                'status' => 1,
+                'added_by'  => 'admin',
             ],
             [
                 'name' => 'Warung Ijo',
@@ -99,6 +117,8 @@ class RestaurantSeeder extends Seeder
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 20,
                 'average' => 2,
+                'status' => 1,
+                'added_by'  => 'admin',
             ],
             [
                 'name' => 'Warung Geprek Ragil',
@@ -108,6 +128,8 @@ class RestaurantSeeder extends Seeder
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 20,
                 'average' => 2,
+                'status' => 1,
+                'added_by'  => 'admin',
             ],
             [
                 'name' => 'Ayam Goreng Nelongso',
@@ -117,6 +139,8 @@ class RestaurantSeeder extends Seeder
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 20,
                 'average' => 2,
+                'status' => 1,
+                'added_by'  => 'admin',
             ],
             [
                 'name' => 'Soto Ayam Cak Man',
@@ -126,6 +150,8 @@ class RestaurantSeeder extends Seeder
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 20,
                 'average' => 2,
+                'status' => 1,
+                'added_by'  => 'admin',
             ],
             [
                 'name' => 'Warung Soto Madura Cak Mad',
@@ -135,6 +161,8 @@ class RestaurantSeeder extends Seeder
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 20,
                 'average' => 2,
+                'status' => 1,
+                'added_by'  => 'admin',
             ],
             [
                 'name' => 'Warung Makan & Kopi "Tegar"',
@@ -144,6 +172,8 @@ class RestaurantSeeder extends Seeder
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 20,
                 'average' => 2,
+                'status' => 1,
+                'added_by'  => 'admin',
             ],
         ];
 

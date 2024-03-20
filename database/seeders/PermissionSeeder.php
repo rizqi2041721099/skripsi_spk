@@ -113,6 +113,9 @@ class PermissionSeeder extends Seeder
             ['name'  => 'dashboard'],
             ['name'  => 'perhitungan-saw'],
             ['name'  => 'data-master'],
+            ['name'  => 'list-rejected-restaurants'],
+            ['name'  => 'list-approve-restaurants'],
+            ['name'  => 'search-restaurants'],
         ];
 
         foreach ($permissions as $permission) {

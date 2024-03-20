@@ -29,11 +29,11 @@
         <li class="nav-item {{ request()->is('kriterias*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('kriterias.index') }}">
                 <i class="far fa-fw fa-window-maximize"></i>
-                <span>Kriteria</span>
+                <span>Keterangan Kriteria</span>
             </a>
         </li>
     @endif
-    @if (auth()->user()->can('list-restaurant') && auth()->user()->hasRole('ADMIN'))
+    @if (auth()->user()->can('list-restaurant'))
         <li class="nav-item {{ $page == 'restaurants' ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('restaurants.index') }}">
                 <i class="fa fa-building"></i>
@@ -41,11 +41,27 @@
             </a>
         </li>
     @endif
-    @if (auth()->user()->can('create-restaurant') && auth()->user()->hasRole('USER') )
-        <li class="nav-item {{ $page == 'restaurants' ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('restaurants.create') }}">
+    @if (auth()->user()->can('list-rejected-restaurants'))
+        <li class="nav-item {{ $page == 'restaurants-rejected' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('list.rejected') }}">
                 <i class="fa fa-building"></i>
-                <span>Add Restaurants</span>
+                <span>Restaurants Rejected</span>
+            </a>
+        </li>
+    @endif
+    @if (auth()->user()->can('list-approve-restaurants'))
+        <li class="nav-item {{ $page == 'approve-restaurants' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('list.approve') }}">
+                <i class="fa fa-building"></i>
+                <span>Restaurants Approve</span>
+            </a>
+        </li>
+    @endif
+    @if (auth()->user()->can('search-restaurants'))
+        <li class="nav-item {{ $page = 'search-restaurants' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('search.restaurants') }}">
+                <i class="far fa-fw fa-window-maximize"></i>
+                <span>Search Restaurants</span>
             </a>
         </li>
     @endif
@@ -65,7 +81,7 @@
         </a>
     </li>
     @endif
-    {{-- @if (auth()->user()->hasRole('ADMIN'))
+    @if (auth()->user()->hasRole('ADMIN'))
     <li class="nav-item {{ $page == 'master' ? 'active' : '' }}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
             aria-expanded="true" aria-controls="collapseBootstrap">
@@ -76,14 +92,14 @@
             aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Data Master</h6>
-                <a class="collapse-item {{ request()->is('food-variaties*') ? 'active' : '' }}"
-                    href="{{ route('food-variaties.index') }}">Food Variatys</a>
+                {{-- <a class="collapse-item {{ request()->is('food-variaties*') ? 'active' : '' }}"
+                    href="{{ route('food-variaties.index') }}">Variasi Menu</a> --}}
                 <a class="collapse-item {{ request()->is('facilities*') ? 'active' : '' }}"
-                    href="{{ route('facilities.index') }}">Facilities</a>
+                    href="{{ route('facilities.index') }}">Fasilitas</a>
             </div>
         </div>
     </li>
-    @endif --}}
+    @endif
     @if (auth()->user()->can('list-users') ||
     auth()->user()->can('list-role'))
         <li class="nav-item {{ $page == 'management-users' ? 'active' : '' }}">

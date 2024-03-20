@@ -25,7 +25,7 @@ class RoleSeeder extends Seeder
             'name' => 'USER',
         ]);
 
-        $user_perm = Permission::whereIn('id',[14,17])->pluck('id','id')->all();
+        $user_perm = Permission::whereIn('id',[35,14,42])->pluck('id','id')->all();
         $user->syncPermissions($user_perm);
 
     }

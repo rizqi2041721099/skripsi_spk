@@ -25,10 +25,6 @@ class FacilityController extends Controller
 
         if ($request->ajax()) {
             return DataTables::of($data)
-                ->addColumn('restaurant', function ($row) {
-                    $rs = Restaurant::find($row->restaurant_id);
-                    return $rs->name;
-                })
                 ->addColumn('name', function ($row) {
                     return $row->name;
                 })
@@ -78,12 +74,10 @@ class FacilityController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'restaurant_id' => 'required',
-            'name'  => 'required|unique:facilities,restaurant_id',
+            'name'  => 'required',
             'image' => 'nullable'
         ],[
             'name.required'           => 'Fasilitas harus diisi.',
-            'restaurant_id.required'  => 'Restaurant harus diisi.',
             'name.unique'             => 'Fasilitas sudah ada.'
         ]);
 
@@ -96,7 +90,6 @@ class FacilityController extends Controller
         }
 
         $data = Facility::create([
-            'restaurant_id' => $request->restaurant_id,
             'name' => $request->name,
             'image' => isset($request->image) ? $request->image : null,
         ]);

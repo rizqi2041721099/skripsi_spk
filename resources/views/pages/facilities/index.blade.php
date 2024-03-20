@@ -21,7 +21,6 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>No</th>
-                                <th>Restaurant</th>
                                 <th>Fasilitas</th>
                                 <th>Image</th>
                                 <th>Action</th>
@@ -30,7 +29,6 @@
                         <tfoot>
                             <tr>
                                 <th>No</th>
-                                <th>Restaurant</th>
                                 <th>Fasilitas</th>
                                 <th>Image</th>
                                 <th>Action</th>
@@ -87,9 +85,6 @@
             },
             columns: [{
                     data: 'DT_RowIndex',
-                },
-                {
-                    data: 'restaurant',
                 },
                 {
                     data: 'name',

@@ -88,11 +88,6 @@
     <script src="{{ asset('assets/js/ruang-admin.min.js') }} "></script>
     <script src="{{ asset('assets/js/currency.js') }} "></script>
 
-    <!-- Page level plugins -->
-    <script src="{{ asset('assets/vendor/chart.js/Chart.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/chart.js/Chart.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/demo/chart-bar-demo.js') }}"></script>
-
     {{-- Price Format --}}
     <script src="{{ asset('assets/js/price.format.1.7.min.js') }}"></script>
 
@@ -126,10 +121,6 @@
 
     {{-- Auto Numeric Price Format  --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/4.1.0/autoNumeric.min.js"></script>
-
-    {{-- Chart Js --}}
-    <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="js/demo/chart-area-demo.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {

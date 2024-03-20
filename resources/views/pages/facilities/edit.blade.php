@@ -7,25 +7,20 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Master</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('facilities.index') }}">Fasilitas</a></li>
-                <li class="breadcrumb-item active"><a href="#">Tambah Fasilitas</a></li>
+                <li class="breadcrumb-item active"><a href="#">Edit Fasilitas</a></li>
             </ol>
         </div>
         <div class="card mb-3" style="margin-top: -20px !important">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="font-weight-bold text-primary">
-                    Tambah Fasilitas
+                    Edit Fasilitas
                 </h6>
             </div>
             <div class="card-body">
                 <form id="facilities_table">
                     @csrf
+                    @method('PUT')
                     <div class="row mb-3">
-                       <div class="col-md-4">
-                            <label for="restaurant">Restaurant</label>
-                            <select  class="select2-single form-control"
-                            data-toggle="select" id="restaurant" name="restaurant_id" width="100%"></select>
-                            <small class="text-danger" id="error_restaurant_id"></small>
-                       </div>
                        <div class="col-md-4">
                             <label class="form-label">Fasilitas</label>
                             <input type="text" class="form-control" id="name" name="name" value="{{ $data->name }}">
@@ -33,8 +28,9 @@
                        </div>
                        <div class="col-md-4">
                             <label for="">Image</label>
-                            <input type="file" class="form-control" name="image" id="foto">
-                            <img id="imagePreviewEdit" class="img-preview mt-3" style="display: none; mar" width="150" height="150" />
+                            <input type="file" name="image" id="image" class="form-control"
+                            placeholder="Image" onchange="previewImage();">
+                            <img id="image-preview" class="img-preview mt-3" style="display: none;" width="150" height="150" />
                        </div>
                     </div>
                     <div class="row mb-3">
@@ -102,28 +98,37 @@
                     error: function(response) {
                         btn.attr('disabled', false);
                         btn.text('Submit');
-                        $('#error_restaurant_id').text(response.responseJSON.errors.restaurant_id);
                         $('#error_name').text(response.responseJSON.errors.name);
                         $('#error_image').text(response.responseJSON.errors.image);
                     }
                 });
             });
 
-            $('#foto_edit').empty();
+            var img = "{{ $data->image }}";
 
-            $('#foto_edit').change(function() {
-                var file = this.files[0];
-
-                if (file) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('#imagePreviewEdit').attr('src',  "{{ Storage::url('public/images/facilities/') }}" + '/' + "{{ $data->images }}");
-                        $('#imagePreviewEdit').show();
-                    };
-                    reader.readAsDataURL(file);
+            if ($('#image').val() == '') {
+                document.getElementById("image-preview").style.display = "block";
+                if (img == '') {
+                    document.getElementById("image-preview").src =
+                        "{{ asset('assets/img/default.png') }}";
+                } else {
+                    document.getElementById("image-preview").src =
+                        "{{ Storage::url('public/images/facilities/') . $data->image }}";
                 }
-            });
+            } else {
+                $('#image-preview').empty();
+            }
         });
+
+        function previewImage() {
+            document.getElementById("image-preview").style.display = "block";
+            var oFReader = new FileReader();
+            oFReader.readAsDataURL(document.getElementById("image").files[0]);
+
+            oFReader.onload = function(oFREvent) {
+                document.getElementById("image-preview").src = oFREvent.target.result;
+            }
+        }
 
     </script>
 @endsection

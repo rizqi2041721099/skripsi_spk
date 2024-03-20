@@ -21,20 +21,15 @@
                     @csrf
                     <div class="row mb-3">
                        <div class="col-md-4">
-                            <label for="restaurant">Restaurant</label>
-                            <select  class="select2-single form-control"
-                            data-toggle="select" id="restaurant" name="restaurant_id" width="100%"></select>
-                            <small class="text-danger" id="error_restaurant_id"></small>
-                       </div>
-                       <div class="col-md-4">
                             <label class="form-label">Fasilitas</label>
                             <input type="text" class="form-control" id="name" name="name">
                             <small class="text-danger" id="error_name"></small>
                        </div>
                        <div class="col-md-4">
                             <label for="">Image</label>
-                            <input type="file" class="form-control" name="image" id="foto">
-                            <img id="imagePreview" class="img-preview mt-3" style="display: none; mar" width="150" height="150" />
+                            <input type="file" name="image" id="image" class="form-control"
+                            placeholder="Image" onchange="previewImage();">
+                            <img id="image-preview" class="img-preview mt-3" style="display: none;" width="150" height="150" />
                        </div>
                     </div>
                     <div class="row mb-3">
@@ -102,28 +97,22 @@
                     error: function(response) {
                         btn.attr('disabled', false);
                         btn.text('Submit');
-                        $('#error_restaurant_id').text(response.responseJSON.errors.restaurant_id);
                         $('#error_name').text(response.responseJSON.errors.name);
                         $('#error_image').text(response.responseJSON.errors.image);
                     }
                 });
             });
 
-            $('#foto').empty();
-
-            $('#foto').change(function() {
-                var file = this.files[0];
-
-                if (file) {
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('#imagePreview').attr('src', e.target.result);
-                        $('#imagePreview').show();
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
         });
+        function previewImage() {
+            document.getElementById("image-preview").style.display = "block";
+            var oFReader = new FileReader();
+            oFReader.readAsDataURL(document.getElementById("image").files[0]);
+
+            oFReader.onload = function(oFREvent) {
+                document.getElementById("image-preview").src = oFREvent.target.result;
+            }
+        }
 
     </script>
 @endsection

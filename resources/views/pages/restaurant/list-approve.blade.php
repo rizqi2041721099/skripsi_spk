@@ -23,7 +23,7 @@
                                 <th>Alamat</th>
                                 <th>Jarak</th>
                                 <th>Image</th>
-                                <th>Fasilitas</th>
+                                <th>Qty Fasilitas</th>
                                 <th>Qty Variasi Makanan</th>
                                 <th>Rata-Rata Harga Makanan</th>
                                 <th>Action</th>
@@ -36,7 +36,7 @@
                                 <th>Alamat</th>
                                 <th>Jarak</th>
                                 <th>Image</th>
-                                <th>Fasilitas</th>
+                                <th>Qty Fasilitas</th>
                                 <th>Qty Variasi Makanan</th>
                                 <th>Rata-Rata Harga Makanan</th>
                                 <th>Action</th>

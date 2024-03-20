@@ -13,11 +13,6 @@
                     @csrf
                     <div class="row mb-3">
                         <div class="col-md-12 col-xs-12 mb-2">
-                            <select  class="select2-single form-control"
-                            data-toggle="select" id="restaurant" name="restaurant_id" width="100%"></select>
-                            <small class="text-danger" id="error_restaurant_id"></small>
-                        </div>
-                        <div class="col-md-12 col-xs-12 mb-2">
                             <label class="form-label">Fasilitas</label>
                             <input type="text" class="form-control" id="name" name="name">
                             <small class="text-danger" id="error_name"></small>
@@ -54,12 +49,6 @@
                     @csrf
                     @method('PUT')
                     <div class="row mb-3">
-                        <div class="col-md-12 col-xs-12 mb-2">
-                            <label class="form-label">Restaurant</label>
-                            <select  class="select2-single form-control"
-                            data-toggle="select" id="restaurant_id_edit" name="restaurant_id"></select>
-                            <small class="text-danger" id="error_edit_restaurant_id"></small>
-                        </div>
                         <div class="col-md-12 mb-2 col-xs-12">
                           <input type="hidden" id="id" name="id" />
                           <label class="form-label" for="address">Fasilitas</label>

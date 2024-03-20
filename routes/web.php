@@ -50,7 +50,10 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::put('/profile-update/{id}',        [UserController::class, 'updateProfile'])->name('profile.update');
 
     Route::get('list-approve',               [RestaurantController::class, 'listApprove'])->name('list.approve');
+    Route::get('list-restaurants-rejected',  [RestaurantController::class, 'listRejected'])->name('list.rejected');
     Route::get('approve-restaurant/{id}',    [RestaurantController::class, 'approve'])->name('list.approve.restaurant');
 
     Route::get('clear', [CacheController::class, 'clear'])->name('clear');
+    Route::get('filter-restaurants',          [RestaurantController::class, 'filter'])->name('filter.restaurants');
+    Route::get('search-restaurants',          [RestaurantController::class, 'search'])->name('search.restaurants');
 });

@@ -13,8 +13,8 @@
             <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Data Restaurants</h6>
-                    <a class="btn btn-sm btn-success text-white" href="javascript:void(0)" style="cursor: pointer"
-                        id="add-btn"> <span><i class="fa fa-plus"></i>&nbsp;Tambah </span> </a>
+                    <a class="btn btn-sm btn-success text-white" href="{{ route('restaurants.create') }}" style="cursor: pointer"
+                        > <span><i class="fa fa-plus"></i>&nbsp;Tambah </span> </a>
                 </div>
                 <div class="table-responsive p-3">
                     <table class="table align-items-center table-flush" width="100%" id="restaurants_table">
@@ -25,7 +25,7 @@
                                 <th>Alamat</th>
                                 <th>Jarak</th>
                                 <th>Image</th>
-                                <th>Fasilitas</th>
+                                <th>Qty Fasilitas</th>
                                 <th>Qty Variasi Makanan</th>
                                 <th>Rata-Rata Harga Makanan</th>
                                 <th>Action</th>
@@ -38,7 +38,7 @@
                                 <th>Alamat</th>
                                 <th>Jarak</th>
                                 <th>Image</th>
-                                <th>Fasilitas</th>
+                                <th>Qty Fasilitas</th>
                                 <th>Qty Variasi Makanan</th>
                                 <th>Rata-Rata Harga Makanan</th>
                                 <th>Action</th>

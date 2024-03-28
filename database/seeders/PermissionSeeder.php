@@ -116,6 +116,66 @@ class PermissionSeeder extends Seeder
             ['name'  => 'list-rejected-restaurants'],
             ['name'  => 'list-approve-restaurants'],
             ['name'  => 'search-restaurants'],
+            [
+                'name' => 'list-kriteria-harga',
+            ],
+            [
+                'name' => 'create-kriteria-harga',
+            ],
+            [
+                'name' => 'edit-kriteria-harga',
+            ],
+            [
+                'name' => 'delete-kriteria-harga',
+            ],
+            [
+                'name' => 'list-kriteria-jarak',
+            ],
+            [
+                'name' => 'create-kriteria-jarak',
+            ],
+            [
+                'name' => 'edit-kriteria-jarak',
+            ],
+            [
+                'name' => 'delete-kriteria-jarak',
+            ],
+            [
+                'name' => 'list-kriteria-fasilitas',
+            ],
+            [
+                'name' => 'create-kriteria-fasilitas',
+            ],
+            [
+                'name' => 'edit-kriteria-fasilitas',
+            ],
+            [
+                'name' => 'delete-kriteria-fasilitas',
+            ],
+            [
+                'name' => 'list-kriteria-rasa',
+            ],
+            [
+                'name' => 'create-kriteria-rasa',
+            ],
+            [
+                'name' => 'edit-kriteria-rasa',
+            ],
+            [
+                'name' => 'delete-kriteria-rasa',
+            ],
+            [
+                'name' => 'list-kriteria-variasi-menu',
+            ],
+            [
+                'name' => 'create-kriteriavariasi-menu',
+            ],
+            [
+                'name' => 'edit-kriteria-variasi-menu',
+            ],
+            [
+                'name' => 'delete-kriteria-variasi-menu',
+            ],
         ];
 
         foreach ($permissions as $permission) {

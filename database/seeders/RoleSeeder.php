@@ -10,23 +10,22 @@ class RoleSeeder extends Seeder
 {
     public function run()
     {
-        $super = Role::updateOrCreate([
-            'name' => 'ADMIN',
-        ],[
-            'name' => 'ADMIN',
-        ]);
+        $roles = [
+            'ADMIN' => ['ALL'],
+            'USER' => ['dashboard', 'list-restaurant', 'filter-restaurant']
+        ];
 
-        $super_perm = Permission::pluck('id','id')->all();
-        $super->syncPermissions($super_perm);
-
-        $user = Role::updateOrCreate([
-            'name' => 'USER',
-        ],[
-            'name' => 'USER',
-        ]);
-
-        $user_perm = Permission::whereIn('id',[35,14,42])->pluck('id','id')->all();
-        $user->syncPermissions($user_perm);
+        // Create roles and assign permissions
+        foreach ($roles as $roleName => $permissions) {
+            $role = Role::create(['name' => $roleName]);
+            if ($roleName === 'all_permissions') {
+                $permissions = Permission::pluck('name')->toArray();
+            }
+            foreach ($permissions as $permissionName) {
+                $permission = Permission::firstOrCreate(['name' => $permissionName]);
+                $role->givePermissionTo($permission);
+            }
+        }
 
     }
 }

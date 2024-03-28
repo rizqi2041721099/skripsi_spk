@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Restaurant,Facility};
+use App\Models\{Restaurant,Facility,
+                KriteriaFasilitas,KriteriaRasa
+            };
 use Illuminate\Http\Request;
 use DataTables;
 use Storage;
@@ -25,7 +27,7 @@ class RestaurantController extends Controller
 
         if(auth()->user()->hasRole('ADMIN'))
         {
-            $data = Restaurant::with('facilities')->get();
+            $data = Restaurant::with('facilities')->latest()->get();
         } else {
             $data = [];
         }
@@ -68,7 +70,7 @@ class RestaurantController extends Controller
                         $btn .=   '<a href="'.route('restaurants.edit',$row->id).'" class="btn btn-icon btn-primary btn-icon-only">
                                     <span class="btn-inner--icon"><i class="fas fa-pen-square"></i></span>
                                     </a>';
-                        $btn .=   '<a href="'.route('restaurants.show',$row->id).'" class="btn btn-icon btn-secondary btn-icon-only">
+                        $btn .=   '<a href="'.route('restaurants.show',$row->id).'" class="btn btn-icon btn-secondary btn-icon-only" target="_blank">
                                     <span class="btn-inner--icon"><i class="fas fa-eye"></i></span>
                                     </a>';
                     }
@@ -218,7 +220,10 @@ class RestaurantController extends Controller
     {
         $page = 'restaurant';
         $facilities = Facility::get();
-        return view('pages.restaurant.create', compact('page','facilities'));
+        $getRasa = KriteriaRasa::get();
+        $getFasilitas = KriteriaFasilitas::get();
+
+        return view('pages.restaurant.create', compact('page','facilities','getFasilitas','getRasa'));
     }
 
     public function store(Request $request)
@@ -231,6 +236,7 @@ class RestaurantController extends Controller
             'facility'          => 'nullable',
             'qty_variasi_makanan'    => 'nullable|integer',
             'average'           => 'nullable',
+            'map_link'          => 'nullable',
         ],[
             'name.required'           => 'Nama restaurant harus diisi.',
             'distance.required'       => 'Jarak restaurant harus diisi.',
@@ -245,8 +251,42 @@ class RestaurantController extends Controller
             $request->images = $originalFileName;
         }
 
+        $count_variasi_menu = (int)$request->qty_variasi_menu;
+
+        if($count_variasi_menu > 20)
+        {
+           $v_variasi_menu = 1;
+        } elseif ($count_variasi_menu >= 15 || $count_variasi_menu <= 20) {
+            $v_variasi_menu = 2;
+        } elseif($count_variasi_menu >=10 || $count_variasi_menu <= 15) {
+            $v_variasi_menu = 3;
+        } elseif($count_variasi_menu >= 5 || $count_variasi_menu <= 10) {
+            $v_variasi_menu = 4;
+        } elseif($count_variasi_menu <= 5) {
+            $v_variasi_menu = 5;
+        }
+
         $average     = (int)str_replace([",","."], "",$request['average']);
+        if($average >= 2000.00 || $average <= 15000.00) {
+            $v_harga = 1;
+        } elseif ($average >= 15000.00 || $average <= 25000.00) {
+            $v_harga = 2;
+        } elseif($average > 25000.00) {
+            $v_harga = 3;
+        }
+
+        // initial value jarak
+        $jarak = (int)$request->distance;
+        if($jarak < 1000) {
+            $v_jarak = 1;
+        } elseif($jarak >= 1000 || $jarak <= 3000) {
+            $v_jarak = 2;
+        } elseif($jarak > 25000) {
+            $v_jarak = 3;
+        }
+
         $auth = auth()->user();
+
         $data = Restaurant::create([
             'name'      => $request->name,
             'distance'  => $request->distance,
@@ -257,6 +297,12 @@ class RestaurantController extends Controller
             'status'    => $auth->hasRole('ADMIN') ? 1 : 0,
             'qty_variasi_makanan'   => $request->qty_variasi_makanan,
             'images'    => isset($request->images) ? $request->images : null,
+            'kriteria_fasilitas_id' => $request->kriteria_fasilitas_id,
+            'kriteria_rasa_id' => $request->kriteria_rasa_id,
+            'variasi_menu_id'  => $v_variasi_menu,
+            'kriteria_jarak_id' => $v_jarak,
+            'kriteria_harga_id' => $v_harga,
+            'map_link'  => $request->map_link,
         ]);
 
         $data->facilities()->attach($request->facility_id);
@@ -278,7 +324,9 @@ class RestaurantController extends Controller
     {
         $page = 'restaurant';
         $facilities = Facility::get();
-        return view('pages.restaurant.edit',compact('restaurant','page','facilities'));
+        $getRasa = KriteriaRasa::get();
+        $getFasilitas = KriteriaFasilitas::get();
+        return view('pages.restaurant.edit',compact('restaurant','page','facilities','getRasa','getFasilitas'));
     }
 
     public function show(Restaurant $restaurant)
@@ -304,7 +352,39 @@ class RestaurantController extends Controller
             'qty_variasi_makanan.integer' => 'Qty food variaty harus berupa angka.',
         ]);
 
+        $count_variasi_menu = (int)$request->qty_variasi_menu;
+
+        if($count_variasi_menu > 20)
+        {
+           $v_variasi_menu = 1;
+        } elseif ($count_variasi_menu >= 15 || $count_variasi_menu <= 20) {
+            $v_variasi_menu = 2;
+        } elseif($count_variasi_menu >=10 || $count_variasi_menu <= 15) {
+            $v_variasi_menu = 3;
+        } elseif($count_variasi_menu >= 5 || $count_variasi_menu <= 10) {
+            $v_variasi_menu = 4;
+        } elseif($count_variasi_menu <= 5) {
+            $v_variasi_menu = 5;
+        }
+
         $average     = (int)str_replace([",","."], "",$request['average']);
+        if($average >= 2000.00 || $average <= 15000.00) {
+            $v_harga = 1;
+        } elseif ($average >= 15000.00 || $average <= 25000.00) {
+            $v_harga = 2;
+        } elseif($average > 25000.00) {
+            $v_harga = 3;
+        }
+
+        // initial value jarak
+        $jarak = (int)$request->distance;
+        if($jarak < 1000) {
+            $v_jarak = 1;
+        } elseif($jarak >= 1000 || $jarak <= 3000) {
+            $v_jarak = 2;
+        } elseif($jarak > 25000) {
+            $v_jarak = 3;
+        }
 
         $temp = null;
         if ($request->hasFile('image')) {
@@ -322,6 +402,12 @@ class RestaurantController extends Controller
             'qty_variasi_makanan'   => $request->qty_variasi_makanan,
             'average'   => $average,
             'images'    => $request->hasFile('image') ? $originalFileName : $restaurant->images,
+            'kriteria_fasilitas_id' => $request->kriteria_fasilitas_id,
+            'kriteria_rasa_id' => $request->kriteria_rasa_id,
+            'variasi_menu_id'  => $v_variasi_menu,
+            'kriteria_jarak_id' => $v_jarak,
+            'kriteria_harga_id' => $v_harga,
+            'map_link'  => $request->map_link,
         ]);
 
         if ($restaurant->wasChanged('images') && $temp) {
@@ -344,12 +430,13 @@ class RestaurantController extends Controller
 
     }
 
-    public function destroy(Restaurant $restaurant)
+    public function destroy(int $id)
     {
-        $data = $restaurant->delete();
+        $data = Restaurant::find($id);
 
         if($data)
         {
+            $data->delete();
             Storage::delete('public/images/restaurants/'.$data->image);
 
             return response()->json([
@@ -385,7 +472,7 @@ class RestaurantController extends Controller
 
     public function search()
     {
-        $page = 'search-restaurants';
+        $page = 'search';
         $facilities = Facility::get();
         return view('pages.restaurant.search',compact('page','facilities'));
     }

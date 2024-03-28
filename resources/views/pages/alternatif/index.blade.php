@@ -14,7 +14,7 @@
             <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Data Alternatif</h6>
-                    <a class="btn btn-sm btn-success text-white" href="{{ route('alternatif.create') }}" style="cursor: pointer"> <span><i class="fa fa-plus"></i>&nbsp;Tambah </span> </a>
+                    {{-- <a class="btn btn-sm btn-success text-white" href="{{ route('alternatif.create') }}" style="cursor: pointer"> <span><i class="fa fa-plus"></i>&nbsp;Tambah </span> </a> --}}
                 </div>
                 <div class="table-responsive p-3">
                     <table class="table table-bordered" width="100%" id="alternatif_table">
@@ -23,7 +23,6 @@
                                 <th rowspan="2" width="15%">No</th>
                                 <th rowspan="2" width="15%">Restaurant</th>
                                 <th colspan="5" class="text-center">Kriteria</th>
-                                <th rowspan="2" width="15%">Action</th>
                             </tr>
                             <tr>
                                 <th>Harga Makanan</th>
@@ -42,7 +41,6 @@
                                 <th>Fasilitas</th>
                                 <th>Rasa Makanan</th>
                                 <th>Variasi Menu</th>
-                                <th>Action</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -88,10 +86,7 @@
                     data: 'v_rasa_makanan',
                 },
                 {
-                    data: 'v_variasi_makanan',
-                },
-                {
-                    data: 'action',
+                    data: 'v_variasi_makan',
                 },
             ],
         });

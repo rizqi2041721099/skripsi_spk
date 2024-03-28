@@ -19,53 +19,53 @@ class AlternatifController extends Controller
     public function index(Request $request)
     {
         $page = 'alternatif';
-        $data = Alternatif::orderBy('created_at')->get();
+        $data = Restaurant::orderBy('created_at')->get();
 
         $auth  = auth()->user();
 
         if ($request->ajax()) {
             return DataTables::of($data)
                 ->addColumn('restaurant', function ($row) {
-                    return $row->restaurant->name;
+                    return $row->name;
                 })
                 ->addColumn('v_harga_makanan', function ($row) {
-                    return $row->v_harga_makanan;
+                    return $row->harga->value;
                 })
                 ->addColumn('v_jarak', function ($row) {
-                    return $row->v_jarak;
+                    return $row->jarak->value;
                 })
                 ->addColumn('v_fasilitas', function ($row) {
-                    return $row->v_fasilitas;
+                    return $row->jarak->value;
                 })
                 ->addColumn('v_rasa_makanan', function ($row) {
-                    return $row->v_rasa_makanan;
+                    return $row->rasa->value;
                 })
                 ->addColumn('v_variasi_makan', function ($row) {
-                    return $row->v_variasi_makan;
+                    return $row->variasiMenu->value;
                 })
-                ->addColumn('action', function ($row)use($auth) {
-                    $btn = '';
-                    if ($auth->can('edit-alternatif')) {
-                        $btn .= '&nbsp;&nbsp';
-                        $btn .=   '<a href="'.route('alternatif.edit',$row->id).'" onclick="updateItem(this)" data-id="'.$row->id.'" class="btn btn-icon btn-primary btn-icon-only rounded">
-                                <span class="btn-inner--icon"><i class="fas fa-pen-square"></i></span>
-                                </a>';
-                    }
-                    if ($auth->can('delete-alternatif')) {
-                        $btn .= '&nbsp;&nbsp';
-                        $btn .=
-                            '<a class="btn btn-icon btn-danger btn-icon-only" href="#" onclick="deleteItem(this)" data-name="' .
-                            $row->name .
-                            '" data-id="' .
-                            $row->id .
-                            '">
-                                <span class="btn-inner--icon"><i class="fas fa-trash-alt text-white"></i></span>
-                            </a>';
-                    }
+                // ->addColumn('action', function ($row)use($auth) {
+                //     $btn = '';
+                //     if ($auth->can('edit-alternatif')) {
+                //         $btn .= '&nbsp;&nbsp';
+                //         $btn .=   '<a href="'.route('alternatif.edit',$row->id).'" onclick="updateItem(this)" data-id="'.$row->id.'" class="btn btn-icon btn-primary btn-icon-only rounded">
+                //                 <span class="btn-inner--icon"><i class="fas fa-pen-square"></i></span>
+                //                 </a>';
+                //     }
+                //     if ($auth->can('delete-alternatif')) {
+                //         $btn .= '&nbsp;&nbsp';
+                //         $btn .=
+                //             '<a class="btn btn-icon btn-danger btn-icon-only" href="#" onclick="deleteItem(this)" data-name="' .
+                //             $row->name .
+                //             '" data-id="' .
+                //             $row->id .
+                //             '">
+                //                 <span class="btn-inner--icon"><i class="fas fa-trash-alt text-white"></i></span>
+                //             </a>';
+                //     }
 
-                    return $btn;
-                })
-                ->rawColumns(['action'])
+                //     return $btn;
+                // })
+                // ->rawColumns(['action'])
                 ->addIndexColumn()
                 ->make(true);
             }
@@ -167,7 +167,7 @@ class AlternatifController extends Controller
     public function perhitunganSaw(Request $request)
     {
         $page = 'alternatif';
-        $data = Alternatif::orderBy('created_at')->get();
+        $data = Restaurant::orderBy('created_at')->get();
 
         $auth  = auth()->user();
         $alternatif_hasil = [];
@@ -184,19 +184,19 @@ class AlternatifController extends Controller
             // $v_jarak = 1 / $item->v_jarak;
             // $v_fasilitas = 1 / $item->v_fasilitas;
 
-            $v_harga_makanan = round($item->v_harga_makanan, 2);
+            $v_harga_makanan = round($item->harga->value, 2);
             $sum_v_harga_makanan[] = $v_harga_makanan;
 
-            $v_variasi_makanan = round($item->v_variasi_makanan, 2);
+            $v_variasi_makanan = round($item->variasiMenu->value, 2);
             $sum_v_variasi_makanan[] = $v_variasi_makanan;
 
-            $v_rasa_makanan = round($item->v_rasa_makanan, 2);
+            $v_rasa_makanan = round($item->rasa->value, 2);
             $sum_v_rasa_makanan[] = $v_rasa_makanan;
 
-            $v_jarak = round($item->v_jarak, 2);
+            $v_jarak = round($item->jarak->value, 2);
             $sum_v_jarak[] = $v_jarak;
 
-            $v_fasilitas = round($item->v_fasilitas, 2);
+            $v_fasilitas = round($item->fasilitas->value, 2);
             $sum_v_fasilitas[] = $v_fasilitas;
         }
 
@@ -209,26 +209,26 @@ class AlternatifController extends Controller
         if ($request->ajax()) {
             return DataTables::of($data)
                 ->addColumn('restaurant', function ($row) {
-                    return $row->restaurant->name;
+                    return $row->name;
                 })
                 ->addColumn('v_harga_makanan', function ($row) use ($min_v_harga_makanan) {
-                    $v_harga_makanan = $min_v_harga_makanan / $row->v_harga_makanan;
+                    $v_harga_makanan = $min_v_harga_makanan / $row->harga->value;
                     return round($v_harga_makanan,2);
                 })
                 ->addColumn('v_jarak', function ($row) use ($min_v_jarak){
-                    $v_jarak = $min_v_jarak / $row->v_jarak;
+                    $v_jarak = $min_v_jarak / $row->jarak->value;
                     return round($v_jarak,2);
                 })
                 ->addColumn('v_fasilitas', function ($row) use ($max_v_fasilitas) {
-                    $v_fasilitas = $row->v_fasilitas/ $max_v_fasilitas;
+                    $v_fasilitas = $row->fasilitas->value / $max_v_fasilitas;
                     return round($v_fasilitas,2);
                 })
                 ->addColumn('v_rasa_makanan', function ($row) use ($max_v_rasa_makanan) {
-                    $v_rasa_makanan = $row->v_rasa_makanan / $max_v_rasa_makanan;
+                    $v_rasa_makanan = $row->rasa->value / $max_v_rasa_makanan;
                     return round($v_rasa_makanan,2);
                 })
                 ->addColumn('v_variasi_makan', function ($row) use ($max_v_variasi_makanan) {
-                    $v_variasi_makanan =  $row->v_variasi_makanan / $max_v_variasi_makanan ;
+                    $v_variasi_makanan =  $row->variasiMenu->value / $max_v_variasi_makanan ;
                     return round($v_variasi_makanan,2);
                 })
                 ->addIndexColumn()
@@ -240,7 +240,7 @@ class AlternatifController extends Controller
     public function normalisasiAlternatif(Request $request)
     {
         $page = 'alternatif';
-        $data = Alternatif::orderBy('created_at')->get();
+        $data = Restaurant::orderBy('created_at')->get();
 
         $auth  = auth()->user();
         $alternatif_hasil = [];
@@ -257,19 +257,19 @@ class AlternatifController extends Controller
             // $v_jarak = 1 / $item->v_jarak;
             // $v_fasilitas = 1 / $item->v_fasilitas;
 
-            $v_harga_makanan = round($item->v_harga_makanan, 2);
+            $v_harga_makanan = round($item->harga->value, 2);
             $sum_v_harga_makanan[] = $v_harga_makanan;
 
-            $v_variasi_makanan = round($item->v_variasi_makanan, 2);
+            $v_variasi_makanan = round($item->variasiMenu->value, 2);
             $sum_v_variasi_makanan[] = $v_variasi_makanan;
 
-            $v_rasa_makanan = round($item->v_rasa_makanan, 2);
+            $v_rasa_makanan = round($item->rasa->value, 2);
             $sum_v_rasa_makanan[] = $v_rasa_makanan;
 
-            $v_jarak = round($item->v_jarak, 2);
+            $v_jarak = round($item->jarak->value, 2);
             $sum_v_jarak[] = $v_jarak;
 
-            $v_fasilitas = round($item->v_fasilitas, 2);
+            $v_fasilitas = round($item->fasilitas->value, 2);
             $sum_v_fasilitas[] = $v_fasilitas;
         }
 
@@ -305,26 +305,26 @@ class AlternatifController extends Controller
         if ($request->ajax()) {
             return DataTables::of($data)
                 ->addColumn('restaurant', function ($row) {
-                    return $row->restaurant->name;
+                    return $row->name;
                 })
                 ->addColumn('v_harga_makanan', function ($row) use ($min_v_harga_makanan) {
-                    $v_harga_makanan = $min_v_harga_makanan / $row->v_harga_makanan;
+                    $v_harga_makanan = $min_v_harga_makanan / $row->harga->value;
                     return $min_v_harga_makanan.' / '.$row->harga_makanan.' = '.round($v_harga_makanan,2);
                 })
                 ->addColumn('v_jarak', function ($row) use ($min_v_jarak){
-                    $v_jarak = $min_v_jarak / $row->v_jarak;
+                    $v_jarak = $min_v_jarak / $row->jarak->value;
                     return $min_v_jarak.' / '.$row->v_jarak.' = '.round($v_jarak,2);
                 })
                 ->addColumn('v_fasilitas', function ($row) use ($max_v_fasilitas) {
-                    $v_fasilitas = $row->v_fasilitas/ $max_v_fasilitas;
+                    $v_fasilitas = $row->fasilitas->value / $max_v_fasilitas;
                     return $row->v_fasilitas.' / '.$max_v_fasilitas.' = '.round($v_fasilitas,2);
                 })
                 ->addColumn('v_rasa_makanan', function ($row) use ($max_v_rasa_makanan) {
-                    $v_rasa_makanan = $row->v_rasa_makanan / $max_v_rasa_makanan;
+                    $v_rasa_makanan = $row->rasa->value / $max_v_rasa_makanan;
                     return $row->v_rasa_makanan.' / '.$max_v_rasa_makanan.' = '.round($v_rasa_makanan,2);
                 })
                 ->addColumn('variasi_makanan', function ($row) use ($max_v_variasi_makanan) {
-                    $v_variasi_makanan =  $row->v_variasi_makanan / $max_v_variasi_makanan ;
+                    $v_variasi_makanan =  $row->variasiMenu->value / $max_v_variasi_makanan ;
                     return $row->v_variasi_makanan.' / '.$max_v_variasi_makanan.' = '.round($v_variasi_makanan,2);
                 })
                 ->addIndexColumn()
@@ -335,7 +335,7 @@ class AlternatifController extends Controller
     public function dataRanking(Request $request)
     {
         $page = 'alternatif';
-        $data = Alternatif::get();
+        $data = Restaurant::get();
         $alternatif_hasil = [];
         $sum_v_harga_makanan = [];
         $sum_v_variasi_makanan = [];
@@ -355,19 +355,19 @@ class AlternatifController extends Controller
             // $v_jarak = 1 / $item->v_jarak;
             // $v_fasilitas = 1 / $item->v_fasilitas;
 
-            $v_harga_makanan = round($item->v_harga_makanan, 2);
+            $v_harga_makanan = round($item->harga->value, 2);
             $sum_v_harga_makanan[] = $v_harga_makanan;
 
-            $v_variasi_makanan = round($item->v_variasi_makanan, 2);
+            $v_variasi_makanan = round($item->variasiMenu->value, 2);
             $sum_v_variasi_makanan[] = $v_variasi_makanan;
 
-            $v_rasa_makanan = round($item->v_rasa_makanan, 2);
+            $v_rasa_makanan = round($item->rasa->value, 2);
             $sum_v_rasa_makanan[] = $v_rasa_makanan;
 
-            $v_jarak = round($item->v_jarak, 2);
+            $v_jarak = round($item->jarak->value, 2);
             $sum_v_jarak[] = $v_jarak;
 
-            $v_fasilitas = round($item->v_fasilitas, 2);
+            $v_fasilitas = round($item->fasilitas->value, 2);
             $sum_v_fasilitas[] = $v_fasilitas;
         }
 
@@ -378,11 +378,11 @@ class AlternatifController extends Controller
         $max_v_variasi_makanan = max($sum_v_variasi_makanan);
 
         foreach ($data as $item) {
-            $v_harga_makanan = $min_v_harga_makanan / $item->v_harga_makanan;
-            $v_jarak = $min_v_jarak / $item->v_jarak;
-            $v_fasilitas = $item->v_fasilitas / $max_v_fasilitas;
-            $v_rasa_makanan = $item->v_rasa_makanan / $max_v_rasa_makanan;
-            $v_variasi_makanan =  $item->v_variasi_makanan / $max_v_variasi_makanan;
+            $v_harga_makanan = $min_v_harga_makanan / $item->harga->value;
+            $v_jarak = $min_v_jarak / $item->jarak->value;
+            $v_fasilitas = $item->fasilitas->value / $max_v_fasilitas;
+            $v_rasa_makanan = $item->rasa->value / $max_v_rasa_makanan;
+            $v_variasi_makanan =  $item->variasiMenu->value / $max_v_variasi_makanan;
 
             $bobot_v_harga =  round($v_harga_makanan,2) * 0.30;
             $bobot_v_variasi = round($v_variasi_makanan,2) * 0.10;
@@ -414,7 +414,7 @@ class AlternatifController extends Controller
         if ($request->ajax()) {
             return DataTables::of($alternatif_hasil)
                 ->addColumn('restaurant', function ($row) {
-                    return isset($row['alternatif']->restaurant->name) ? $row['alternatif']->restaurant->name : null;
+                    return $row['alternatif']->name;
                 })
                 ->addColumn('v_harga_makanan', function ($row) {
                   return round($row['v_harga_makanan'],2);

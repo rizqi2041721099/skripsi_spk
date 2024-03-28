@@ -15,8 +15,9 @@
             </h6>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-flush" width="100%">
+            <h6 class="font-weight-bold">Data Restaurant</h6>
+            <div class="table-responsive my-3">
+                <table class="table table-bordered" width="100%">
                     <thead class="thead-light">
                         <tr>
                             <th>Resturant</th>
@@ -24,8 +25,9 @@
                             <th>Jarak</th>
                             <th>Fasilitas</th>
                             <th>Image</th>
-                            <th>Harga</th>
+                            <th>Rata-rata Harga</th>
                             <th>Qty Variasi Makanan</th>
+                            <th>Link Gmaps</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,9 +57,55 @@
                             <td>
                                 {{ $restaurant->qty_variasi_makanan }}
                             </td>
+                            <td>
+                                @if (empty($restaurant->map_link))
+                                    <span class="text-danger fw-bold">tidak ada link gmaps</span>
+                                    @else
+                                    <a href="{{ $restaurant->map_link }}" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                        check location</a>
+                                @endif
+                            </td>
                         </tr>
                     </tbody>
                 </table>
+                <div class="table-responsive my-5">
+                    <h6 class="font-weight-bold">Data Alternatif</h6>
+                    <table class="table table-bordered" width="100%" id="alternatif_table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" width="15%">Restaurant</th>
+                                <th colspan="5" class="text-center">Kriteria</th>
+                            </tr>
+                            <tr>
+                                <th>Harga Makanan</th>
+                                <th>Jarak</th>
+                                <th>Fasilitas</th>
+                                <th>Rasa Makanan</th>
+                                <th>Variasi Makanan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ $restaurant->name }}</td>
+                                <td>{{ $restaurant->harga->value }}</td>
+                                <td>{{ $restaurant->jarak->value }}</td>
+                                <td>{{ $restaurant->fasilitas->value }}</td>
+                                <td>{{ $restaurant->rasa->value }}</td>
+                                <td>{{ $restaurant->variasiMenu->value }}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Restaurant</th>
+                                <th>Harga Makanan</th>
+                                <th>Jarak</th>
+                                <th>Fasilitas</th>
+                                <th>Rasa Makanan</th>
+                                <th>Variasi Makanan</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
         </div>

@@ -17,8 +17,14 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             SuperAdminSeeder::class,
             KriteriaSeeder::class,
+            KriteriaVariasiMenuSeeder::class,
+            KriteriaJarakSeeder::class,
+            KriteriaHargaSeeder::class,
+            KriteriaRasaSeeder::class,
+            KriteriaFasilitasSeeder::class,
             RestaurantSeeder::class,
             AlternatifSeeder::class,
+            FasilitasSeeder::class,
         ]);
     }
 }

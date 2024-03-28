@@ -25,62 +25,6 @@
     <div class="sidebar-heading">
         Features
     </div>
-    @if (auth()->user()->can('list-kriteria'))
-        <li class="nav-item {{ request()->is('kriterias*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('kriterias.index') }}">
-                <i class="far fa-fw fa-window-maximize"></i>
-                <span>Keterangan Kriteria</span>
-            </a>
-        </li>
-    @endif
-    @if (auth()->user()->can('list-restaurant'))
-        <li class="nav-item {{ $page == 'restaurants' ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('restaurants.index') }}">
-                <i class="fa fa-building"></i>
-                <span>Restaurants</span>
-            </a>
-        </li>
-    @endif
-    @if (auth()->user()->can('list-rejected-restaurants'))
-        <li class="nav-item {{ $page == 'restaurants-rejected' ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('list.rejected') }}">
-                <i class="fa fa-building"></i>
-                <span>Restaurants Rejected</span>
-            </a>
-        </li>
-    @endif
-    @if (auth()->user()->can('list-approve-restaurants'))
-        <li class="nav-item {{ $page == 'approve-restaurants' ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('list.approve') }}">
-                <i class="fa fa-building"></i>
-                <span>Restaurants Approve</span>
-            </a>
-        </li>
-    @endif
-    @if (auth()->user()->can('search-restaurants'))
-        <li class="nav-item {{ $page = 'search-restaurants' ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('search.restaurants') }}">
-                <i class="far fa-fw fa-window-maximize"></i>
-                <span>Search Restaurants</span>
-            </a>
-        </li>
-    @endif
-    @if (auth()->user()->can('list-alternatif'))
-        <li class="nav-item {{ request()->is('alternatif*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('alternatif.index') }}">
-                <i class="far fa-fw fa-window-maximize"></i>
-                <span>Alternatif</span>
-            </a>
-        </li>
-    @endif
-    @if (auth()->user()->can('perhitungan-saw'))
-    <li class="nav-item {{ request()->is('perhitungan.saw*') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('perhitungan.saw') }}">
-            <i class="far fa-fw fa-window-maximize"></i>
-            <span>Perhitungan SAE</span>
-        </a>
-    </li>
-    @endif
     @if (auth()->user()->hasRole('ADMIN'))
     <li class="nav-item {{ $page == 'master' ? 'active' : '' }}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
@@ -123,6 +67,93 @@
                 </div>
             </div>
         </li>
+    @endif
+    @if (auth()->user()->can('list-kriteria') ||
+    auth()->user()->can('list-kriteria-harga') ||
+    auth()->user()->can('list-kriteria-jarak') ||
+    auth()->user()->can('list-kriteria-fasilitas') ||
+    auth()->user()->can('list-kriteria-variasi-menu'))
+        <li class="nav-item {{ $page == 'kriteria' ? 'active' : '' }}">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable"
+                aria-expanded="true" aria-controls="collapseTable">
+                <i class="far fa-fw fa-window-maximize"></i>
+                <span>Kriteria</span>
+            </a>
+            <div id="collapseTable" class="collapse {{ $page == 'kriteria' ? 'show' : '' }}"
+                aria-labelledby="headingPage" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">List Kriteria</h6>
+                    @can('list-kriteria')
+                     <a class="collapse-item {{ request()->is('kriterias*') ? 'active' : '' }}"
+                        href="{{ route('kriterias.index') }}">Keterangan Kriteria</a>
+                    @endcan
+                    @can('list-kriteria-harga')
+                    <a class="collapse-item {{ request()->is('kriteria-harga*') ? 'active' : '' }}"
+                        href="{{ route('kriteria-harga.index') }}">Kriteria Harga</a>
+                    @endcan
+                    @can('list-kriteria-jarak')
+                    <a class="collapse-item {{ request()->is('kriteria-jarak*') ? 'active' : '' }}"
+                        href="{{ route('kriteria-jarak.index') }}">Kriteria Jarak</a>
+                    @endcan
+                    @can('list-kriteria-fasilitas')
+                    <a class="collapse-item {{ request()->is('kriteria-fasilitas*') ? 'active' : '' }}"
+                        href="{{ route('kriteria-fasilitas.index') }}">Kriteria Fasilitas</a>
+                    @endcan
+                    @can('list-kriteria-variasi-menu')
+                    <a class="collapse-item {{ request()->is('kriteria-variasi-menu*') ? 'active' : '' }}"
+                        href="{{ route('kriteria-variasi-menu.index') }}">Kriteria Variasi Menu</a>
+                    @endcan
+                </div>
+            </div>
+        </li>
+    @endif
+    @if (auth()->user()->can('list-restaurant'))
+        <li class="nav-item {{ $page == 'restaurants' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('restaurants.index') }}">
+                <i class="fa fa-building"></i>
+                <span>Restaurants</span>
+            </a>
+        </li>
+    @endif
+    @if (auth()->user()->can('list-rejected-restaurants'))
+        <li class="nav-item {{ $page == 'restaurants-rejected' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('list.rejected') }}">
+                <i class="fa fa-building"></i>
+                <span>Restaurants Rejected</span>
+            </a>
+        </li>
+    @endif
+    @if (auth()->user()->can('list-approve-restaurants'))
+        <li class="nav-item {{ $page == 'approve-restaurants' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('list.approve') }}">
+                <i class="fa fa-building"></i>
+                <span>Restaurants Approve</span>
+            </a>
+        </li>
+    @endif
+    @if (auth()->user()->can('filter-restaurant'))
+        <li class="nav-item {{ $page = 'search' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('search.restaurants') }}">
+                <i class="far fa-fw fa-window-maximize"></i>
+                <span>Search Restaurants</span>
+            </a>
+        </li>
+    @endif
+    @if (auth()->user()->can('list-alternatif'))
+        <li class="nav-item {{ request()->is('alternatif*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('alternatif.index') }}">
+                <i class="far fa-fw fa-window-maximize"></i>
+                <span>Alternatif</span>
+            </a>
+        </li>
+    @endif
+    @if (auth()->user()->can('perhitungan-saw'))
+    <li class="nav-item {{ request()->is('perhitungan.saw*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('perhitungan.saw') }}">
+            <i class="far fa-fw fa-window-maximize"></i>
+            <span>Perhitungan SAE</span>
+        </a>
+    </li>
     @endif
     @if (auth()->user()->hasRole('ADMIN'))
     <li class="nav-item {{ $page == 'settings' ? 'active' : '' }}">

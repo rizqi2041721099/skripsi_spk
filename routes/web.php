@@ -10,6 +10,11 @@ use App\Http\Controllers\{
     KriteriaController,
     AlternatifController,
     HomeController,
+    KriteriaVariasiMenuController,
+    KriteriaJarakController,
+    KriteriaHargaController,
+    KriteriaRasaController,
+    KriteriaFasilitasController,
 };
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +31,8 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+Route::get('logs-error',                          [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
+
 Auth::routes(['register' => false]);
 
 Route::group(['middleware' => ['auth:web']], function() {
@@ -37,7 +44,14 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::resource('facilities',        FacilityController::class);
     Route::resource('restaurants',       RestaurantController::class);
     Route::post('get-restaurant',        [RestaurantController::class, 'getRestaurant'])->name('get-restaurant');
+
     Route::resource('kriterias',         KriteriaController::class);
+    Route::resource('kriteria-variasi-menu',  KriteriaVariasiMenuController::class);
+    Route::resource('kriteria-jarak',         KriteriaJarakController::class);
+    Route::resource('kriteria-harga',         KriteriaHargaController::class);
+    Route::resource('kriteria-rasa',         KriteriaRasaController::class);
+    Route::resource('kriteria-fasilitas',    KriteriaFasilitasController::class);
+
     Route::resource('alternatif',        AlternatifController::class);
     Route::get('perhitungan-saw',        [AlternatifController::class, 'perhitunganSaw'])->name('perhitungan.saw');
     Route::get('normalisasi-alternatif',        [AlternatifController::class, 'normalisasiAlternatif'])->name('normalisasi.alternatif');

@@ -18,45 +18,63 @@
                 <form id="form-create" name="form-tambah">
                     @csrf
                     <div class="row mb-3">
-                        <div class="col-md-12 col-xs-12 mb-2">
-                            <label class="form-label">Restaurant Name</label>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Restaurant Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="name" name="name">
                             <small class="text-danger" id="error_name"></small>
                         </div>
-                        <div class="col-md-12 col-xs-12 mb-2">
-                            <label class="form-label">Address</label>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Address <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="address" name="address">
                             <small class="text-danger" id="error_address"></small>
                         </div>
-                        <div class="col-md-12 col-xs-12 mb-2">
+                        <div class="col-md-4 mb-3">
                             <label class="form-label">Distance <span class="text-danger">Input Jarak format angka (m)*</span></label>
                             <input type="text" class="form-control" id="distance" name="distance">
                             <small class="text-danger" id="error_distance"></small>
                         </div>
-                        {{-- <div class="col-md-12 col-xs-12 mb-2">
-                            <label class="form-label">Facility</label>
-                            <input type="text" class="form-control" id="facility" name="facility">
-                            <small class="text-danger" id="error_facility"></small>
-                        </div> --}}
-                        <div class="col-md-12 col-xs-12 mb-2">
-                            <label class="form-label">Qty Food Variety</label>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Qty Food Variety <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="qty_variasi_makanan" name="qty_variasi_makanan">
                             <small class="text-danger" id="error_qty_variasi_makanan"></small>
                         </div>
-                        <div class="col-md-12 col-xs-12 mb-2">
-                            <label class="form-label">Rata-Rata Harga Makanan</label>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Rata-Rata Harga Makanan <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" data-type="currency" id="average"
                             name="average" value="0">
                             <small class="text-danger" id="error_average"></small>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-4 mb-3">
                             <label for="">Image</label>
                             <input type="file" class="form-control" name="images" id="foto">
                             <img id="imagePreview" class="img-preview mt-3" style="display: none;" width="150" height="150" />
                         </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="">Link Gmaps</label>
+                            <input type="text" class="form-control" name="map_link">
+                            <small class="text-danger" id="error_map_link"></small>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="">Kriteria Fasilitas <span class="text-danger">*</span></label>
+                            <select name="kriteria_fasilitas_id" id="kriteria_fasilitas_id" class="form-control">
+                                <option value="">pilih</option>
+                                @foreach ($getFasilitas as $item)
+                                    <option value="{{ $item->id }}">{{ $item->standard_value }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="">Kriteria Rasa <span class="text-danger">*</span></label>
+                            <select name="kriteria_rasa_id" id="kriteria_rasa_id" class="form-control">
+                                <option value="">pilih</option>
+                                @foreach ($getRasa as $item)
+                                    <option value="{{ $item->id }}">{{ $item->standard_value }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <div class="row ml-3">
-                        <h6>Fasilitas:</h6>
+                        <h6>Fasilitas <span class="text-danger">*</span> :</h6>
                         <hr>
                         @foreach ($facilities as $item)
                             <div class="col-lg-3 col-md-6 col-sm-6">
@@ -128,6 +146,7 @@
                         $('#error_facility').text(response.responseJSON.errors.facility);
                         $('#error_average').text(response.responseJSON.errors.average);
                         $('#error_qty_variasi_makanan').text(response.responseJSON.errors.qty_variasi_makanan);
+                        $('#error_map_link').text(response.responseJSON.errors.map_link);
                     }
                 });
             });

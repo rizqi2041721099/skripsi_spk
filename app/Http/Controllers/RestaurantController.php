@@ -287,10 +287,14 @@ class RestaurantController extends Controller
         $jarak = (int)$request->distance;
         if($jarak < 1000) {
             $v_jarak = 1;
-        } elseif($jarak >= 1000 || $jarak <= 3000) {
+        } elseif($jarak >= 1000 && $jarak < 3000) {
             $v_jarak = 2;
-        } elseif($jarak > 25000) {
+        } elseif($jarak <= 3000 && $jarak < 5000) {
             $v_jarak = 3;
+        } elseif($jarak <= 5000 && $jarak < 7000) {
+            $v_jarak = 2;
+        }  elseif($jarak > 7000) {
+            $v_jarak = 1;
         }
 
         $auth = auth()->user();
@@ -393,10 +397,14 @@ class RestaurantController extends Controller
         $jarak = (int)$request->distance;
         if($jarak < 1000) {
             $v_jarak = 1;
-        } elseif($jarak >= 1000 || $jarak <= 3000) {
+        } elseif($jarak >= 1000 && $jarak < 3000) {
             $v_jarak = 2;
-        } elseif($jarak > 25000) {
+        } elseif($jarak <= 3000 && $jarak < 5000) {
             $v_jarak = 3;
+        } elseif($jarak <= 5000 && $jarak < 7000) {
+            $v_jarak = 2;
+        }  elseif($jarak > 7000) {
+            $v_jarak = 1;
         }
 
         $temp = null;

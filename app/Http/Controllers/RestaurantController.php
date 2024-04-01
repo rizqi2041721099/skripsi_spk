@@ -62,6 +62,9 @@ class RestaurantController extends Controller
                 ->addColumn('average', function ($row) {
                     return number_format($row->average) ?? '-';
                 })
+                ->addColumn('rasa', function ($row) {
+                    return $row->rasa->standard_value;
+                })
                 ->addColumn('action', function ($row)use($auth) {
                     $btn = '';
                     $btn .= '<div class="btn-group" role="group"/> ';

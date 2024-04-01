@@ -28,6 +28,7 @@
                                 <th>Qty Fasilitas</th>
                                 <th>Qty Variasi Makanan</th>
                                 <th>Rata-Rata Harga Makanan</th>
+                                <th>Rasa Makanan</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -40,7 +41,7 @@
                                 <th>Image</th>
                                 <th>Qty Fasilitas</th>
                                 <th>Qty Variasi Makanan</th>
-                                <th>Rata-Rata Harga Makanan</th>
+                                <th>Rasa Makanan</th>
                                 <th>Action</th>
                             </tr>
                         </tfoot>
@@ -93,6 +94,9 @@
                 },
                 {
                     data: 'average',
+                },
+                {
+                    data: 'rasa',
                 },
                 {
                     data: 'action',

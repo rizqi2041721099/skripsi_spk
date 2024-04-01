@@ -368,12 +368,17 @@ class RestaurantController extends Controller
         }
 
         $average     = (int)str_replace([",","."], "",$request['average']);
-        if($average >= 2000.00 || $average <= 15000.00) {
-            $v_harga = 1;
-        } elseif ($average >= 15000.00 || $average <= 25000.00) {
-            $v_harga = 2;
-        } elseif($average > 25000.00) {
-            $v_harga = 3;
+        $v_harga = 0;
+        switch ($average) {
+            case ($average >= 2000 && $average < 15000):
+                $v_harga = 1;
+                break;
+            case ($average >= 15000 && $average < 25000):
+                $v_harga = 2;
+                break;
+            case ($average >= 25000):
+                $v_harga = 3;
+                break;
         }
 
         // initial value jarak

@@ -272,10 +272,10 @@ class RestaurantController extends Controller
         $average     = (int)str_replace([",","."], "",$request['average']);
         $v_harga = 0;
         switch ($average) {
-            case ($average >= 2000 && $average < 15000):
+            case ($average >= 2000 || $average < 15000):
                 $v_harga = 1;
                 break;
-            case ($average >= 15000 && $average < 25000):
+            case ($average >= 15000 || $average < 25000):
                 $v_harga = 2;
                 break;
             case ($average >= 25000):
@@ -286,12 +286,12 @@ class RestaurantController extends Controller
         // initial value jarak
         $jarak = (int)$request->distance;
         if($jarak < 1000) {
-            $v_jarak = 1;
-        } elseif($jarak >= 1000 && $jarak < 3000) {
-            $v_jarak = 2;
-        } elseif($jarak <= 3000 && $jarak < 5000) {
+            $v_jarak = 5;
+        } elseif($jarak >= 1000 || $jarak < 3000) {
+            $v_jarak = 4;
+        } elseif($jarak <= 3000 || $jarak < 5000) {
             $v_jarak = 3;
-        } elseif($jarak <= 5000 && $jarak < 7000) {
+        } elseif($jarak <= 5000 || $jarak <= 7000) {
             $v_jarak = 2;
         }  elseif($jarak > 7000) {
             $v_jarak = 1;
@@ -382,10 +382,10 @@ class RestaurantController extends Controller
         $average     = (int)str_replace([",","."], "",$request['average']);
         $v_harga = 0;
         switch ($average) {
-            case ($average >= 2000 && $average < 15000):
+            case ($average >= 2000 || $average < 15000):
                 $v_harga = 1;
                 break;
-            case ($average >= 15000 && $average < 25000):
+            case ($average >= 15000 || $average < 25000):
                 $v_harga = 2;
                 break;
             case ($average >= 25000):
@@ -395,13 +395,14 @@ class RestaurantController extends Controller
 
         // initial value jarak
         $jarak = (int)$request->distance;
+        $v_jarak = 0;
         if($jarak < 1000) {
-            $v_jarak = 1;
-        } elseif($jarak >= 1000 && $jarak < 3000) {
-            $v_jarak = 2;
-        } elseif($jarak <= 3000 && $jarak < 5000) {
+            $v_jarak = 5;
+        } elseif($jarak >= 1000 || $jarak < 3000) {
+            $v_jarak = 4;
+        } elseif($jarak <= 3000 || $jarak < 5000) {
             $v_jarak = 3;
-        } elseif($jarak <= 5000 && $jarak < 7000) {
+        } elseif($jarak <= 5000 || $jarak <= 7000) {
             $v_jarak = 2;
         }  elseif($jarak > 7000) {
             $v_jarak = 1;

@@ -259,11 +259,11 @@ class RestaurantController extends Controller
         if($count_variasi_menu > 20)
         {
            $v_variasi_menu = 1;
-        } elseif ($count_variasi_menu >= 15 || $count_variasi_menu <= 20) {
+        } elseif ($count_variasi_menu >= 15 && $count_variasi_menu <= 20) {
             $v_variasi_menu = 2;
-        } elseif($count_variasi_menu >=10 || $count_variasi_menu <= 15) {
+        } elseif($count_variasi_menu >=10 && $count_variasi_menu <= 15) {
             $v_variasi_menu = 3;
-        } elseif($count_variasi_menu >= 5 || $count_variasi_menu <= 10) {
+        } elseif($count_variasi_menu >= 5 && $count_variasi_menu <= 10) {
             $v_variasi_menu = 4;
         } elseif($count_variasi_menu <= 5) {
             $v_variasi_menu = 5;
@@ -272,10 +272,10 @@ class RestaurantController extends Controller
         $average     = (int)str_replace([",","."], "",$request['average']);
         $v_harga = 0;
         switch ($average) {
-            case ($average >= 2000 || $average < 15000):
+            case ($average >= 2000 && $average < 15000):
                 $v_harga = 1;
                 break;
-            case ($average >= 15000 || $average < 25000):
+            case ($average >= 15000 && $average < 25000):
                 $v_harga = 2;
                 break;
             case ($average >= 25000):
@@ -287,16 +287,15 @@ class RestaurantController extends Controller
         $jarak = (int)$request->distance;
         if($jarak < 1000) {
             $v_jarak = 5;
-        } elseif($jarak >= 1000 || $jarak < 3000) {
+        } elseif($jarak >= 1000 && $jarak < 3000) {
             $v_jarak = 4;
-        } elseif($jarak <= 3000 || $jarak < 5000) {
+        } elseif($jarak <= 3000 && $jarak < 5000) {
             $v_jarak = 3;
-        } elseif($jarak <= 5000 || $jarak <= 7000) {
+        } elseif($jarak <= 5000 && $jarak <= 7000) {
             $v_jarak = 2;
-        }  elseif($jarak > 7000) {
+        }  elseif($jarak >= 7000) {
             $v_jarak = 1;
         }
-
         $auth = auth()->user();
 
         $data = Restaurant::create([
@@ -369,11 +368,11 @@ class RestaurantController extends Controller
         if($count_variasi_menu > 20)
         {
            $v_variasi_menu = 1;
-        } elseif ($count_variasi_menu >= 15 || $count_variasi_menu <= 20) {
+        } elseif ($count_variasi_menu >= 15 && $count_variasi_menu <= 20) {
             $v_variasi_menu = 2;
-        } elseif($count_variasi_menu >=10 || $count_variasi_menu <= 15) {
+        } elseif($count_variasi_menu >=10 && $count_variasi_menu <= 15) {
             $v_variasi_menu = 3;
-        } elseif($count_variasi_menu >= 5 || $count_variasi_menu <= 10) {
+        } elseif($count_variasi_menu >= 5 && $count_variasi_menu <= 10) {
             $v_variasi_menu = 4;
         } elseif($count_variasi_menu <= 5) {
             $v_variasi_menu = 5;
@@ -382,10 +381,10 @@ class RestaurantController extends Controller
         $average     = (int)str_replace([",","."], "",$request['average']);
         $v_harga = 0;
         switch ($average) {
-            case ($average >= 2000 || $average < 15000):
+            case ($average >= 2000 && $average < 15000):
                 $v_harga = 1;
                 break;
-            case ($average >= 15000 || $average < 25000):
+            case ($average >= 15000 && $average < 25000):
                 $v_harga = 2;
                 break;
             case ($average >= 25000):
@@ -397,15 +396,15 @@ class RestaurantController extends Controller
         $jarak = (int)$request->distance;
         $v_jarak = 0;
         if($jarak < 1000) {
-            $v_jarak = 5;
-        } elseif($jarak >= 1000 || $jarak < 3000) {
-            $v_jarak = 4;
-        } elseif($jarak <= 3000 || $jarak < 5000) {
-            $v_jarak = 3;
-        } elseif($jarak <= 5000 || $jarak <= 7000) {
-            $v_jarak = 2;
-        }  elseif($jarak > 7000) {
             $v_jarak = 1;
+        } elseif($jarak >= 1000 && $jarak < 3000) {
+            $v_jarak = 2;
+        } elseif($jarak <= 3000 && $jarak < 5000) {
+            $v_jarak = 3;
+        } elseif ($jarak <= 5000 && $jarak <= 7000) {
+            $v_jarak = 4;
+        }  elseif ($jarak > 7000) {
+            $v_jarak = 5;
         }
 
         $temp = null;

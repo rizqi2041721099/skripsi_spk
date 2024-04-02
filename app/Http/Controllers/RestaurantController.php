@@ -254,7 +254,7 @@ class RestaurantController extends Controller
             $request->images = $originalFileName;
         }
 
-        $count_variasi_menu = (int)$request->qty_variasi_menu;
+        $count_variasi_menu = (int)$request->qty_variasi_makanan;
 
         if($count_variasi_menu > 20)
         {
@@ -363,7 +363,7 @@ class RestaurantController extends Controller
             'qty_variasi_makanan.integer' => 'Qty food variaty harus berupa angka.',
         ]);
 
-        $count_variasi_menu = (int)$request->qty_variasi_menu;
+        $count_variasi_menu = (int)$request->qty_variasi_makanan;
 
         if($count_variasi_menu > 20)
         {

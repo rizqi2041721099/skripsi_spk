@@ -47,12 +47,12 @@
     @if (auth()->user()->can('list-users') ||
     auth()->user()->can('list-role'))
         <li class="nav-item {{ $page == 'management-users' ? 'active' : '' }}">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable"
-                aria-expanded="true" aria-controls="collapseTable">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage"
+                aria-expanded="true" aria-controls="collapsePage">
                 <i class="fa fa-users"></i>
                 <span>Management Users</span>
             </a>
-            <div id="collapseTable" class="collapse {{ $page == 'management-users' ? 'show' : '' }}"
+            <div id="collapsePage" class="collapse {{ $page == 'management-users' ? 'show' : '' }}"
                 aria-labelledby="headingPage" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">List Management Users</h6>

@@ -35,7 +35,7 @@ class AlternatifController extends Controller
                     return $row->jarak->value;
                 })
                 ->addColumn('v_fasilitas', function ($row) {
-                    return $row->jarak->value;
+                    return $row->fasilitas->value;
                 })
                 ->addColumn('v_rasa_makanan', function ($row) {
                     return $row->rasa->value;

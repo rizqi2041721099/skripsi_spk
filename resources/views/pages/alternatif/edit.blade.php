@@ -22,7 +22,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="alternatif_table">
+                <form id="form_alternatif">
                     @csrf
                     @method('PUT')
                     <div class="row mb-3">
@@ -99,7 +99,7 @@
                 // }
             });
 
-            $('#alternatif_table').on('submit', function(event) {
+            $('#form_alternatif').on('submit', function(event) {
                 event.preventDefault();
                 var formData = new FormData(this);
 

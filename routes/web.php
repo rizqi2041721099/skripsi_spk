@@ -15,6 +15,7 @@ use App\Http\Controllers\{
     KriteriaHargaController,
     KriteriaRasaController,
     KriteriaFasilitasController,
+    CommentController,
 };
 /*
 |--------------------------------------------------------------------------
@@ -70,4 +71,6 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::get('clear', [CacheController::class, 'clear'])->name('clear');
     Route::get('filter-restaurants',          [RestaurantController::class, 'filter'])->name('filter.restaurants');
     Route::get('search-restaurants',          [RestaurantController::class, 'search'])->name('search.restaurants');
+
+    Route::post('coment/store',        [CommentController::class, 'store'])->name('comment.store');
 });

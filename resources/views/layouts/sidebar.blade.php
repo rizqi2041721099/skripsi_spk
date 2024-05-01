@@ -132,7 +132,7 @@
         </li>
     @endif
     @if (auth()->user()->can('filter-restaurant'))
-        <li class="nav-item {{ $page = 'search' ? 'active' : '' }}">
+        <li class="nav-item {{ $page == 'search' ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('search.restaurants') }}">
                 <i class="far fa-fw fa-window-maximize"></i>
                 <span>Search Restaurants</span>

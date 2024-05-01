@@ -20,22 +20,22 @@
                     @method('PUT')
                     <div class="row mb-3">
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">Restaurant Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="name" name="name" value="{{ $restaurant->name }}">
+                            <label class="form-label">Nama Restuarant <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="name" name="restaurant_name" value="{{ $restaurant->name }}">
                             <small class="text-danger" id="error_name"></small>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">Address <span class="text-danger">*</span></label>
+                            <label class="form-label">Alamat <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="address" name="address" value="{{ $restaurant->address }}">
                             <small class="text-danger" id="error_address"></small>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">Distance <span class="text-danger">Input Jarak format angka (m)*</span></label>
+                            <label class="form-label">Jarak <span class="text-danger">Input Jarak format angka (m)*</span></label>
                             <input type="text" class="form-control" id="distance" name="distance" value="{{ $restaurant->distance }}">
                             <small class="text-danger" id="error_distance"></small>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label">Qty Food Variety <span class="text-danger">*</span></label>
+                        {{-- <div class="col-md-4 mb-3">
+                            <label class="form-label">Jumlah Variasi Menu <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="qty_variasi_makanan" name="qty_variasi_makanan" value="{{ $restaurant->qty_variasi_makanan }}">
                             <small class="text-danger" id="error_qty_variasi_makanan"></small>
                         </div>
@@ -44,7 +44,7 @@
                             <input type="text" class="form-control" data-type="currency" id="average"
                             name="average" value="{{ $restaurant->average }}">
                             <small class="text-danger" id="error_average"></small>
-                        </div>
+                        </div> --}}
                         <div class="col-md-4 mb-3">
                             <label for="">Image</label>
                             <input type="file" class="form-control" name="images" id="image">
@@ -72,6 +72,49 @@
                             </select>
                         </div>
                     </div>
+                    <hr>
+                    <h6>Variasi Menu <span class="text-danger">*</span></h6>
+                    <div id="menu-container">
+                        @if ($foodVariaty)
+                            @foreach ($foodVariaty as $index => $key)
+                                <div class="row  mb-3">
+                                    <div class="col-md-4">
+                                        <label for="">Nama Menu</label>
+                                        <input type="text" class="form-control" name="name[]" value="{{ $key['name'] }}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="">Haga</label>
+                                        <input type="text" class="form-control" name="price[]" data-type="currency" value="{{ number_format($key['price']) }}">
+                                    </div>
+                                    <div class="col-md-4 d-flex align-items-end">
+                                        @if ($index === 0)
+                                            <button class="btn btn-md btn-success btn-icon btn-round" id="add-row" type="button"><i
+                                                    class="fas fa-plus"></i></button>
+                                        @else
+                                            <button class="btn btn-md btn-danger btn-icon btn-round delete-row" type="button"><i
+                                                    class="fas fa-trash"></i></button>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                            <div class="row  mb-3">
+                                    <div class="col-md-4">
+                                        <label for="">Nama Menu</label>
+                                        <input type="text" class="form-control" name="name[]">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="">Haga</label>
+                                        <input type="text" class="form-control" name="price[]" data-type="currency" value="0">
+                                    </div>
+                                    <div class="col-md-4 d-flex align-items-end">
+                                        <button class="btn btn-md btn-success btn-icon btn-round" id="add-row" type="button"><i
+                                                class="fas fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            @else
+                        @endif
+                    </div>
+                    <hr>
                     <div class="row ml-3">
                         <h6>Fasilitas <span class="text-danger">*</span>:</h6>
                         <hr>
@@ -111,14 +154,47 @@
     </div>
     <script type="application/javascript">
         $(document).ready(function () {
-            var cleave = new Cleave('#average', {
-                numeral: true,
-                numeralThousandsGroupStyle: 'thousand'
+            $('#menu-container').on('click', '.delete-row', function() {
+                $(this).closest('.row').remove();
+            });
+
+            $('#menu-container').on('click', '#add-row', function() {
+                var row = '<div class="row mb-3">' +
+                    '<div class="col-md-4">' +
+                    '<label for="">Nama Menu</label>' +
+                    '<input type="text" class="form-control" name="name[]">' +
+                    '</div>' +
+                    '<div class="col-md-4">' +
+                    '<label for="">Haga</label>' +
+                    '<input type="text" class="form-control price-input" name="price[]" data-type="currency" value="0">' +
+                    '</div>' +
+                    '<div class="col-md-4 d-flex align-items-end">' +
+                    '<button class="btn btn-md btn-danger delete-row"><i class="fas fa-trash"></i></button>' +
+                    '</div>' +
+                    '</div>';
+
+                $('#menu-container').append(row);
+                $('.price-input').each(function () {
+                    var cleave = new Cleave(this, {
+                        numeral: true,
+                        numeralThousandsGroupStyle: 'thousand'
+                    });
+                })
             });
 
             $('#form-create').on('submit', function(event) {
                 event.preventDefault();
+                // Mengumpulkan data dari input dinamis
+                var menuData = [];
+                $('[name="name[]"]').each(function(index) {
+                    var name = $(this).val();
+                    var price = $('[name="price[]"]').eq(index).val();
+                    menuData.push({ name: name, price: price });
+                });
+
                 var formData = new FormData(this);
+
+                formData.append('menuData', JSON.stringify(menuData));
 
                 var btn = $('#submit-button');
                 btn.attr('disabled', true);
@@ -144,17 +220,18 @@
                     error: function(response) {
                         btn.attr('disabled', false);
                         btn.text('Submit');
-                        $('#error_name').text(response.responseJSON.errors.name);
+                        $('#error_restaurant_name').text(response.responseJSON.errors.restuarnt_name);
                         $('#error_distance').text(response.responseJSON.errors.distance);
                         $('#error_images').text(response.responseJSON.errors.images);
                         $('#error_address').text(response.responseJSON.errors.address);
                         $('#error_facility').text(response.responseJSON.errors.facility);
-                        $('#error_average').text(response.responseJSON.errors.average);
-                        $('#error_qty_variasi_makanan').text(response.responseJSON.errors.qty_variasi_makanan);
+                        // $('#error_average').text(response.responseJSON.errors.average);
+                        // $('#error_qty_variasi_makanan').text(response.responseJSON.errors.qty_variasi_makanan);
                         $('#error_map_link').text(response.responseJSON.errors.map_link);
                     }
                 });
             });
+
 
             var img = "{{ $restaurant->image }}";
 

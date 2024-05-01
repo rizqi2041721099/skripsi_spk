@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Comment;
+use Illuminate\Http\Request;
+
+class CommentController
+{
+    public function index()
+    {
+    }
+
+    public function create()
+    {
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'restaurant_id' => 'nullable',
+            'content' => 'required',
+        ]);
+
+        $data = Comment::create([
+            'restaurant_id' => $data['restaurant_id'],
+            'user_id'       => auth()->user()->id,
+            'parent_id'     => $request->input('parent_id'),
+            'content'       => $data['content'],
+        ]);
+
+        if($data){
+            return response()->json([
+                'success'   => true,
+                'message'   => 'Komentar berhasil ditambahkan',
+            ]);
+        }else{
+            return response()->json([
+                'success'   => fasle,
+                'message'   => 'Komentar gagal ditambahkan'
+            ]);
+        }
+    }
+
+    public function show(Comment $comment)
+    {
+    }
+
+    public function edit(Comment $comment)
+    {
+    }
+
+    public function update(Request $request, Comment $comment)
+    {
+    }
+
+    public function destroy(Comment $comment)
+    {
+    }
+}

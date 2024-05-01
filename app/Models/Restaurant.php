@@ -48,4 +48,8 @@ class Restaurant extends Model
     {
         return $this->belongsTo(KriteriaFasilitas::class,'kriteria_fasilitas_id');
     }
+
+    public function comments(){
+        return $this->hasMany(Comment::class)->whereNull('parent_id');
+    }
 }

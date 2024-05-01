@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\{Restaurant,Facility,
-                KriteriaFasilitas,KriteriaRasa
+                KriteriaFasilitas,KriteriaRasa,
+                FoodVariaty,Comment
             };
 use Illuminate\Http\Request;
 use DataTables;
@@ -232,7 +233,7 @@ class RestaurantController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'name'              => 'required|unique:restaurants,name,',
+            'restaurant_name'   => 'required|unique:restaurants,name,',
             'distance'          => 'required',
             'images'            => 'nullable',
             'address'           => 'nullable',
@@ -240,10 +241,11 @@ class RestaurantController extends Controller
             'qty_variasi_makanan'    => 'nullable|integer',
             'average'           => 'nullable',
             'map_link'          => 'nullable',
+            'menuData'          => 'nullable'
         ],[
             'name.required'           => 'Nama restaurant harus diisi.',
             'distance.required'       => 'Jarak restaurant harus diisi.',
-            'qty_variasi_makanan'       => 'Qty food variaty harus berupa angka.',
+            // 'qty_variasi_makanan'       => 'Qty food variaty harus berupa angka.',
         ]);
 
         if(isset($request->images))
@@ -254,34 +256,9 @@ class RestaurantController extends Controller
             $request->images = $originalFileName;
         }
 
-        $count_variasi_menu = (int)$request->qty_variasi_makanan;
+        // $count_variasi_menu = (int)$request->qty_variasi_makanan;
 
-        if($count_variasi_menu > 20)
-        {
-           $v_variasi_menu = 1;
-        } elseif ($count_variasi_menu >= 15 && $count_variasi_menu <= 20) {
-            $v_variasi_menu = 2;
-        } elseif($count_variasi_menu >=10 && $count_variasi_menu <= 15) {
-            $v_variasi_menu = 3;
-        } elseif($count_variasi_menu >= 5 && $count_variasi_menu <= 10) {
-            $v_variasi_menu = 4;
-        } elseif($count_variasi_menu <= 5) {
-            $v_variasi_menu = 5;
-        }
-
-        $average     = (int)str_replace([",","."], "",$request['average']);
-        $v_harga = 0;
-        switch ($average) {
-            case ($average >= 2000 && $average < 15000):
-                $v_harga = 1;
-                break;
-            case ($average >= 15000 && $average < 25000):
-                $v_harga = 2;
-                break;
-            case ($average >= 25000):
-                $v_harga = 3;
-                break;
-        }
+        // $average     = (int)str_replace([",","."], "",$request['average']);
 
         // initial value jarak
         $jarak = (int)$request->distance;
@@ -297,26 +274,71 @@ class RestaurantController extends Controller
             $v_jarak = 1;
         }
         $auth = auth()->user();
+        $menuData = json_decode($request->input('menuData'), TRUE);
 
         $data = Restaurant::create([
-            'name'      => $request->name,
+            'name'      => $request->restaurant_name,
             'distance'  => $request->distance,
             'added_by'  => auth()->user()->name,
             'address'   => $request->address,
             'facility'   => $request->facility,
-            'average'   => $average,
             'status'    => $auth->hasRole('ADMIN') ? 1 : 0,
-            'qty_variasi_makanan'   => $request->qty_variasi_makanan,
             'images'    => isset($request->images) ? $request->images : null,
             'kriteria_fasilitas_id' => $request->kriteria_fasilitas_id,
             'kriteria_rasa_id' => $request->kriteria_rasa_id,
-            'variasi_menu_id'  => $v_variasi_menu,
             'kriteria_jarak_id' => $v_jarak,
-            'kriteria_harga_id' => $v_harga,
             'map_link'  => $request->map_link,
         ]);
-
         $data->facilities()->attach($request->facility_id);
+
+        $totalPrice = 0;
+        $totalData = count($menuData);
+
+        if($totalData > 20)
+        {
+           $v_variasi_menu = 1;
+        } elseif ($totalData >= 15 && $totalData <= 20) {
+            $v_variasi_menu = 2;
+        } elseif($totalData >=10 && $totalData <= 15) {
+            $v_variasi_menu = 3;
+        } elseif($totalData >= 5 && $totalData <= 10) {
+            $v_variasi_menu = 4;
+        } elseif($totalData <= 5) {
+            $v_variasi_menu = 5;
+        }
+
+        foreach ($menuData as $menu) {
+            $name = $menu['name'];
+            $price = $menu['price'];
+            $priceNumeric = (int) str_replace([",", "."], "", $price);
+
+            $totalPrice += $priceNumeric;
+
+            FoodVariaty::create([
+                'restaurant_id' => $data->id,
+                'name' => $name,
+                'price' => $priceNumeric,
+            ]);
+        }
+        $averagePrice = $totalData > 0 ? $totalPrice / $totalData : 0;
+        $v_harga = 0;
+        switch ($averagePrice) {
+            case ($averagePrice >= 2000 && $averagePrice < 15000):
+                $v_harga = 1;
+                break;
+            case ($averagePrice >= 15000 && $averagePrice < 25000):
+                $v_harga = 2;
+                break;
+            case ($averagePrice >= 25000):
+                $v_harga = 3;
+                break;
+        }
+
+        $data->qty_variasi_makanan = $totalData;
+        $data->average = $averagePrice;
+        $data->variasi_menu_id = $v_variasi_menu;
+        $data->kriteria_harga_id = $v_harga;
+        $data->save();
 
         if($data){
             return response()->json([
@@ -337,20 +359,23 @@ class RestaurantController extends Controller
         $facilities = Facility::get();
         $getRasa = KriteriaRasa::get();
         $getFasilitas = KriteriaFasilitas::get();
-        return view('pages.restaurant.edit',compact('restaurant','page','facilities','getRasa','getFasilitas'));
+        $foodVariaty = FoodVariaty::where('restaurant_id',$restaurant->id)->get();
+        return view('pages.restaurant.edit',compact('restaurant','page','facilities','getRasa','getFasilitas','foodVariaty'));
     }
 
     public function show(Restaurant $restaurant)
     {
         $page = 'restaurant';
         $facilities = Facility::get();
-        return view('pages.restaurant.show',compact('restaurant','page','facilities'));
+        $food_variaty = FoodVariaty::where('restaurant_id',$restaurant->id)->get();
+        $commentList = Comment::where('restaurant_id',$restaurant->id)->get();
+        return view('pages.restaurant.show',compact('restaurant','page','facilities','food_variaty','commentList'));
     }
 
     public function update(Request $request, Restaurant $restaurant)
     {
         $this->validate($request, [
-            'name'      => 'nullable|unique:restaurants,name,'.$restaurant->id,
+            'restaurant_name'  => 'nullable|unique:restaurants,name,'.$restaurant->id,
             'distance'  => 'nullable',
             'image'     => 'nullable|image',
             'address'   => 'nullable',
@@ -362,35 +387,6 @@ class RestaurantController extends Controller
             'image.image' => 'File yang diunggah harus berupa gambar.',
             'qty_variasi_makanan.integer' => 'Qty food variaty harus berupa angka.',
         ]);
-
-        $count_variasi_menu = (int)$request->qty_variasi_makanan;
-
-        if($count_variasi_menu > 20)
-        {
-           $v_variasi_menu = 1;
-        } elseif ($count_variasi_menu >= 15 && $count_variasi_menu <= 20) {
-            $v_variasi_menu = 2;
-        } elseif($count_variasi_menu >=10 && $count_variasi_menu <= 15) {
-            $v_variasi_menu = 3;
-        } elseif($count_variasi_menu >= 5 && $count_variasi_menu <= 10) {
-            $v_variasi_menu = 4;
-        } elseif($count_variasi_menu <= 5) {
-            $v_variasi_menu = 5;
-        }
-
-        $average     = (int)str_replace([",","."], "",$request['average']);
-        $v_harga = 0;
-        switch ($average) {
-            case ($average >= 2000 && $average < 15000):
-                $v_harga = 1;
-                break;
-            case ($average >= 15000 && $average < 25000):
-                $v_harga = 2;
-                break;
-            case ($average >= 25000):
-                $v_harga = 3;
-                break;
-        }
 
         // initial value jarak
         $jarak = (int)$request->distance;
@@ -415,19 +411,17 @@ class RestaurantController extends Controller
             $request->image = $originalFileName;
         }
 
+        $menuData = json_decode($request->input('menuData'), TRUE);
+
         $restaurant->update([
-            'name'      => $request->name,
+            'name'      => $request->restaurant_name,
             'distance'  => $request->distance,
             'address'   => $request->address,
             'facility'   => $request->facility,
-            'qty_variasi_makanan'   => $request->qty_variasi_makanan,
-            'average'   => $average,
             'images'    => $request->hasFile('image') ? $originalFileName : $restaurant->images,
             'kriteria_fasilitas_id' => $request->kriteria_fasilitas_id,
             'kriteria_rasa_id' => $request->kriteria_rasa_id,
-            'variasi_menu_id'  => $v_variasi_menu,
             'kriteria_jarak_id' => $v_jarak,
-            'kriteria_harga_id' => $v_harga,
             'map_link'  => $request->map_link,
         ]);
 
@@ -436,6 +430,56 @@ class RestaurantController extends Controller
         }
 
         $restaurant->facilities()->sync($request->facility_id);
+
+        $totalPrice = 0;
+        $totalData = count($menuData);
+
+        if($totalData > 20)
+        {
+           $v_variasi_menu = 1;
+        } elseif ($totalData >= 15 && $totalData <= 20) {
+            $v_variasi_menu = 2;
+        } elseif($totalData >=10 && $totalData <= 15) {
+            $v_variasi_menu = 3;
+        } elseif($totalData >= 5 && $totalData <= 10) {
+            $v_variasi_menu = 4;
+        } elseif($totalData <= 5) {
+            $v_variasi_menu = 5;
+        }
+
+        foreach ($menuData as $menu) {
+            $name = $menu['name'];
+            $price = $menu['price'];
+            $priceNumeric = (int) str_replace([",", "."], "", $price);
+
+            $totalPrice += $priceNumeric;
+
+            FoodVariaty::create([
+                'restaurant_id' => $restaurant->id,
+                'name' => $name,
+                'price' => $priceNumeric,
+            ]);
+        }
+        $averagePrice = $totalData > 0 ? $totalPrice / $totalData : 0;
+        $v_harga = 0;
+        switch ($averagePrice) {
+            case ($averagePrice >= 2000 && $averagePrice < 15000):
+                $v_harga = 1;
+                break;
+            case ($averagePrice >= 15000 && $averagePrice < 25000):
+                $v_harga = 2;
+                break;
+            case ($averagePrice >= 25000):
+                $v_harga = 3;
+                break;
+        }
+
+        $restaurant->update([
+            'qty_variasi_makanan' => $totalData,
+            'average' => $averagePrice,
+            'variasi_menu_id' => $v_variasi_menu,
+            'kriteria_harga_id' => $v_harga,
+        ]);
 
         if ($restaurant) {
             return response()->json([

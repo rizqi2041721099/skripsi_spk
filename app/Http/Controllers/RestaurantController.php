@@ -360,6 +360,7 @@ class RestaurantController extends Controller
         $getRasa = KriteriaRasa::get();
         $getFasilitas = KriteriaFasilitas::get();
         $foodVariaty = FoodVariaty::where('restaurant_id',$restaurant->id)->get();
+
         return view('pages.restaurant.edit',compact('restaurant','page','facilities','getRasa','getFasilitas','foodVariaty'));
     }
 
@@ -411,7 +412,9 @@ class RestaurantController extends Controller
             $request->image = $originalFileName;
         }
 
-        $menuData = json_decode($request->input('menuData'), TRUE);
+        // $menuData = json_decode($request->input('menuData'), TRUE);
+        $menuData = collect(json_decode($request->input('menuData'), TRUE));
+
 
         $restaurant->update([
             'name'      => $request->restaurant_name,
@@ -447,19 +450,41 @@ class RestaurantController extends Controller
             $v_variasi_menu = 5;
         }
 
+        $existingVariety = FoodVariaty::where('restaurant_id',$restaurant->id)->select('id','name','price')->get();
+        foreach ($existingVariety as $foodVariety) {
+            if (!$menuData->contains('id', $foodVariety->id)) {
+                $foodVariety->delete();
+            }
+        }
+
         foreach ($menuData as $menu) {
             $name = $menu['name'];
-            $price = $menu['price'];
-            $priceNumeric = (int) str_replace([",", "."], "", $price);
+            $price = (int) str_replace([",", "."], "", $menu['price']);
+            $totalPrice += $price;
+            if($existingVariety->isEmpty()){
+                FoodVariaty::create([
+                    'restaurant_id' => $restaurant->id,
+                    'name' => $name,
+                    'price' => $price,
+                ]);
+            } else {
+                $existing = $existingVariety->where('id',$menu['id'])->first();
+                if ($existing) {
+                        $existing->update([
+                            'price' => $price,
+                            'name' => $name,
+                        ]);
+                } else {
+                    FoodVariaty::create([
+                        'restaurant_id' => $restaurant->id,
+                        'name' => $name,
+                        'price' => $price,
+                    ]);
+                }
+            }
 
-            $totalPrice += $priceNumeric;
-
-            FoodVariaty::create([
-                'restaurant_id' => $restaurant->id,
-                'name' => $name,
-                'price' => $priceNumeric,
-            ]);
         }
+
         $averagePrice = $totalData > 0 ? $totalPrice / $totalData : 0;
         $v_harga = 0;
         switch ($averagePrice) {

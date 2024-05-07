@@ -199,7 +199,7 @@
                                             <div class="d-flex flex-start">
                                                 <img class="rounded-circle img-fluid" src="{{ asset('assets/img/boy.png') }}" alt="avatar" style="width: 50px; height: 50px;" />
                                                 <div class="mx-2">
-                                                    <h6 class="font-weight-bold mb-1">{{ $comment->user->name }}</h6>
+                                                    <h6 class="mb-1"><span class="font-weight-bold">{{ $comment->user->name }} </span> <span><small> {{  \Carbon\Carbon::parse($comment->created_at)->diffForHumans() }} </small></span> </h6>
                                                     <p class="mb-0">
                                                         {{ $comment->content }}
                                                     </p>
@@ -207,7 +207,7 @@
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center mt-4">
                                                 <div class="d-flex align-items-center">
-                                                    <a class="link-muted mx-2 like-btn" ><i class="fas fa-thumbs-up me-1"></i>0</a>
+                                                    <a href="#!" class="link-muted mx-4 like-btn" data-comment-id="{{ $comment->id }}"><i class="fas fa-thumbs-up me-1"></i>0</a>
                                                     <a href="#!" class="link-muted"><i class="fas fa-thumbs-down me-1"></i>0</a>
                                                 </div>
                                                 <a type="button" class="link-muted btn-reply" data-comment-id="{{ $comment->id }}" data-restaurant-id="{{ $restaurant->id }}"><i class="fas fa-reply me-1"></i> Reply</a>
@@ -220,7 +220,7 @@
                                                                 <div class="d-flex flex-start">
                                                                     <img class="rounded-circle img-fluid" src="{{ asset('assets/img/boy.png') }}" alt="avatar" style="width: 50px; height: 50px;" />
                                                                     <div class="mx-2">
-                                                                        <h6 class="font-weight-bold mb-1">{{ $reply->user->name }}</h6>
+                                                                        <h6 class="mb-1"> <span class="font-weight-bold"> {{ $reply->user->name }} </span> <small>{{  \Carbon\Carbon::parse($reply->created_at)->diffForHumans() }}</small></h6>
                                                                         <p class="mb-0">
                                                                             {{ $reply->content }}
                                                                         </p>
@@ -228,7 +228,7 @@
                                                                 </div>
                                                                 <div class="d-flex justify-content-between align-items-center mt-4">
                                                                     <div class="d-flex align-items-center">
-                                                                        <a href="#!" class="link-muted mx-2"><i class="fas fa-thumbs-up me-1"></i>0</a>
+                                                                        <a href="#!" class="link-muted mx-4 like-btn" data-comment-id="{{ $reply->id }}"><i class="fas fa-thumbs-up me-1"></i>{{ $reply->likes }}</a>
                                                                         <a href="#!" class="link-muted"><i class="fas fa-thumbs-down me-1"></i>0</a>
                                                                     </div>
                                                                 </div>
@@ -359,14 +359,36 @@
                 });
             });
 
+            // function updateLikes(commentId) {
+            //     $.ajax({
+            //         url: '/comment/' + commentId + '/likes',
+            //         type: 'GET',
+            //         success: function(response) {
+            //             var newLikesCount = response.likes;
+            //             var likeBtn = $('.like-btn[data-comment-id="' + commentId + '"]');
+            //             // likeBtn.text(newLikesCount);
+            //             // likeBtn.show();
+            //         },
+            //         error: function(xhr, status, error) {
+            //             console.error(error);
+            //         }
+            //     });
+            // }
+
             $('.like-btn').on('click', function(e) {
                 e.preventDefault();
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
                 var commentId = $(this).data('comment-id');
+                var clickedBtn = $(this);
                 $.ajax({
                     url: '/comment/' + commentId + '/like',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
                     type: 'POST',
                     success: function(response) {
-                        // Perbarui tampilan dengan jumlah like yang baru
+                        var newLikesCount = response.likes;
+                        clickedBtn.find('i').text(newLikesCount);
                     },
                     error: function(xhr, status, error) {
                         console.error(error);
@@ -374,6 +396,12 @@
                 });
             });
 
+            // setInterval(function() {
+            //     $('.like-btn').each(function() {
+            //         var commentId = $(this).data('comment-id');
+            //         updateLikes(commentId);
+            //     });
+            // }, 5000);
         });
     </script>
 @endsection

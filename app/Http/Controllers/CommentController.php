@@ -42,6 +42,22 @@ class CommentController
         }
     }
 
+    public function like(Request $request, Comment $comment)
+    {
+        $comment->increment('likes');
+        return response()->json([
+            'likes' => $comment->likes
+        ]);
+    }
+
+    public function getLikes(Request $request, $id)
+    {
+        $comment = Comment::find($id);
+        return response()->json([
+            'likes' => $comment->likes
+        ]);
+    }
+
     public function show(Comment $comment)
     {
     }

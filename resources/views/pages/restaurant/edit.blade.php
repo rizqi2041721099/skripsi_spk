@@ -75,11 +75,12 @@
                     <hr>
                     <h6>Variasi Menu <span class="text-danger">*</span></h6>
                     <div id="menu-container">
-                        @if ($foodVariaty)
+                        @if (!$foodVariaty->isEmpty())
                             @foreach ($foodVariaty as $index => $key)
                                 <div class="row  mb-3">
                                     <div class="col-md-4">
                                         <label for="">Nama Menu</label>
+                                        <input type="hidden" value="{{ $key['id'] }}" name="id[]">
                                         <input type="text" class="form-control" name="name[]" value="{{ $key['name'] }}">
                                     </div>
                                     <div class="col-md-4">
@@ -97,21 +98,21 @@
                                     </div>
                                 </div>
                             @endforeach
-                            <div class="row  mb-3">
-                                    <div class="col-md-4">
-                                        <label for="">Nama Menu</label>
-                                        <input type="text" class="form-control" name="name[]">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="">Haga</label>
-                                        <input type="text" class="form-control" name="price[]" data-type="currency" value="0">
-                                    </div>
-                                    <div class="col-md-4 d-flex align-items-end">
-                                        <button class="btn btn-md btn-success btn-icon btn-round" id="add-row" type="button"><i
-                                                class="fas fa-plus"></i></button>
-                                    </div>
-                                </div>
                             @else
+                            <div class="row  mb-3">
+                               <div class="col-md-4">
+                                   <label for="">Nama Menu</label>
+                                   <input type="text" class="form-control" name="name[]">
+                               </div>
+                               <div class="col-md-4">
+                                   <label for="">Haga</label>
+                                   <input type="text" class="form-control" name="price[]" data-type="currency" value="0">
+                               </div>
+                               <div class="col-md-4 d-flex align-items-end">
+                                   <button class="btn btn-md btn-success btn-icon btn-round" id="add-row" type="button"><i
+                                           class="fas fa-plus"></i></button>
+                               </div>
+                           </div>
                         @endif
                     </div>
                     <hr>
@@ -162,6 +163,7 @@
                 var row = '<div class="row mb-3">' +
                     '<div class="col-md-4">' +
                     '<label for="">Nama Menu</label>' +
+                    '<input type="hidden" name="id[]">'
                     '<input type="text" class="form-control" name="name[]">' +
                     '</div>' +
                     '<div class="col-md-4">' +
@@ -188,8 +190,9 @@
                 var menuData = [];
                 $('[name="name[]"]').each(function(index) {
                     var name = $(this).val();
+                    var id = $('[name="id[]"]').eq(index).val();
                     var price = $('[name="price[]"]').eq(index).val();
-                    menuData.push({ name: name, price: price });
+                    menuData.push({ name: name, price: price, id: id });
                 });
 
                 var formData = new FormData(this);

@@ -73,4 +73,6 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::get('search-restaurants',          [RestaurantController::class, 'search'])->name('search.restaurants');
 
     Route::post('coment/store',        [CommentController::class, 'store'])->name('comment.store');
+    Route::post('comment/{id}/like',    [CommentController::class, 'like'])->name('like.comment');
+    Route::get('comment/{id}/likes',    [CommentController::class, 'getLikes']);
 });

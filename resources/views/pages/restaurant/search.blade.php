@@ -87,6 +87,7 @@
                             <tr>
                                 <th>Restaurant</th>
                                 <th>Alamat</th>
+                                <th>Rating</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -94,6 +95,7 @@
                             <tr>
                                 <td id="column_name"></td>
                                 <td id="column_address"></td>
+                                <td id="column_rating"></td>
                                 <td id="column_action"></td>
                             </tr>
                         </tbody>
@@ -146,16 +148,29 @@
                         $('#data-restaurants tbody').empty();
                         $('#data-restaurants').removeClass("d-none");
                         response.forEach(function(restaurant) {
+                            var sum = 0;
+                            var count = restaurant.comments.length;
+                            for (var i = 0; i < count; i++) {
+                                sum += restaurant.comments[i].star_rating;
+                            }
+                            var average = count > 0 ? sum / count : 0;
                             id = restaurant.id;
                             var row = '<tr>' +
                                         '<td>' + restaurant.name + '</td>' +
-                                        '<td>' + restaurant.address + '</td>' +
-                                        '<td>' + '<a href="/restaurants/' + id + '" class="btn btn-sm btn-secondary btn-icon-only">' +
-                                        '<span class="btn-inner--icon"><i class="fas fa-eye"></i></span>' +
-                                        '</a>' +
-                                        '</td>' +
-                                    '</tr>';
+                                        '<td>' + restaurant.address + '</td>';
+                            if (parseInt(average) === 0) {
+                                row += '<td>' + '<i class="fa fa-star fa-xs" style="color:#aaa; font-size: 16px" aria-hidden="true"></i>' + parseInt(average) + '</td>';
+                            } else {
+                                row += '<td>' + '<i class="fa fa-star fa-xs" style="color:#ffcd3c; font-size: 16px" aria-hidden="true"></i>' + parseInt(average) + '</td>';
+                            }
+                            row += '<td>' + '<a href="/restaurants/' + id + '" class="btn btn-sm btn-secondary btn-icon-only">' +
+                                    '<span class="btn-inner--icon"><i class="fas fa-eye"></i></span>' +
+                                    '</a>' +
+                                '</td>' +
+                                '</tr>';
+
                             $('#data-restaurants').append(row);
+
                         });
                     } else {
                         toastr.warning('warning','Data tidak ditemukan');

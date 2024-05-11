@@ -550,10 +550,10 @@ class RestaurantController extends Controller
         }
         $response = array();
         foreach($data as $data){
-
             $response[] = array(
                     "id" => $data->id,
                     "text" => $data->name,
+                    "average_rating" => $averageRating,
             );
         }
 
@@ -617,7 +617,6 @@ class RestaurantController extends Controller
             });
         })
         ->get();
-
 
         return response()->json($data);
     }

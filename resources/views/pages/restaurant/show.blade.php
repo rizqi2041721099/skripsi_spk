@@ -13,6 +13,33 @@
                 <h6 class="font-weight-bold text-primary">
                     Restaurant {{ $restaurant->name }}
                 </h6>
+                <div class="rating">
+                    <span>
+                        @php
+                            $starCount = 5;
+                            $comments = App\Models\Comment::where('restaurant_id', $restaurant->id)->get();
+                            $sumRating = 0;
+                            $count = $comments->count();
+
+                            foreach ($comments as $comment) {
+                                $sumRating += $comment->star_rating;
+                            }
+
+                            $avgRating = ($count > 0) ? $sumRating / $count : 0;
+                            $filledStars = intval($avgRating);
+                            $emptyStars = $starCount - $filledStars;
+                        @endphp
+                        <div class="star-rating">
+                            @for ($i = 0; $i < $filledStars; $i++)
+                                <i class="fa fa-star fa-xs" style="color:#ffcd3c; font-size: 28px" aria-hidden="true"></i>
+                            @endfor
+
+                            @for ($i = 0; $i < $emptyStars; $i++)
+                                <i class="fa fa-star fa-xs" style="color: #aaa;font-size:28px" aria-hidden="true"></i>
+                            @endfor
+                        </div>
+                    </span>
+                </div>
             </div>
             <div class="card-body mb-2">
                 <nav>
@@ -143,42 +170,50 @@
         </div>
         <div class="card mb-4">
             <div class="card-body">
-                @if (count($commentList) < 1)
+                @if (count($commentList) == 0)
                     <form id="form_comment">
                         @csrf
                         <input type="hidden" name="restaurant_id" value="{{ $restaurant->id }}"></input>
-                        {{-- <div class="rating">
-                            <label>
-                                <input type="radio" name="stars" value="1" />
-                                <span class="icon">★</span>
-                            </label>
-                            <label>
-                                <input type="radio" name="stars" value="2" />
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                            </label>
-                            <label>
-                                <input type="radio" name="stars" value="3" />
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                            </label>
-                            <label>
-                                <input type="radio" name="stars" value="4" />
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                            </label>
-                            <label>
-                                <input type="radio" name="stars" value="5" />
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                            </label>
-                        </div> --}}
+                        <div class="row">
+                            <div class="col-md-2 mt-3">
+                                <label for="">Tinggalkan Rating</label>
+                            </div>
+                            <div class="col">
+                                <div class="rating">
+                                    <label>
+                                        <input type="radio" name="star_rating" value="1" />
+                                        <span class="icon">★</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="star_rating" value="2" />
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="star_rating" value="3" />
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="star_rating" value="4" />
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="star_rating" value="5" />
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                    </label>
+                                </div>
+                                <small class="text-danger" id="error-star-rating"></small>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label for="exampleFormControlTextarea1">Coba Jelaskan Pengalaman Anda</label>
                             <textarea id="content" cols="30" rows="3" class="form-control" name="content"></textarea>
@@ -328,6 +363,7 @@
 
             $('#form_comment').on('submit', function(event) {
                 event.preventDefault();
+                var form = $(this).closest('form');
                 var formData = new FormData(this);
 
                 var btn = $('#submit-button');
@@ -343,9 +379,9 @@
                     processData: false,
                     success: function(response) {
                         if (response.success == true) {
-                            $('#form_comment').reset();
-                            sessionStorage.setItem('success', response.message);
+                            form[0].reset();
                             window.location.href = '/restaurants/' + {{ $restaurant->id }};
+                            sessionStorage.setItem('success', response.message);
                         } else if (response.success == false) {
                             btn.attr('disabled', false);
                             btn.text('Submit');

@@ -12,7 +12,7 @@ class Restaurant extends Model
 
     public $guarded = [];
     public $table = 'restaurants';
-    public $with = ['facilities','jarak','fasilitas','rasa','harga','variasiMenu'];
+    public $with = ['facilities','jarak','fasilitas','rasa','harga','variasiMenu','comments'];
 
     public function alternatif()
     {

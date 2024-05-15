@@ -161,19 +161,19 @@
 
             $('#menu-container').on('click', '#add-row', function() {
                 var row = '<div class="row mb-3">' +
-                    '<div class="col-md-4">' +
-                    '<label for="">Nama Menu</label>' +
-                    '<input type="hidden" name="id[]">'
-                    '<input type="text" class="form-control" name="name[]">' +
-                    '</div>' +
-                    '<div class="col-md-4">' +
-                    '<label for="">Haga</label>' +
-                    '<input type="text" class="form-control price-input" name="price[]" data-type="currency" value="0">' +
-                    '</div>' +
-                    '<div class="col-md-4 d-flex align-items-end">' +
-                    '<button class="btn btn-md btn-danger delete-row"><i class="fas fa-trash"></i></button>' +
-                    '</div>' +
-                    '</div>';
+                '<div class="col-md-4">' +
+                '<label for="">Nama Menu</label>' +
+                '<input type="hidden" name="id[]">' +
+                '<input type="text" class="form-control" name="name[]">' +
+                '</div>' +
+                '<div class="col-md-4">' +
+                '<label for="">Haga</label>' +
+                '<input type="text" class="form-control price-input" name="price[]" data-type="currency" value="0">' +
+                '</div>' +
+                '<div class="col-md-4 d-flex align-items-end">' +
+                '<button class="btn btn-md btn-danger delete-row"><i class="fas fa-trash"></i></button>' +
+                '</div>' +
+                '</div>';
 
                 $('#menu-container').append(row);
                 $('.price-input').each(function () {

@@ -403,6 +403,8 @@ class RestaurantController extends Controller
             'facility'   => 'nullable',
             'qty_variasi_makanan'    => 'nullable|integer',
             'average'           => 'nullable',
+            'kriteria_fasilitas_id' => 'nullable',
+            'kriteria_rasa_id' => 'nullable'
         ], [
             'name.unique' => 'Restaurant sudah ada.',
             'image.image' => 'File yang diunggah harus berupa gambar.',
@@ -434,7 +436,6 @@ class RestaurantController extends Controller
 
         // $menuData = json_decode($request->input('menuData'), TRUE);
         $menuData = collect(json_decode($request->input('menuData'), TRUE));
-
 
         $restaurant->update([
             'name'      => $request->restaurant_name,

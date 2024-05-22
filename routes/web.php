@@ -17,6 +17,8 @@ use App\Http\Controllers\{
     KriteriaFasilitasController,
     CommentController,
 };
+use App\Http\Controllers\Auth\AuthController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,12 +31,22 @@ use App\Http\Controllers\{
 */
 
 Route::get('/', function () {
-    return redirect()->route('login');
-});
+    return view('pages.frontend.home.home');
+})->name('landing-page');
+
+Auth::routes();
 
 Route::get('logs-error',                          [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
-
-Auth::routes(['register' => false]);
+Route::get('signin',                              [AuthController::class,'login'])->name('auth.login');
+Route::post('store-signin',                       [AuthController::class,'loginProcess'])->name('store.login');
+Route::get('signup',                              [AuthController::class,'signup'])->name('auth.signup');
+Route::post('store-signup',                       [AuthController::class,'storeSignup'])->name('store.signup');
+Route::post('resend-activation',                  [AuthController::class,'resendActivation'])->name('auth.store.resend-activation');
+Route::get('activation/{token}',                  [AuthController::class,'activation'])->name('auth.activation');
+Route::get('cari-restaurants',                    [RestaurantController::class, 'searchRestaurant'])->name('cari.restaurant');
+Route::get('filter-restaurants',                  [RestaurantController::class, 'filter'])->name('filter.restaurants');
+Route::get('detail-restaurant/{restaurant}',      [RestaurantController::class, 'detailRestaurant'])->name('detail.restaurant');
+// Auth::routes(['register' => false]);
 
 Route::group(['middleware' => ['auth:web']], function() {
     Route::get('/home',                  [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -69,7 +81,6 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::get('approve-restaurant/{id}',    [RestaurantController::class, 'approve'])->name('list.approve.restaurant');
 
     Route::get('clear', [CacheController::class, 'clear'])->name('clear');
-    Route::get('filter-restaurants',          [RestaurantController::class, 'filter'])->name('filter.restaurants');
     Route::get('search-restaurants',          [RestaurantController::class, 'search'])->name('search.restaurants');
 
     Route::post('coment/store',        [CommentController::class, 'store'])->name('comment.store');

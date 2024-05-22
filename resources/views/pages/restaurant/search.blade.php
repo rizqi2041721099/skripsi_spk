@@ -20,18 +20,18 @@
                             <label for="">Restaurant</label>
                             <select  class="select2-single form-control" data-toggle="select" id="restaurant" name="restaurant_id" width="100%"></select>
                         </div> --}}
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="">Rentang Variasi Menu Makanan</label>
                             <select name="variasi_menu" id="maxQty" class="form-control">
                                 <option value="">Pilih</option>
-                                <option value="5"> > 20</option>
-                                <option value="4"> 15 - 20 </option>
-                                <option value="3"> 10 - 15 </option>
-                                <option value="2"> 5 - 10 </option>
-                                <option value="1"> < 5 </option>
+                                <option value="5"> > 20 variasi makanan</option>
+                                <option value="4"> 15 - 20 variasi makanan</option>
+                                <option value="3"> 10 - 15 variasi makanan</option>
+                                <option value="2"> 5 - 10 variasi makanan</option>
+                                <option value="1"> < 5 variasi makanan</option>
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="">Rentang Jarak</label>
                             <select name="jarak" id="jarak" class="form-control">
                                 <option value="">Pilih</option>
@@ -42,13 +42,22 @@
                                 <option value="1"> > 7 KM </option>
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label for="">Rentang Harga</label>
                             <select name="harga" id="harga" class="form-control">
                                 <option value="">Pilih</option>
                                 <option value="5"> Rp. 2.000,00 - Rp. 15.000,00</option>
                                 <option value="3"> Rp. 15.000,00 - Rp. 25.000,00</option>
                                 <option value="1"> > Rp. 25.000,00 </option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="">Kriteria Rasa Makanan</label>
+                            <select name="rasa" id="rasa" class="form-control">
+                                <option value="">Pilih</option>
+                                @foreach ($getRasa as $item)
+                                    <option value="{{ $item->value }}">{{ $item->standard_value }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -155,14 +164,21 @@
                             }
                             var average = count > 0 ? sum / count : 0;
                             id = restaurant.id;
+
+                            var starColor = average > 0 ? '#ffcd3c' : '#aaa';
+                            var starHtml = '';
+                            if (average > 0) {
+                                for (var i = 0; i < parseInt(average); i++) {
+                                    starHtml += '<i class="fa fa-star fa-xs" style="color: ' + starColor + '; font-size: 16px" aria-hidden="true"></i>';
+                                }
+                            } else {
+                                starHtml += '<i class="fa fa-star fa-xs" style="color: ' + starColor + '; font-size: 16px" aria-hidden="true"></i>';
+                            }
+
                             var row = '<tr>' +
                                         '<td>' + restaurant.name + '</td>' +
                                         '<td>' + restaurant.address + '</td>';
-                            if (parseInt(average) === 0) {
-                                row += '<td>' + '<i class="fa fa-star fa-xs" style="color:#aaa; font-size: 16px" aria-hidden="true"></i>' + parseInt(average) + '</td>';
-                            } else {
-                                row += '<td>' + '<i class="fa fa-star fa-xs" style="color:#ffcd3c; font-size: 16px" aria-hidden="true"></i>' + parseInt(average) + '</td>';
-                            }
+                            row += '<td>' + starHtml + '</td>';
                             row += '<td>' + '<a href="/restaurants/' + id + '" class="btn btn-sm btn-secondary btn-icon-only">' +
                                     '<span class="btn-inner--icon"><i class="fas fa-eye"></i></span>' +
                                     '</a>' +
@@ -179,11 +195,8 @@
             });
         }
 
-        // Event listener untuk tombol "Reset"
         $('#reset').click(function() {
-            // Uncheck all checkboxes
             $('input[type="checkbox"]').prop('checked', false);
-            // Lakukan filter ulang
             filterRestaurants();
         });
     });

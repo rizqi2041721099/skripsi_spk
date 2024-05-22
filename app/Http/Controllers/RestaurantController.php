@@ -30,7 +30,7 @@ class RestaurantController extends Controller
         {
             $data = Restaurant::with('facilities')->latest()->get();
         } else {
-            $data = [];
+            $data = Restaurant::where('added_by',auth()->user()->name)->get();
         }
 
         $auth  = auth()->user();
@@ -66,6 +66,15 @@ class RestaurantController extends Controller
                 ->addColumn('rasa', function ($row) {
                     return $row->rasa->standard_value;
                 })
+                ->addColumn('status', function ($row) {
+                    $span = '';
+                    if($row->status == '0'){
+                        $span .= '<span class="badge badge-pill badge-warning">Waiting</span>';
+                    } else {
+                        $span .= '<span class="badge badge-pill badge-primary">Approve</span>';
+                    }
+                    return $span;
+                })
                 ->addColumn('action', function ($row)use($auth) {
                     $btn = '';
                     $btn .= '<div class="btn-group" role="group"/> ';
@@ -92,7 +101,7 @@ class RestaurantController extends Controller
                     $btn .= '</div>';
                     return $btn;
                 })
-                ->rawColumns(['action','image'])
+                ->rawColumns(['action','image','status'])
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -370,7 +379,18 @@ class RestaurantController extends Controller
         $facilities = Facility::get();
         $food_variaty = FoodVariaty::where('restaurant_id',$restaurant->id)->get();
         $commentList = Comment::where('restaurant_id',$restaurant->id)->get();
-        return view('pages.restaurant.show',compact('restaurant','page','facilities','food_variaty','commentList'));
+        $getRasa = KriteriaRasa::get();
+        return view('pages.restaurant.show',compact('restaurant','page','facilities','food_variaty','commentList','getRasa'));
+    }
+
+    public function detailRestaurant(Restaurant $restaurant)
+    {
+        $restaurant = Restaurant::where('id',$restaurant->id)->first();
+        $facilities = Facility::get();
+        $food_variaty = FoodVariaty::where('restaurant_id',$restaurant->id)->get();
+        $commentList = Comment::where('restaurant_id',$restaurant->id)->get();
+        $getRasa = KriteriaRasa::get();
+        return view('pages.frontend.home.detail-restaurant',compact('restaurant','facilities','food_variaty','commentList','getRasa'));
     }
 
     public function update(Request $request, Restaurant $restaurant)
@@ -564,7 +584,13 @@ class RestaurantController extends Controller
     {
         $page = 'search';
         $facilities = Facility::get();
-        return view('pages.restaurant.search',compact('page','facilities'));
+        $getRasa = KriteriaRasa::get();
+        return view('pages.restaurant.search',compact('page','facilities','getRasa'));
+    }
+
+    public function searchRestaurant()
+    {
+        return view('pages.frontend.home.search-restaurant');
     }
 
     public function filter(Request $request)
@@ -572,20 +598,21 @@ class RestaurantController extends Controller
         $maxQty = $request->input('variasi_menu');
         $jarak = $request->input('jarak');
         $harga = $request->input('harga');
+        $rasa = $request->input('rasa');
         $selectedFacilities = $request->input('facility_id', []);
 
-        $data = Restaurant::where(function($query) use ($jarak, $harga, $maxQty) {
+        $data = Restaurant::where(function($query) use ($jarak, $harga, $maxQty, $rasa) {
             $query->where(function($query) use ($maxQty) {
                 if ($maxQty == 5) {
-                    $query->where('qty_variasi_makanan', '>', 20);
+                    $query->where('variasi_menu_id', 5);
                 } elseif ($maxQty == 4) {
-                    $query->whereBetween('qty_variasi_makanan', [15, 20]);
+                    $query->where('variasi_menu_id',4);
                 } elseif ($maxQty == 3) {
-                    $query->whereBetween('qty_variasi_makanan', [10, 15]);
+                    $query->where('variasi_menu_id',3);
                 } elseif ($maxQty == 2) {
-                    $query->whereBetween('qty_variasi_makanan', [5, 10]);
+                    $query->where('variasi_menu_id',2);
                 } elseif ($maxQty == 1) {
-                    $query->where('qty_variasi_makanan', '<', 5);
+                    $query->where('variasi_menu_id', 1);
                 }
             })
             ->where(function($query) use ($jarak) {
@@ -601,6 +628,19 @@ class RestaurantController extends Controller
                     $query->where('distance', '>', 7000);
                 }
             })
+            ->where(function($query) use ($rasa) {
+                if ($rasa == 5) {
+                    $query->where('kriteria_rasa_id', 5);
+                } elseif ($rasa == 4) {
+                    $query->whereBetween('kriteria_rasa_id',4);
+                } elseif ($rasa == 3) {
+                    $query->whereBetween('kriteria_rasa_id', 3);
+                } elseif ($rasa == 2) {
+                    $query->whereBetween('kriteria_rasa_id', 2);
+                } elseif ($rasa == 1) {
+                    $query->where('kriteria_rasa_id',1);
+                }
+            })
             ->where(function($query) use ($harga) {
                 if ($harga == 5) {
                     $query->whereBetween('average', [2000.00, 15000.00]);
@@ -613,11 +653,10 @@ class RestaurantController extends Controller
         })
         ->when(!empty($selectedFacilities), function ($query) use ($selectedFacilities) {
             $query->whereHas('facilities', function ($query) use ($selectedFacilities) {
-                $query->whereIn('facilities.id', $selectedFacilities);
+                $query->whereIn('facilities.value', $selectedFacilities);
             });
         })
         ->get();
-
         return response()->json($data);
     }
 

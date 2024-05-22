@@ -70,7 +70,7 @@
                             <div class="col-sm-10">
                                 <p class="mt-3 mb-0"> <span class="font-weight-bold">Alamat</span> :
                                     {{ $restaurant->address }}</p>
-                                <p class="mb-0"><span class="font-weight-bold">Jarak</span> : {{ $restaurant->distance }}
+                                <p class="mb-0"><span class="font-weight-bold">Jarak</span> : {{ $restaurant->distance }} m
                                 </p>
                                 <p class="mb-0"><span class="font-weight-bold">Fasilitas</span> :
                                     @if (!$restaurant->facilities)
@@ -85,6 +85,34 @@
                                     {{ number_format($restaurant->average) }}</p>
                                 <p class="mb-0"><span class="font-weight-bold">Qty Variasi Makanan</span> :
                                     {{ $restaurant->qty_variasi_makanan }}</p>
+                                {{-- <p class="mb-0"><span class="font-weight-bold">Kriteria Rasa</span>:
+                                   @if ($restaurant->kriteria_rasa_id == 5)
+                                        @php
+                                            $rasa = App\Models\KriteriaRasa::where('value',5)->first();
+                                        @endphp
+                                        {{ $rasa->standard_value  }}
+                                    @elseif($restaurant->kriteria_rasa_id == 4)
+                                        @php
+                                            $rasa = App\Models\KriteriaRasa::where('value',4)->first();
+                                        @endphp
+                                        {{ $rasa->standard_value  }}
+                                    @elseif($restaurant->kriteria_rasa_id == 3)
+                                        @php
+                                            $rasa = App\Models\KriteriaRasa::where('value',3)->first();
+                                        @endphp
+                                        {{ $rasa->standard_value  }}
+                                    @elseif($restaurant->kriteria_rasa_id == 2)
+                                        @php
+                                            $rasa = App\Models\KriteriaRasa::where('value',2)->first();
+                                        @endphp
+                                        {{ $rasa->standard_value  }}
+                                    @elseif($restaurant->kriteria_rasa_id == 1)
+                                        @php
+                                            $rasa = App\Models\KriteriaRasa::where('value',1)->first();
+                                        @endphp
+                                        {{ $rasa->standard_value  }}
+                                   @endif
+                                </p> --}}
                             </div>
                         </div>
                     </div>

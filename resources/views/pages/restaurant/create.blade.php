@@ -59,7 +59,7 @@
                             <select name="kriteria_fasilitas_id" id="kriteria_fasilitas_id" class="form-control">
                                 <option value="">pilih</option>
                                 @foreach ($getFasilitas as $item)
-                                    <option value="{{ $item->value }}">{{ $item->standard_value }}</option>
+                                    <option value="{{ $item->id }}">{{ $item->standard_value }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -68,7 +68,7 @@
                             <select name="kriteria_rasa_id" id="kriteria_rasa_id" class="form-control">
                                 <option value="">pilih</option>
                                 @foreach ($getRasa as $item)
-                                    <option value="{{ $item->value }}">{{ $item->standard_value }}</option>
+                                    <option value="{{ $item->id }}">{{ $item->standard_value }}</option>
                                 @endforeach
                             </select>
                         </div>

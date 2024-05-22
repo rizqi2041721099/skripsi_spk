@@ -59,7 +59,7 @@
                             <label for="">Kriteria Fasilitas <span class="text-danger">*</span></label>
                             <select name="kriteria_fasilitas_id" id="kriteria_fasilitas_id" class="form-control">
                                 @foreach($getFasilitas as $item)
-                                    <option value="{{ $item->value }}" {{ $item->id == $restaurant->kriteria_fasilitas_id ? 'selected' : '' }}>{{ $item->standard_value }}</option>
+                                    <option value="{{ $item->id }}" {{ $item->id == $restaurant->kriteria_fasilitas_id ? 'selected' : '' }}>{{ $item->standard_value }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -67,7 +67,7 @@
                             <label for="">Kriteria Rasa <span class="text-danger">*</span></label>
                             <select name="kriteria_rasa_id" id="kriteria_rasa_id" class="form-control">
                                 @foreach($getRasa as $item)
-                                <option value="{{ $item->value }}" {{ $item->id == $restaurant->kriteria_rasa_id ? 'selected' : '' }}>{{ $item->standard_value }}</option>
+                                <option value="{{ $item->id }}" {{ $item->id == $restaurant->kriteria_rasa_id ? 'selected' : '' }}>{{ $item->standard_value }}</option>
                             @endforeach
                             </select>
                         </div>

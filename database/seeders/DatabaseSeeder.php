@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             RestaurantSeeder::class,
             AlternatifSeeder::class,
             FasilitasSeeder::class,
-            FoodVariatiesSeeder::class,
+            // FoodVariatiesSeeder::class,
         ]);
     }
 }

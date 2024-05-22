@@ -24,31 +24,27 @@
                             <label for="">Rentang Variasi Menu Makanan</label>
                             <select name="variasi_menu" id="maxQty" class="form-control">
                                 <option value="">Pilih</option>
-                                <option value="5"> > 20 variasi makanan</option>
-                                <option value="4"> 15 - 20 variasi makanan</option>
-                                <option value="3"> 10 - 15 variasi makanan</option>
-                                <option value="2"> 5 - 10 variasi makanan</option>
-                                <option value="1"> < 5 variasi makanan</option>
+                            @foreach ($getVariasiMenu as $item)
+                                <option value="{{ $item->id }}">{{ $item->range_value }}  variasi makanan</option>
+                            @endforeach
                             </select>
                         </div>
                         <div class="col-md-3">
                             <label for="">Rentang Jarak</label>
                             <select name="jarak" id="jarak" class="form-control">
                                 <option value="">Pilih</option>
-                                <option value="5"> < 1 KM</option>
-                                <option value="4"> 1 - 3 KM</option>
-                                <option value="3"> 3 - 5 KM </option>
-                                <option value="2"> 5 - 7 KM </option>
-                                <option value="1"> > 7 KM </option>
+                                @foreach ($getJarak as $item)
+                                    <option value="{{ $item->id }}">{{ $item->range_value }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-3">
                             <label for="">Rentang Harga</label>
                             <select name="harga" id="harga" class="form-control">
                                 <option value="">Pilih</option>
-                                <option value="5"> Rp. 2.000,00 - Rp. 15.000,00</option>
-                                <option value="3"> Rp. 15.000,00 - Rp. 25.000,00</option>
-                                <option value="1"> > Rp. 25.000,00 </option>
+                                @foreach ($getHarga as $item)
+                                    <option value="{{ $item->id }}">{{ $item->range_value }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-3">

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\{Restaurant,Facility,
                 KriteriaFasilitas,KriteriaRasa,
-                FoodVariaty,Comment
+                FoodVariaty,Comment,KriteriaVariasiMenu,KriteriaJarak,KriteriaHarga
             };
 use Illuminate\Http\Request;
 use DataTables;
@@ -585,12 +585,21 @@ class RestaurantController extends Controller
         $page = 'search';
         $facilities = Facility::get();
         $getRasa = KriteriaRasa::get();
-        return view('pages.restaurant.search',compact('page','facilities','getRasa'));
+        $getJarak = KriteriaJarak::get();
+        $getVariasiMenu = KriteriaVariasiMenu::get();
+        $getHarga = KriteriaHarga::get();
+        return view('pages.restaurant.search',compact('page','facilities','getRasa','getJarak','getVariasiMenu','getHarga'));
     }
 
     public function searchRestaurant()
     {
-        return view('pages.frontend.home.search-restaurant');
+        $getRasa = KriteriaRasa::get();
+        $getJarak = KriteriaJarak::get();
+        $getVariasiMenu = KriteriaVariasiMenu::get();
+        $getHarga = KriteriaHarga::get();
+        $facilities = Facility::get();
+        $getRasa = KriteriaRasa::get();
+        return view('pages.frontend.home.search-restaurant',compact('getRasa','getJarak','getVariasiMenu','getHarga','facilities','getRasa'));
     }
 
     public function filter(Request $request)
@@ -617,43 +626,43 @@ class RestaurantController extends Controller
             })
             ->where(function($query) use ($jarak) {
                 if ($jarak == 5) {
-                    $query->where('distance', '<', 1000);
+                    $query->where('kriteria_jarak_id', 5);
                 } elseif ($jarak == 4) {
-                    $query->whereBetween('distance', [1000, 3000]);
+                    $query->where('kriteria_jarak_id',4);
                 } elseif ($jarak == 3) {
-                    $query->whereBetween('distance', [3000, 5000]);
+                    $query->where('kriteria_jarak_id', 3);
                 } elseif ($jarak == 2) {
-                    $query->whereBetween('distance', [5000, 7000]);
+                    $query->where('kriteria_jarak_id', 2);
                 } elseif ($jarak == 1) {
-                    $query->where('distance', '>', 7000);
+                    $query->where('kriteria_jarak_id',1);
                 }
             })
             ->where(function($query) use ($rasa) {
                 if ($rasa == 5) {
                     $query->where('kriteria_rasa_id', 5);
                 } elseif ($rasa == 4) {
-                    $query->whereBetween('kriteria_rasa_id',4);
+                    $query->where('kriteria_rasa_id',4);
                 } elseif ($rasa == 3) {
-                    $query->whereBetween('kriteria_rasa_id', 3);
+                    $query->where('kriteria_rasa_id', 3);
                 } elseif ($rasa == 2) {
-                    $query->whereBetween('kriteria_rasa_id', 2);
+                    $query->where('kriteria_rasa_id', 2);
                 } elseif ($rasa == 1) {
                     $query->where('kriteria_rasa_id',1);
                 }
             })
             ->where(function($query) use ($harga) {
                 if ($harga == 5) {
-                    $query->whereBetween('average', [2000.00, 15000.00]);
+                    $query->where('kriteria_harga_id', 5);
                 }  elseif ($harga == 3) {
-                    $query->whereBetween('average', [15000.00, 25000.00]);
+                    $query->where('kriteria_harga_id', 3);
                 } elseif ($harga == 1) {
-                    $query->where('average', '>', 25000.00);
+                    $query->where('kriteria_harga_id',1);
                 }
             });
         })
         ->when(!empty($selectedFacilities), function ($query) use ($selectedFacilities) {
             $query->whereHas('facilities', function ($query) use ($selectedFacilities) {
-                $query->whereIn('facilities.value', $selectedFacilities);
+                $query->whereIn('facilities.id', $selectedFacilities);
             });
         })
         ->get();

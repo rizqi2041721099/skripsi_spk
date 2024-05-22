@@ -65,7 +65,7 @@
             </div>
             <div class="col-md-12">
                 <h4>Variasi Menu</h4>
-                <table class="table table-borderless" width="100%">
+                <table class="table table-bordered" width="100%">
                     <thead>
                         <tr>
                             <th>#</th>

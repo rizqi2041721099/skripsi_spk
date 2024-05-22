@@ -18,11 +18,9 @@
                             <div class="form-floating">
                                 <select name="variasi_menu" id="" class="form-control">
                                     <option value="">Pilih</option>
-                                    <option value="5"> > 20 variasi makanan</option>
-                                    <option value="4"> 15 - 20 variasi makanan</option>
-                                    <option value="3"> 10 - 15 variasi makanan</option>
-                                    <option value="2"> 5 - 10 variasi makanan</option>
-                                    <option value="1"> < 5 variasi makanan</option>
+                                    @foreach ($getVariasiMenu as $item)
+                                        <option value="{{ $item->id }}">{{ $item->range_value }}  variasi makanan</option>
+                                    @endforeach
                                 </select>
                                 <label for="range-variasi-makanan">Range Variasi Menu Makanan</label>
                             </div>
@@ -31,11 +29,9 @@
                             <div class="form-floating">
                                 <select name="jarak" id="jarak" class="form-control">
                                     <option value="">Pilih</option>
-                                    <option value="5"> < 1 KM</option>
-                                    <option value="4"> 1 - 3 KM</option>
-                                    <option value="3"> 3 - 5 KM </option>
-                                    <option value="2"> 5 - 7 KM </option>
-                                    <option value="1"> > 7 KM </option>
+                                    @foreach ($getJarak as $item)
+                                        <option value="{{ $item->id }}">{{ $item->range_value }}</option>
+                                    @endforeach
                                 </select>
                                 <label for="rentang-jarak">Rentang Jarak</label>
                             </div>
@@ -44,9 +40,9 @@
                             <div class="form-floating">
                                 <select name="harga" id="harga" class="form-control">
                                     <option value="">Pilih</option>
-                                    <option value="5"> Rp. 2.000,00 - Rp. 15.000,00</option>
-                                    <option value="3"> Rp. 15.000,00 - Rp. 25.000,00</option>
-                                    <option value="1"> > Rp. 25.000,00 </option>
+                                    @foreach ($getHarga as $item)
+                                        <option value="{{ $item->id }}">{{ $item->range_value }}</option>
+                                    @endforeach
                                 </select>
                                 <label for="range-harga">Rentang Harga</label>
                             </div>
@@ -54,9 +50,6 @@
                         <div class="col-md-6">
                             <div class="form-floating">
                                 <select name="rasa" id="rasa" class="form-control">
-                                    @php
-                                        $getRasa = App\Models\KriteriaRasa::get();
-                                    @endphp
                                     <option value="">Pilih</option>
                                     @foreach ($getRasa as $item)
                                         <option value="{{ $item->value }}">{{ $item->standard_value }}</option>
@@ -68,9 +61,6 @@
                         <div class="col-12">
                             <label for="facility" class="form-label text-white fw-bold">Fasilitas</label>
                             <div class="d-flex flex-wrap">
-                                @php
-                                    $facilities = App\Models\Facility::get();
-                                @endphp
                                 @foreach($facilities as $facility)
                                     <div class="form-check me-3">
                                         <input type="checkbox" name="facility_id[]" value="{{ $facility->id }}" id="facility_{{ $facility->id }}" class="form-check-input">
@@ -119,7 +109,7 @@
         </div>
     </div>
 </div>
-
+@include('pages.frontend.home.modal')
 <script>
     $(document).ready(function(){
         $('#filter').click(function() {
@@ -179,7 +169,10 @@
 
                         });
                     } else {
-                        toastr.warning('warning','Data tidak ditemukan');
+                       $('.modal').show();
+                       $('#btn-close').click(function(){
+                            $('.modal').hide();
+                       });
                     }
                 }
             });

@@ -52,7 +52,7 @@
                             <select name="rasa" id="rasa" class="form-control">
                                 <option value="">Pilih</option>
                                 @foreach ($getRasa as $item)
-                                    <option value="{{ $item->value }}">{{ $item->standard_value }}</option>
+                                    <option value="{{ $item->id }}">{{ $item->standard_value }}</option>
                                 @endforeach
                             </select>
                         </div>

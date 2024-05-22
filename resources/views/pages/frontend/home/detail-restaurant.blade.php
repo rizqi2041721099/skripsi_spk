@@ -39,7 +39,7 @@
                     </tr>
                     <tr>
                         <th>Jarak</th>
-                        <td class="text-end">{{ $restaurant->distance }}</td>
+                        <td class="text-end">{{ $restaurant->distance }} m</td>
                     </tr>
                     <tr>
                         <th>Link Gmaps</th>

@@ -103,6 +103,10 @@ class AuthController
                 'register_token'=> $micro_id.$hash,
             ]);
 
+
+            $role = Role::where('name','USER')->first();
+            $registrasi->assignRole([$role->id]);
+
             $array['nama']     = $registrasi->name;
             $array['email']    = $registrasi->email;
             $array['date_now'] = date("d-m-Y H:i:s");

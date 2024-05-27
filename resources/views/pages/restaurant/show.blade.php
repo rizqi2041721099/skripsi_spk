@@ -291,7 +291,7 @@
                                                                 </div>
                                                                 <div class="d-flex justify-content-between align-items-center mt-4">
                                                                     <div class="d-flex align-items-center">
-                                                                        <a href="#!" class="link-muted mx-4 like-btn" data-comment-id="{{ $reply->id }}"><i class="fas fa-thumbs-up me-1"></i>{{ $reply->likes }}</a>
+                                                                        <a href="#!" class="link-muted mx-4 like-btn"><i class="fas fa-thumbs-up me-1" data-post-id="{{ $reply->id }}" data-type="like"></i>{{ $reply->likes()->like }}</a>
                                                                         <a href="#!" class="link-muted"><i class="fas fa-thumbs-down me-1"></i>0</a>
                                                                     </div>
                                                                 </div>
@@ -398,6 +398,8 @@
                 btn.attr('disabled', true);
                 btn.val(btn.data("loading-text"));
 
+                $('#error-star-rating').text('');
+
                 $.ajax({
                     url: "{{ route('comment.store') }}",
                     type: "POST",
@@ -419,6 +421,7 @@
                     error: function(response) {
                         btn.attr('disabled', false);
                         btn.text('Submit');
+                        $('#error-star-rating').text(response.responseJSON.errors.star_rating);
                     }
                 });
             });
@@ -459,6 +462,37 @@
                     }
                 });
             });
+
+            // Save Like Or Dislike
+            $(document).on('click','#saveLikeDislike',function(){
+                var _post=$(this).data('post');
+                var _type=$(this).data('type');
+                var vm=$(this);
+                // Run Ajax
+                $.ajax({
+                    url:"{{ url('save-likedislike') }}",
+                    type:"post",
+                    dataType:'json',
+                    data:{
+                        post:_post,
+                        type:_type,
+                        _token:"{{ csrf_token() }}"
+                    },
+                    beforeSend:function(){
+                        vm.addClass('disabled');
+                    },
+                    success:function(res){
+                        if(res.bool==true){
+                            vm.removeClass('disabled').addClass('active');
+                            vm.removeAttr('id');
+                            var _prevCount=$("."+_type+"-count").text();
+                            _prevCount++;
+                            $("."+_type+"-count").text(_prevCount);
+                        }
+                    }
+                });
+            });
+            // End
 
             // setInterval(function() {
             //     $('.like-btn').each(function() {

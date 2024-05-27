@@ -125,6 +125,13 @@
                 success: function(response) {
                     if(response.length != 0)
                     {
+                        toastr.success('Restaurants data found',{
+                            fadeOut: 1000,
+                            swing: 300,
+                            fadeIn: 5000,
+                            linear: 1000,
+                            timeOut: 3000,
+                        });
                         $('#data-restaurants').removeClass("d-none");
                         var row = $('#tab-1 .row');
                         row.empty()

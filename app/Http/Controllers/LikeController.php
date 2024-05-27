@@ -7,31 +7,42 @@ use Illuminate\Http\Request;
 
 class LikeController
 {
-    public function index()
+    public function like(Request $request, Comment $comment)
     {
-    }
+        $user = $request->user();
 
-    public function create()
-    {
-    }
+        $like = $comment->likes()->where('user_id', $user->id)->first();
 
-    public function store(Request $request)
-    {
-    }
+        if ($request->input('type') === 'like') {
+            if ($like) {
+                if ($like->type === 'like') {
+                    $like->delete();
+                } else {
+                    $like->update(['type' => 'like']);
+                }
+            } else {
+                $comment->likes()->create(['user_id' => $user->id, 'type' => 'like']);
+            }
+        } else {
+            if ($like) {
+                if ($like->type === 'dislike') {
+                    $like->delete();
+                } else {
+                    $like->update(['type' => 'dislike']);
+                }
+            } else {
+                $comment->likes()->create(['user_id' => $user->id, 'type' => 'dislike']);
+            }
+        }
 
-    public function show(Like $like)
-    {
-    }
+        $likesCount = $comment->likes()->where('type', 'like')->count();
+        $dislikesCount = $comment->likes()->where('type', 'dislike')->count();
 
-    public function edit(Like $like)
-    {
-    }
-
-    public function update(Request $request, Like $like)
-    {
-    }
-
-    public function destroy(Like $like)
-    {
+        return response()->json([
+            'likesCount' => $likesCount,
+            'dislikesCount' => $dislikesCount,
+            'hasLiked' => $comment->hasLiked($user),
+            'hasDisliked' => $comment->hasDisliked($user),
+        ]);
     }
 }

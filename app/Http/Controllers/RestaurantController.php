@@ -273,15 +273,16 @@ class RestaurantController extends Controller
         $jarak = (int)$request->distance;
         if($jarak < 1000) {
             $v_jarak = 1;
-        } elseif($jarak >= 1000 && $jarak < 3000) {
+        } elseif($jarak >= 1000 && $jarak <= 3000) {
             $v_jarak = 2;
-        } elseif($jarak <= 3000 && $jarak < 5000) {
+        } elseif($jarak > 3000 && $jarak <= 5000) {
             $v_jarak = 3;
-        } elseif($jarak <= 5000 && $jarak <= 7000) {
+        } elseif($jarak > 5000 && $jarak <= 7000) {
             $v_jarak = 4;
-        }  elseif($jarak >= 7000) {
+        }  elseif($jarak > 7000) {
             $v_jarak = 5;
         }
+
         $auth = auth()->user();
         $menuData = json_decode($request->input('menuData'), TRUE);
 
@@ -416,13 +417,13 @@ class RestaurantController extends Controller
         $v_jarak = 0;
         if($jarak < 1000) {
             $v_jarak = 1;
-        } elseif($jarak >= 1000 && $jarak < 3000) {
+        } elseif($jarak >= 1000 && $jarak <= 3000) {
             $v_jarak = 2;
-        } elseif($jarak <= 3000 && $jarak < 5000) {
+        } elseif($jarak > 3000 && $jarak <= 5000) {
             $v_jarak = 3;
-        } elseif($jarak <= 5000 && $jarak <= 7000) {
+        } elseif($jarak > 5000 && $jarak <= 7000) {
             $v_jarak = 4;
-        }  elseif($jarak >= 7000) {
+        }  elseif($jarak > 7000) {
             $v_jarak = 5;
         }
 
@@ -436,18 +437,6 @@ class RestaurantController extends Controller
 
         // $menuData = json_decode($request->input('menuData'), TRUE);
         $menuData = collect(json_decode($request->input('menuData'), TRUE));
-
-        $restaurant->update([
-            'name'      => $request->restaurant_name,
-            'distance'  => $request->distance,
-            'address'   => $request->address,
-            'facility'   => $request->facility,
-            'images'    => $request->hasFile('image') ? $originalFileName : $restaurant->images,
-            'kriteria_fasilitas_id' => $request->kriteria_fasilitas_id,
-            'kriteria_rasa_id' => $request->kriteria_rasa_id,
-            'kriteria_jarak_id' => $v_jarak,
-            'map_link'  => $request->map_link,
-        ]);
 
         if ($restaurant->wasChanged('images') && $temp) {
             Storage::delete('public/images/restaurants/'.$temp);
@@ -520,7 +509,18 @@ class RestaurantController extends Controller
                 break;
         }
 
+
+
         $restaurant->update([
+            'name'      => $request->restaurant_name,
+            'distance'  => $request->distance,
+            'address'   => $request->address,
+            'facility'   => $request->facility,
+            'images'    => $request->hasFile('image') ? $originalFileName : $restaurant->images,
+            'kriteria_fasilitas_id' => $request->kriteria_fasilitas_id,
+            'kriteria_rasa_id' => $request->kriteria_rasa_id,
+            'kriteria_jarak_id' => $v_jarak,
+            'map_link'  => $request->map_link,
             'qty_variasi_makanan' => $totalData,
             'average' => $averagePrice,
             'variasi_menu_id' => $v_variasi_menu,

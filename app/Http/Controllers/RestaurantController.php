@@ -509,8 +509,6 @@ class RestaurantController extends Controller
                 break;
         }
 
-
-
         $restaurant->update([
             'name'      => $request->restaurant_name,
             'distance'  => $request->distance,
@@ -652,12 +650,12 @@ class RestaurantController extends Controller
                 }
             })
             ->where(function($query) use ($harga) {
-                if ($harga == 5) {
-                    $query->where('kriteria_harga_id', 5);
-                }  elseif ($harga == 3) {
-                    $query->where('kriteria_harga_id', 3);
-                } elseif ($harga == 1) {
-                    $query->where('kriteria_harga_id',1);
+                if ($harga == 1) {
+                    $query->where('kriteria_harga_id', 1);
+                }  elseif ($harga == 2) {
+                    $query->where('kriteria_harga_id', 2);
+                } elseif ($harga == 3) {
+                    $query->where('kriteria_harga_id',3);
                 }
             });
         })

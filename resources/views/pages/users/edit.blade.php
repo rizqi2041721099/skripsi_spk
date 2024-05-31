@@ -36,19 +36,18 @@
                                 <small class="text-danger" id="error_email"></small>
                             </div>
                         </div>
-                        <div class="col-md-12 col-lg-12 col-xs-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold">Role</label>
-                                <select class="form-control" name="role" style="width: 100%" disabled>
-                                    <option value="" selected>---Pilih Role---</option>
-                                    @foreach ($roles as $role)
-                                        <option value="{{ $role->id }}"
-                                            {{ $role->id == $userRole->id ? 'selected' : '' }}>{{ $role->name }}</option>
-                                    @endforeach
-                                </select>
-                                <small class="text-danger" id="error_role"></small>
+                        @if (!empty($userRole))
+                            <div class="col-md-12 col-lg-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Role</label>
+                                    <select class="form-control" name="role" style="width: 100%" disabled>
+                                            <option value="{{ $role->id }}"
+                                                {{ $role->id == $userRole->id ? 'selected' : '' }}>{{ $role->name }}</option>
+                                    </select>
+                                    <small class="text-danger" id="error_role"></small>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                         <div class="col-md-12 col-lg-12 col-xs-12 mb-2">
                             <label>Password <span><small class="text-warning">(kosongi password jika tidak di update.)</small></span></label>
                             <div class="input-group mb-0">

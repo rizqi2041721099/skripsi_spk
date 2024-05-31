@@ -8,6 +8,7 @@ use Auth;
 use Hash;
 use DB;
 use Mail;
+use Spatie\Permission\Models\Role;
 
 class AuthController
 {

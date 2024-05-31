@@ -126,10 +126,10 @@ class UserController extends Controller
     {
         $page = 'management-users';
         $user = User::find($id);
-        $roles = Role::whereNotIn('id',[1])->get();
+        $role = Role::whereNotIn('id',[1])->first();
         $userRole = $user->roles->first();
 
-        return view('pages.users.edit',compact('page','roles','userRole','user'));
+        return view('pages.users.edit',compact('page','role','userRole','user'));
     }
 
     public function editProfile(int $id)
@@ -182,6 +182,8 @@ class UserController extends Controller
         }
 
         $user = User::find($id);
+        $role = Role::where('name','USER')->first();
+        $user->assignRole([$role->id]);
         $user->update($validated);
 
         return response()->json([

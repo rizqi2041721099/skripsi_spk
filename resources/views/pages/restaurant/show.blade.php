@@ -256,23 +256,24 @@
                                     <h4 class="mb-0">Recent comments</h4>
                                     <p class="fw-light mb-4">Latest Comments section by users</p>
                                     @foreach ($commentList as $comment)
-                                        <div class="card-body p-4">
-                                            <div class="d-flex flex-start">
-                                                <img class="rounded-circle img-fluid" src="{{ asset('assets/img/boy.png') }}" alt="avatar" style="width: 50px; height: 50px;" />
-                                                <div class="mx-2">
-                                                    <h6 class="mb-1"><span class="font-weight-bold">{{ $comment->user->name }} </span> <span><small> {{  \Carbon\Carbon::parse($comment->created_at)->diffForHumans() }} </small></span> </h6>
+                                    <div class="card-body p-4">
+                                        <div class="d-flex flex-start">
+                                            <img class="rounded-circle img-fluid" src="{{ asset('assets/img/boy.png') }}" alt="avatar" style="width: 50px; height: 50px;" />
+                                            <div class="mx-2 d-flex flex-grow-1 justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-1">
+                                                        <span class="font-weight-bold">{{ $comment->user->name }}</span>
+                                                        <span><small>{{ \Carbon\Carbon::parse($comment->created_at)->diffForHumans() }}</small></span>
+                                                    </h6>
                                                     <p class="mb-0">
                                                         {{ $comment->content }}
                                                     </p>
                                                 </div>
-                                            </div>
-                                            <div class="d-flex justify-content-between align-items-center mt-4">
-                                                <div class="d-flex align-items-center">
-                                                    <a href="#!" class="link-muted mx-4 like-btn" data-comment-id="{{ $comment->id }}"><i class="fas fa-thumbs-up me-1"></i>0</a>
-                                                    <a href="#!" class="link-muted"><i class="fas fa-thumbs-down me-1"></i>0</a>
+                                                <div class="ms-auto">
+                                                    <a type="button" class="link-muted btn-reply" data-comment-id="{{ $comment->id }}" data-restaurant-id="{{ $restaurant->id }}"><i class="fas fa-reply me-1"></i> Reply</a>
                                                 </div>
-                                                <a type="button" class="link-muted btn-reply" data-comment-id="{{ $comment->id }}" data-restaurant-id="{{ $restaurant->id }}"><i class="fas fa-reply me-1"></i> Reply</a>
                                             </div>
+                                        </div>
                                             @if(count($comment->replies) > 0)
                                                 <ul class="nested-comments">
                                                     @foreach($comment->replies as $reply)
@@ -285,12 +286,6 @@
                                                                         <p class="mb-0">
                                                                             {{ $reply->content }}
                                                                         </p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="d-flex justify-content-between align-items-center mt-4">
-                                                                    <div class="d-flex align-items-center">
-                                                                        <a href="#!" class="link-muted mx-4 like-btn"><i class="fas fa-thumbs-up me-1" data-post-id="{{ $reply->id }}" data-type="like"></i>{{ $reply->likes()->like }}</a>
-                                                                        <a href="#!" class="link-muted"><i class="fas fa-thumbs-down me-1"></i>0</a>
                                                                     </div>
                                                                 </div>
                                                             </div>

@@ -253,7 +253,7 @@ class RestaurantController extends Controller
             'qty_variasi_makanan'    => 'nullable|integer',
             'average'           => 'nullable',
             'map_link'          => 'nullable',
-            'menuData'          => 'nullable'
+            'menuData'          => 'nullable',
         ],[
             'name.required'           => 'Nama restaurant harus diisi.',
             'distance.required'       => 'Jarak restaurant harus diisi.',
@@ -382,7 +382,7 @@ class RestaurantController extends Controller
         $page = 'restaurant';
         $facilities = Facility::get();
         $food_variaty = FoodVariaty::where('restaurant_id',$restaurant->id)->get();
-        $commentList = Comment::where('restaurant_id',$restaurant->id)->get();
+        $commentList = Comment::where('restaurant_id',$restaurant->id)->whereNull('parent_id')->get();
         $getRasa = KriteriaRasa::get();
         return view('pages.restaurant.show',compact('restaurant','page','facilities','food_variaty','commentList','getRasa'));
     }
@@ -392,7 +392,7 @@ class RestaurantController extends Controller
         $restaurant = Restaurant::where('id',$restaurant->id)->first();
         $facilities = Facility::get();
         $food_variaty = FoodVariaty::where('restaurant_id',$restaurant->id)->get();
-        $commentList = Comment::where('restaurant_id',$restaurant->id)->get();
+        $commentList = Comment::where('restaurant_id',$restaurant->id)->whereNull('parent_id')->get();
         $getRasa = KriteriaRasa::get();
         return view('pages.frontend.home.detail-restaurant',compact('restaurant','facilities','food_variaty','commentList','getRasa'));
     }

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Redirect;
+use Auth;
 
 class LoginController extends Controller
 {
@@ -45,7 +46,7 @@ class LoginController extends Controller
     }
 
     protected function loggedOut(Request $request) {
-        return Redirect::to('/login');
+         return Redirect::to('/');
     }
 
     public function username()

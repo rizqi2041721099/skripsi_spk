@@ -19,7 +19,7 @@ class CommentController
     {
         $data = $request->validate([
             'restaurant_id' => 'nullable',
-            'star_rating' => 'required',
+            'star_rating' => 'nullable',
             'content' => 'required',
         ]);
 
@@ -28,7 +28,7 @@ class CommentController
             'user_id'       => auth()->user()->id,
             'parent_id'     => $request->input('parent_id'),
             'content'       => $data['content'],
-            'star_rating'   => $data['star_rating'],
+            'star_rating'   => $data['star_rating'] ?? 0,
         ]);
 
         if($data){

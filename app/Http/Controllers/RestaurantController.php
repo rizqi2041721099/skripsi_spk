@@ -393,9 +393,8 @@ class RestaurantController extends Controller
         $facilities = Facility::get();
         $food_variaty = FoodVariaty::where('restaurant_id',$restaurant->id)->get();
         $commentList = Comment::where('restaurant_id',$restaurant->id)->get();
-        $getUserComment = Comment::where('user_id',auth()->user()->id)->where('restaurant_id',$restaurant->id)->get();
         $getRasa = KriteriaRasa::get();
-        return view('pages.frontend.home.detail-restaurant',compact('restaurant','facilities','food_variaty','commentList','getRasa','getUserComment'));
+        return view('pages.frontend.home.detail-restaurant',compact('restaurant','facilities','food_variaty','commentList','getRasa'));
     }
 
     public function update(Request $request, Restaurant $restaurant)
@@ -438,7 +437,6 @@ class RestaurantController extends Controller
             $image_path = $request->image->storeAs('public/images/restaurants', $originalFileName);
             $request->image = $originalFileName;
         }
-
         // $menuData = json_decode($request->input('menuData'), TRUE);
         $menuData = collect(json_decode($request->input('menuData'), TRUE));
 

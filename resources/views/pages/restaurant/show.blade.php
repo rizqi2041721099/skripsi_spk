@@ -198,58 +198,56 @@
         </div>
         <div class="card mb-4">
             <div class="card-body">
-                @if (count($commentList) == 0)
-                    <form id="form_comment">
-                        @csrf
-                        <input type="hidden" name="restaurant_id" value="{{ $restaurant->id }}"></input>
-                        <div class="row">
-                            <div class="col-md-2 mt-3">
-                                <label for="">Tinggalkan Rating</label>
-                            </div>
-                            <div class="col">
-                                <div class="rating">
-                                    <label>
-                                        <input type="radio" name="star_rating" value="1" />
-                                        <span class="icon">★</span>
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="star_rating" value="2" />
-                                        <span class="icon">★</span>
-                                        <span class="icon">★</span>
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="star_rating" value="3" />
-                                        <span class="icon">★</span>
-                                        <span class="icon">★</span>
-                                        <span class="icon">★</span>
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="star_rating" value="4" />
-                                        <span class="icon">★</span>
-                                        <span class="icon">★</span>
-                                        <span class="icon">★</span>
-                                        <span class="icon">★</span>
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="star_rating" value="5" />
-                                        <span class="icon">★</span>
-                                        <span class="icon">★</span>
-                                        <span class="icon">★</span>
-                                        <span class="icon">★</span>
-                                        <span class="icon">★</span>
-                                    </label>
-                                </div>
-                                <small class="text-danger" id="error-star-rating"></small>
-                            </div>
+                <form id="form_comment">
+                    @csrf
+                    <input type="hidden" name="restaurant_id" value="{{ $restaurant->id }}"></input>
+                    <div class="row">
+                        <div class="col-md-2 mt-3">
+                            <label for="">Tinggalkan Rating</label>
                         </div>
-                        <div class="form-group">
-                            <label for="exampleFormControlTextarea1">Coba Jelaskan Pengalaman Anda</label>
-                            <textarea id="content" cols="30" rows="3" class="form-control" name="content"></textarea>
+                        <div class="col">
+                            <div class="rating">
+                                <label>
+                                    <input type="radio" name="star_rating" value="1" />
+                                    <span class="icon">★</span>
+                                </label>
+                                <label>
+                                    <input type="radio" name="star_rating" value="2" />
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                </label>
+                                <label>
+                                    <input type="radio" name="star_rating" value="3" />
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                </label>
+                                <label>
+                                    <input type="radio" name="star_rating" value="4" />
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                </label>
+                                <label>
+                                    <input type="radio" name="star_rating" value="5" />
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                </label>
+                            </div>
+                            <small class="text-danger" id="error-star-rating"></small>
                         </div>
-                        <button type="submit" id="submit-button" class="btn btn-sm btn-primary"
-                            data-loading-text="Loading...">Post Comment</button>
-                    </form>
-                @endif
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Coba Jelaskan Pengalaman Anda</label>
+                        <textarea id="content" cols="30" rows="3" class="form-control" name="content"></textarea>
+                    </div>
+                    <button type="submit" id="submit-button" class="btn btn-sm btn-primary"
+                        data-loading-text="Loading...">Post Comment</button>
+                </form>
                 @if (count($commentList) > 0)
                     <div class="comment-list my-5">
                         <section style="background-color: #f7f6f6;">

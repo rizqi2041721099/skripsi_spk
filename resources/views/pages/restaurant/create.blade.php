@@ -46,7 +46,7 @@
                         </div> --}}
                         <div class="col-md-4 mb-3">
                             <label for="">Image</label>
-                            <input type="file" class="form-control" name="images" id="foto">
+                            <input type="file" class="form-control" name="image" id="foto">
                             <img id="imagePreview" class="img-preview mt-3" style="display: none;" width="150" height="150" />
                         </div>
                         <div class="col-md-4 mb-2">

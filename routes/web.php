@@ -86,4 +86,6 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::post('coment/store',        [CommentController::class, 'store'])->name('comment.store');
     Route::post('comment/{id}/like',    [CommentController::class, 'like'])->name('like.comment');
     Route::get('comment/{id}/likes',    [CommentController::class, 'getLikes']);
+    Route::get('comment-restaurant/{id}', [RestaurantController::class, 'commentRestaurant'])->name('comment.restaurant');
+    Route::delete('delete-comment/{id}', [RestaurantController::class, 'destroyComment'])->name('delete.comment');
 });

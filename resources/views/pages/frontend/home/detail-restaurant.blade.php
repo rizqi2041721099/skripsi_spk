@@ -133,7 +133,7 @@
         <div class="row">
             <div class="card mb-4">
                 <div class="card-body">
-                    @if (count($commentList) == 0)
+                    @if (count($getUserComment) == 0)
                         <form id="form_comment">
                             @csrf
                             <input type="hidden" name="restaurant_id" value="{{ $restaurant->id }}"></input>

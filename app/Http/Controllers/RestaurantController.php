@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\{Restaurant,Facility,
                 KriteriaFasilitas,KriteriaRasa,
-                FoodVariaty,Comment,KriteriaVariasiMenu,KriteriaJarak,KriteriaHarga
+                FoodVariaty,Comment,KriteriaVariasiMenu,KriteriaJarak,KriteriaHarga,
             };
 use Illuminate\Http\Request;
 use DataTables;
@@ -82,6 +82,9 @@ class RestaurantController extends Controller
                         // $btn .= '&nbsp;&nbsp';
                         $btn .=   '<a href="'.route('restaurants.edit',$row->id).'" class="btn btn-icon btn-primary btn-icon-only">
                                     <span class="btn-inner--icon"><i class="fas fa-pen-square"></i></span>
+                                    </a>';
+                        $btn .=   '<a href="javascript:void(0)" onclick="showItem(this)" data-id="'.$row->id.'" data-restaurant="'.($row->name ?? '-').'" class="btn btn-icon btn-secondary btn-icon-only">
+                                    <span class="btn-inner--icon"><i class="fas fa-comment"></i></span>
                                     </a>';
                         $btn .=   '<a href="'.route('restaurants.show',$row->id).'" class="btn btn-icon btn-secondary btn-icon-only" target="_blank">
                                     <span class="btn-inner--icon"><i class="fas fa-eye"></i></span>
@@ -390,8 +393,9 @@ class RestaurantController extends Controller
         $facilities = Facility::get();
         $food_variaty = FoodVariaty::where('restaurant_id',$restaurant->id)->get();
         $commentList = Comment::where('restaurant_id',$restaurant->id)->get();
+        $getUserComment = Comment::where('user_id',auth()->user()->id)->where('restaurant_id',$restaurant->id)->get();
         $getRasa = KriteriaRasa::get();
-        return view('pages.frontend.home.detail-restaurant',compact('restaurant','facilities','food_variaty','commentList','getRasa'));
+        return view('pages.frontend.home.detail-restaurant',compact('restaurant','facilities','food_variaty','commentList','getRasa','getUserComment'));
     }
 
     public function update(Request $request, Restaurant $restaurant)
@@ -666,6 +670,72 @@ class RestaurantController extends Controller
         })
         ->get();
         return response()->json($data);
+    }
+
+
+    public function commentRestaurant(Request $request, $id)
+    {
+        $page = 'restaurants';
+        $data = Comment::where('restaurant_id',$id)->get();
+
+        if ($request->ajax()) {
+            return DataTables::of($data)
+                ->addColumn('content', function ($row) {
+                    return $row->content;
+                })
+                ->addColumn('user', function ($row) {
+                    return $row->user->name;
+                })
+                ->addColumn('rating', function ($row) {
+                    $starHtml = '';
+                    $maxRating = 5;
+                    $starColor = '#ffcd3c';
+                    $emptyStarColor = '#ddd';
+
+                    for ($i = 0; $i < $row->star_rating; $i++) {
+                        $starHtml .= '<i class="fa fa-star fa-xs" style="color: ' . $starColor . '; font-size: 16px" aria-hidden="true"></i>';
+                    }
+                    for ($i = $row->star_rating; $i < $maxRating; $i++) {
+                        $starHtml .= '<i class="fa fa-star fa-xs" style="color: ' . $emptyStarColor . '; font-size: 16px" aria-hidden="true"></i>';
+                    }
+
+                    return $starHtml;
+                })
+                ->addColumn('action', function ($row) {
+                    $btn = '';
+                    $btn .=
+                        '<button class="btn btn-sm btn-danger" href="#" onclick="deleteDetail(this)" data-name="' .
+                        $row->name .
+                        '" data-id="' .
+                        $row->id .
+                        '">
+                            <span class="btn-inner--icon"><i class="fas fa-trash-alt text-white"></i></span>
+                        </button>';
+                    return $btn;
+                })
+                ->rawColumns(['rating','action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+    }
+
+    public function destroyComment(int $id)
+    {
+        $data = Comment::find($id);
+
+        if($data)
+        {
+            $data->delete();
+            return response()->json([
+               'success'   => true,
+                'message'  => "Comment berhasil dihapus"
+            ]);
+        } else {
+            return response()->json([
+                'success'   => false,
+                 'message'  => "Comment gagal dihapus"
+             ]);
+        }
     }
 
 }

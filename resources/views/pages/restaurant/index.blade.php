@@ -236,6 +236,46 @@
         })
     }
 
+
+    function showItem(e) {
+            let id = e.getAttribute('data-id');
+            let restaurant = e.getAttribute('data-restaurant');
+
+            $('#text-restaurant').text('restaurant  : ' + restaurant)
+
+            var table = $('#table-detail-rating-comment').DataTable();
+
+            table.destroy();
+
+            var table = $('#table-detail-rating-comment').DataTable({
+                processing: true,
+                ajax: {
+                    url: "/comment-restaurant/" + id,
+                    type: 'GET',
+                },
+                responsive: true,
+                columns: [{
+                        data: 'DT_RowIndex',
+                        searchable: false,
+                        orderable: false
+                    },
+                    {
+                        data: 'content',
+                    },
+                    {
+                        data: 'user',
+                    },
+                    {
+                        data: 'rating',
+                    },
+                    {
+                        data: 'action',
+                    }
+                ]
+            });
+            $('#modalShowDetail').modal('show')
+    }
+
     function deleteItem(e) {
         let id = e.getAttribute('data-id');
         let user = e.getAttribute('data-name');
@@ -267,6 +307,71 @@
             }
         })
     }
+
+    function deleteDetail(e) {
+            let id = e.getAttribute('data-id');
+            let name = e.getAttribute('data-name');
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: true
+            });
+
+            let modalZIndex = parseInt($('.modal').css('z-index')) + 10;
+            swalWithBootstrapButtons.fire({
+                title: 'Yakin menghapus ' + name + '?',
+                text: "Data akan dihapus",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Tidak, Batal!',
+                reverseButtons: true,
+                backdrop: `
+                    rgba(0,0,0,0.4)
+                    left top
+                    no-repeat
+                `,
+                didOpen: () => {
+                    $('.swal2-container').css('z-index', modalZIndex);
+                    $('.swal2-backdrop-show').css('z-index', modalZIndex - 1);
+                }
+            }).then((result) => {
+                if (result.value) {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ url('/') }}" + "/delete-comment/" + id,
+                            data: {
+                                "_token": "{{ csrf_token() }}",
+                                "_method": 'DELETE',
+                            },
+                            success: function(response) {
+                                if (response.success == true) {
+                                    toastr.success('', name + ' berhasil dihapus!', {
+                                        timeOut: 1500,
+                                        preventDuplicates: true,
+                                        progressBar: true,
+                                        positionClass: 'toast-top-right',
+                                    });
+                                    $('#table-detail-rating-comment').DataTable().ajax.reload();
+                                } else if (response.success == false) {
+                                    toastr.error('error', response.message);
+                                }
+                            }
+                        });
+                    }
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    swalWithBootstrapButtons.fire(
+                        'Batal',
+                        'Data ' + name + ' tidak dihapus',
+                        'error'
+                    );
+                }
+            });
+        }
 
 </script>
 @endsection

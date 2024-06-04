@@ -70,6 +70,8 @@
                                             </span>
                                         @enderror
                                         <div class="form-group">
+                                            <p class="small fw-bold my-3 pt-1 mb-0">Don't have an account ? <a href="{{ route('auth.signup') }}"
+                                                class="link-danger">Sign Up</a></p>
                                             <button type="submit" id="submit"
                                                 class="btn btn-primary btn-block shadow">Login</button>
                                             {{-- <button type="submit" id="submit" href="{{ url('login/google') }}"

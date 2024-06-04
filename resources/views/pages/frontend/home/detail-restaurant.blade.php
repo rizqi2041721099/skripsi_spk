@@ -3,7 +3,10 @@
     Detail
 @endsection
 @section('list')
+<ol class="breadcrumb justify-content-center text-uppercase">
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
     <li class="breadcrumb-item text-white active" aria-current="page">Restaurants</li>
+</ol>
 @endsection
 @section('content')
 <div class="container-xxl py-5" id="about-us">

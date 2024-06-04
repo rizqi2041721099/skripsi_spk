@@ -31,7 +31,7 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Jarak <span class="text-danger">Tambahkan format KM jika < 1 KM (0.5 KM) *</span></label>
-                            <input type="text" class="form-control text-uppercase" id="distance" name="distance" value="{{ $restaurant->distance . ' KM' }}">
+                            <input type="text" class="form-control text-uppercase" id="distance" name="distance" value="{{ $restaurant->distance }}">
                             <small class="text-danger" id="error_distance"></small>
                         </div>
                         {{-- <div class="col-md-4 mb-3">

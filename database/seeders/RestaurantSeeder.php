@@ -13,7 +13,7 @@ class RestaurantSeeder extends Seeder
             [
                 'name' => 'Tacibay',
                 'address' => 'Belakang Polinema',
-                'distance'  => 800,
+                'distance'  => '0.8 KM',
                 'images'   => null,
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 3,
@@ -29,7 +29,7 @@ class RestaurantSeeder extends Seeder
             [
                 'name' => 'Dapur Sedep',
                 'address' => 'Belakang Polinema',
-                'distance'  => 300,
+                'distance'  => '0.3 KM',
                 'images'   => null,
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 6,
@@ -45,7 +45,7 @@ class RestaurantSeeder extends Seeder
             [
                 'name' => 'Lalapan Tosa',
                 'address' => 'Belakang Polinema',
-                'distance'  => 1000,
+                'distance'  => '1 KM',
                 'images'   => null,
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 8,
@@ -61,7 +61,7 @@ class RestaurantSeeder extends Seeder
             [
                 'name' => 'Warung Mama',
                 'address' => 'Belakang Polinema',
-                'distance'  => 2000,
+                'distance'  => '2 KM',
                 'images'   => null,
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 20,
@@ -77,7 +77,7 @@ class RestaurantSeeder extends Seeder
             [
                 'name' => 'Ayam Penyet Banyuangi',
                 'address' => 'Belakang Polinema',
-                'distance'  => 3000,
+                'distance'  => '3 KM',
                 'images'   => null,
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 10,
@@ -93,7 +93,7 @@ class RestaurantSeeder extends Seeder
             [
                 'name' => 'Rawon Cak Wott',
                 'address' => 'Belakang Polinema',
-                'distance'  => 3500,
+                'distance'  => '3.5 KM',
                 'images'   => null,
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 14,
@@ -109,7 +109,7 @@ class RestaurantSeeder extends Seeder
             [
                 'name' => 'Warung EWK Lapapan Aneka Sambel',
                 'address' => 'Belakang Polinema',
-                'distance'  => 500,
+                'distance'  => '0.5 KM',
                 'images'   => null,
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 8,
@@ -125,7 +125,7 @@ class RestaurantSeeder extends Seeder
             [
                 'name' => 'Kedai Makcik',
                 'address' => 'Belakang Polinema',
-                'distance'  => 1000,
+                'distance'  => '1 KM',
                 'images'   => null,
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 20,
@@ -141,7 +141,7 @@ class RestaurantSeeder extends Seeder
             [
                 'name' => 'Lalapan Ayam Qodir',
                 'address' => 'Belakang Polinema',
-                'distance'  => 1500,
+                'distance'  => '1.5 KM',
                 'images'   => null,
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 10,
@@ -157,7 +157,7 @@ class RestaurantSeeder extends Seeder
             [
                 'name' => 'Warung Ijo',
                 'address' => 'Belakang Polinema',
-                'distance'  => 4000,
+                'distance'  => '4 KM',
                 'images'   => null,
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 5,
@@ -173,7 +173,7 @@ class RestaurantSeeder extends Seeder
             [
                 'name' => 'Warung Geprek Ragil',
                 'address' => 'Belakang Polinema',
-                'distance'  => 1000,
+                'distance'  => '1 KM',
                 'images'   => null,
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 4,
@@ -189,7 +189,7 @@ class RestaurantSeeder extends Seeder
             [
                 'name' => 'Ayam Goreng Nelongso',
                 'address' => 'Belakang Polinema',
-                'distance'  => 400,
+                'distance'  => '0.4 KM',
                 'images'   => null,
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 10,
@@ -205,7 +205,7 @@ class RestaurantSeeder extends Seeder
             [
                 'name' => 'Soto Ayam Cak Man',
                 'address' => 'Belakang Polinema',
-                'distance'  => 3000,
+                'distance'  => '3 KM',
                 'images'   => null,
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 2,
@@ -221,7 +221,7 @@ class RestaurantSeeder extends Seeder
             [
                 'name' => 'Warung Soto Madura Cak Mad',
                 'address' => 'Belakang Polinema',
-                'distance'  => 200,
+                'distance'  => '0.2 KM',
                 'images'   => null,
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 5,
@@ -237,7 +237,7 @@ class RestaurantSeeder extends Seeder
             [
                 'name' => 'Warung Makan & Kopi "Tegar"',
                 'address' => 'Belakang Polinema',
-                'distance'  => 400,
+                'distance'  => '0.4 KM',
                 'images'   => null,
                 'facility'  => 'Toilet, Musholla',
                 'qty_variasi_makanan' => 8,

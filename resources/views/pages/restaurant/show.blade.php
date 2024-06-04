@@ -70,7 +70,7 @@
                             <div class="col-sm-10">
                                 <p class="mt-3 mb-0"> <span class="font-weight-bold">Alamat</span> :
                                     {{ $restaurant->address }}</p>
-                                <p class="mb-0"><span class="font-weight-bold">Jarak</span> : {{ $restaurant->distance }} m
+                                <p class="mb-0"><span class="font-weight-bold">Jarak</span> : {{ $restaurant->distance }}
                                 </p>
                                 <p class="mb-0"><span class="font-weight-bold">Fasilitas</span> :
                                     @if (!$restaurant->facilities)

@@ -44,7 +44,7 @@ class RestaurantController extends Controller
                     return Str::limit($row->address, 20);
                 })
                 ->addColumn('distance', function ($row) {
-                    return $row->distance.' m';
+                   return $row->distance;
                 })
                 ->addColumn('image', function($row){
                     if (is_null($row->images) || $row->images == "") {
@@ -127,7 +127,7 @@ class RestaurantController extends Controller
                     return Str::limit($row->address, 20);
                 })
                 ->addColumn('distance', function ($row) {
-                    return $row->distance.' m';
+                    return $row->distance;
                 })
                 ->addColumn('image', function($row){
                     if (is_null($row->images) || $row->images == "") {
@@ -183,7 +183,7 @@ class RestaurantController extends Controller
                     return Str::limit($row->address, 20);
                 })
                 ->addColumn('distance', function ($row) {
-                    return $row->distance.' m';
+                    return $row->distance;
                 })
                 ->addColumn('image', function($row){
                     if (is_null($row->images) || $row->images == "") {
@@ -273,16 +273,18 @@ class RestaurantController extends Controller
         // $average     = (int)str_replace([",","."], "",$request['average']);
 
         // initial value jarak
-        $jarak = (int)$request->distance;
-        if($jarak < 1000) {
+        $v_jarak = 0;
+        $distance_value = str_replace([' ', 'KM', 'km'], '', $request->distance);
+
+        if($distance_value < 1) {
             $v_jarak = 1;
-        } elseif($jarak >= 1000 && $jarak <= 3000) {
+        } elseif($distance_value >= 1 && $distance_value <= 3) {
             $v_jarak = 2;
-        } elseif($jarak > 3000 && $jarak <= 5000) {
+        } elseif($distance_value > 3 && $distance_value <= 5) {
             $v_jarak = 3;
-        } elseif($jarak > 5000 && $jarak <= 7000) {
+        } elseif($distance_value > 5 && $distance_value <= 7) {
             $v_jarak = 4;
-        }  elseif($jarak > 7000) {
+        }  elseif($distance_value > 7) {
             $v_jarak = 5;
         }
 
@@ -415,20 +417,21 @@ class RestaurantController extends Controller
             'qty_variasi_makanan.integer' => 'Qty food variaty harus berupa angka.',
         ]);
 
-        // initial value jarak
-        $jarak = (int)$request->distance;
         $v_jarak = 0;
-        if($jarak < 1000) {
+        $distance_value = str_replace([' ', 'KM', 'km'], '', $request->distance);
+
+        if($distance_value < 1) {
             $v_jarak = 1;
-        } elseif($jarak >= 1000 && $jarak <= 3000) {
+        } elseif($distance_value >= 1 && $distance_value <= 3) {
             $v_jarak = 2;
-        } elseif($jarak > 3000 && $jarak <= 5000) {
+        } elseif($distance_value > 3 && $distance_value <= 5) {
             $v_jarak = 3;
-        } elseif($jarak > 5000 && $jarak <= 7000) {
+        } elseif($distance_value > 5 && $distance_value <= 7) {
             $v_jarak = 4;
-        }  elseif($jarak > 7000) {
+        }  elseif($distance_value > 7) {
             $v_jarak = 5;
         }
+
 
         $temp = null;
         if ($request->hasFile('image')) {

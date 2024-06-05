@@ -84,7 +84,7 @@
                                         <input type="text" class="form-control" name="name[]" value="{{ $key['name'] }}">
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="">Haga</label>
+                                        <label for="">Harga</label>
                                         <input type="text" class="form-control" name="price[]" data-type="currency" value="{{ number_format($key['price']) }}">
                                     </div>
                                     <div class="col-md-4 d-flex align-items-end">

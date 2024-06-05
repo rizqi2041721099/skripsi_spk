@@ -246,7 +246,7 @@ class RestaurantController extends Controller
     {
         $this->validate($request,[
             'restaurant_name'   => 'required|unique:restaurants,name,',
-            'distance'          => 'required',
+            'distance'          => 'required|ends_with:KM',
             'images'            => 'nullable',
             'address'           => 'nullable',
             'facility'          => 'nullable',
@@ -257,6 +257,7 @@ class RestaurantController extends Controller
         ],[
             'name.required'           => 'Nama restaurant harus diisi.',
             'distance.required'       => 'Jarak restaurant harus diisi.',
+            'distance.ends_with'      => 'Format jarak tidak valid harus mengandung KM'
             // 'qty_variasi_makanan'       => 'Qty food variaty harus berupa angka.',
         ]);
 
@@ -403,7 +404,7 @@ class RestaurantController extends Controller
     {
         $this->validate($request, [
             'restaurant_name'  => 'nullable|unique:restaurants,name,'.$restaurant->id,
-            'distance'  => 'nullable',
+            'distance'  => 'nullable|ends_with:KM',
             'image'     => 'nullable|image',
             'address'   => 'nullable',
             'facility'   => 'nullable',
@@ -415,6 +416,7 @@ class RestaurantController extends Controller
             'name.unique' => 'Restaurant sudah ada.',
             'image.image' => 'File yang diunggah harus berupa gambar.',
             'qty_variasi_makanan.integer' => 'Qty food variaty harus berupa angka.',
+            'distance.ends_with'      => 'Format jarak tidak valid harus mengandung KM'
         ]);
 
         $v_jarak = 0;

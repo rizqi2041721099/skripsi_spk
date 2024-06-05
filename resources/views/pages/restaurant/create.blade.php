@@ -30,7 +30,7 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Jarak <span class="text-danger">Tambahkan format KM jika < 1 KM (0.5 KM) *</span></label>
-                            <input type="text" class="form-control" id="distance" name="distance">
+                            <input type="text" class="form-control" id="distance" name="distance" placeholder="Exp: 1 KM / 0.5 KM">
                             <small class="text-danger" id="error_distance"></small>
                         </div>
                         {{-- <div class="col-md-4 mb-3">

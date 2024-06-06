@@ -63,11 +63,11 @@
                         </div>
                         <div class="col-6 text-end">
                             <img class="img-fluid rounded w-75 wow zoomIn" data-wow-delay="0.5s"
-                                src="{{ asset('frontend/img/about-3.jpg') }}">
+                                src="{{ asset('frontend/img/about-6.jpg') }}">
                         </div>
                         <div class="col-6 text-end">
                             <img class="img-fluid rounded w-100 wow zoomIn" data-wow-delay="0.7s"
-                                src="{{ asset('frontend/img/about-4.jpg') }}">
+                                src="{{ asset('frontend/img/about-7.jpg') }}">
                         </div>
                     </div>
                 </div>
@@ -154,9 +154,15 @@
                                 <div class="col-lg-6">
                                     <a href="{{ route('detail.restaurant', $item->id) }}">
                                         <div class="d-flex align-items-center">
-                                            <img class="flex-shrink-0 img-fluid rounded"
-                                                src="{{ asset('frontend/img/restaurant.jpg') }}" alt=""
-                                                style="width: 80px;">
+                                            @if (is_null($item->images) || $item->images == '')
+                                                <img class="flex-shrink-0 img-fluid rounded"
+                                                    src="{{ asset('frontend/img/restaurant.jpg') }}" alt=""
+                                                    style="width: 80px;">
+                                                @else
+                                                <img class="flex-shrink-0 img-fluid rounded"
+                                                    src="{{ Storage::url('public/images/restaurants/' . $item->images) }}" alt=""
+                                                    style="width: 80px;">
+                                            @endif
                                             <div class="w-100 d-flex flex-column text-start ps-4">
                                                 <h5 class="d-flex justify-content-between border-bottom pb-2">
                                                     <span>{{ $item->name }}</span>

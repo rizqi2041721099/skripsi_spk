@@ -15,10 +15,9 @@
             <h1 class="mb-4">Welcome to <i class="fa fa-utensils text-primary me-2"></i>Restoran {{ $restaurant->name }}</h1>
             <div class="col-md-4">
                 @if (is_null($restaurant->images) || $restaurant->images == '')
-                    <img src="{{ asset('frontend/img/restaurant.jpg')}}" alt="img" class="rounded" width="100%">
+                    <img class="img-fluid rounded w-100 wow zoomIn" data-wow-delay="0.1s" src="{{ asset('frontend/img/restaurant.jpg')}}" style="visibility: visible; animation-delay: 0.1s; animation-name: zoomIn;">
                 @else
-                    <img src="{{ Storage::url('public/images/restaurants/' . $restaurant->images) }}"
-                        alt="img" class="rounded" width="100px" height="150px">
+                    <img class="img-fluid rounded w-100 wow zoomIn" data-wow-delay="0.1s" src="{{ Storage::url('public/images/restaurants/' . $restaurant->images) }}" style="visibility: visible; animation-delay: 0.1s; animation-name: zoomIn;">
                 @endif
             </div>
             <div class="col-md-6">

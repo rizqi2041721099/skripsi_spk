@@ -78,7 +78,7 @@
 
         $('#add-btn').click(function () {
             $('#form-create').trigger("reset"); //mereset semua input dll didalamnya
-            $('#modal-judul').html("Tambah Variasi Makanan");
+            $('#modal-judul').html("Tambah Kriteria Rasa");
             $('#create-modal').modal('show'); //
         });
 

@@ -83,7 +83,7 @@
 
         $('#add-btn').click(function () {
             $('#form-create').trigger("reset"); //mereset semua input dll didalamnya
-            $('#modal-judul').html("Tamba Variasi Makanan");
+            $('#modal-judul').html("Tambah Kriteria Jarak");
             $('#create-modal').modal('show'); //
         });
 

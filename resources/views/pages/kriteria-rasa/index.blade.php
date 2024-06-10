@@ -117,7 +117,7 @@
             let id = $('#id').val();
 
             $.ajax({
-                url: 'kriteria-variasi-menu/' + id,
+                url: 'kriteria-rasa/' + id,
                 type: "POST",
                 data: formData,
                 cache: false,
@@ -150,7 +150,8 @@
             url:  '/kriteria-rasa/' + id + '/edit',
             success: function (response) {
                 $('#id').val(response.id);
-                $('#edit_name').val(response.name);
+                $('#edit_value').val(response.value);
+                $('#edit_standard_value').val(response.standard_value);
                 $('#edit-modal').modal('show');
             }
         })

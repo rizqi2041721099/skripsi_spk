@@ -62,8 +62,8 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::resource('kriteria-variasi-menu',  KriteriaVariasiMenuController::class);
     Route::resource('kriteria-jarak',         KriteriaJarakController::class);
     Route::resource('kriteria-harga',         KriteriaHargaController::class);
-    Route::resource('kriteria-rasa',         KriteriaRasaController::class);
-    Route::resource('kriteria-fasilitas',    KriteriaFasilitasController::class);
+    Route::resource('kriteria-rasa',  KriteriaRasaController::class);
+    Route::resource('kriteria-fasilitas',     KriteriaFasilitasController::class);
 
     Route::resource('alternatif',        AlternatifController::class);
     Route::get('perhitungan-saw',        [AlternatifController::class, 'perhitunganSaw'])->name('perhitungan.saw');

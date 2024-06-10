@@ -16,7 +16,7 @@ class KriteriaRasaController extends Controller
         $this->middleware('permission:delete-kriteria-rasa', ['only' => ['destroy']]);
     }
 
-    public function index(Reqeuest $request)
+    public function index(Request $request)
     {
         $page = 'kriteria';
 
@@ -76,6 +76,7 @@ class KriteriaRasaController extends Controller
         ]);
 
         $data = KriteriaRasa::create($validated);
+
         if($data){
             return response()->json([
                 'success'   => true,

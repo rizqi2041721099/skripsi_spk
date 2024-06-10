@@ -72,7 +72,9 @@
     auth()->user()->can('list-kriteria-harga') ||
     auth()->user()->can('list-kriteria-jarak') ||
     auth()->user()->can('list-kriteria-fasilitas') ||
-    auth()->user()->can('list-kriteria-variasi-menu'))
+    auth()->user()->can('list-kriteria-variasi-menu') ||
+    auth()->user()->can('list-kriteria-rasa')
+    )
         <li class="nav-item {{ $page == 'kriteria' ? 'active' : '' }}">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable"
                 aria-expanded="true" aria-controls="collapseTable">
@@ -103,6 +105,8 @@
                     <a class="collapse-item {{ request()->is('kriteria-variasi-menu*') ? 'active' : '' }}"
                         href="{{ route('kriteria-variasi-menu.index') }}">Kriteria Variasi Menu</a>
                     @endcan
+                    <a class="collapse-item {{ request()->is('kriteria-rasa*') ? 'active' : '' }}"
+                        href="{{ route('kriteria-rasa.index') }}">Kriteria Rasa Makanan</a>
                 </div>
             </div>
         </li>

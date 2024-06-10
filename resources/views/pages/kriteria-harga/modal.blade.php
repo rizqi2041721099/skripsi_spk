@@ -23,7 +23,7 @@
                               <small class="text-danger" id="error_standard_value"></small>
                           </div>
                           <div class="col-md-12">
-                              <label for="">Rentang Variasi Menu</label>
+                              <label for="">Rentang Rata-Rata Harga</label>
                               <input type="text" class="form-control" name="range_value" id="range_value">
                               <small class="text-danger" id="error_range_value"></small>
                           </div>
@@ -66,7 +66,7 @@
                             <small class="text-danger" id="error_edit_standard_value"></small>
                         </div>
                         <div class="col-md-12">
-                            <label for="">Rentang Variasi Menu</label>
+                            <label for="">Rentang Rata-Rata Harga</label>
                             <input type="text" class="form-control" name="range_value" id="edit_range_value">
                             <small class="text-danger" id="error_edit_range_value"></small>
                         </div>

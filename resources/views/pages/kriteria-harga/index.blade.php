@@ -24,7 +24,7 @@
                                 <th>No</th>
                                 <th>Nilai</th>
                                 <th>Standar Nilai</th>
-                                <th>Rentang Variasi Menu</th>
+                                <th>Rentang Rata-Rata Harga</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -33,7 +33,7 @@
                                 <th>No</th>
                                 <th>Nilai</th>
                                 <th>Standar Nilai</th>
-                                <th>Rentang Variasi Menu</th>
+                                <th>Rentang Rata-Rata Harga</th>
                                 <th>Action</th>
                             </tr>
                         </tfoot>

@@ -168,7 +168,7 @@ class PermissionSeeder extends Seeder
                 'name' => 'list-kriteria-variasi-menu',
             ],
             [
-                'name' => 'create-kriteriavariasi-menu',
+                'name' => 'create-kriteria-variasi-menu',
             ],
             [
                 'name' => 'edit-kriteria-variasi-menu',

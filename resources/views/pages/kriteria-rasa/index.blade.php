@@ -14,8 +14,8 @@
             <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Data Kriteria Rasa</h6>
-                    {{-- <a class="btn btn-sm btn-success text-white" href="javascript:void(0)" style="cursor: pointer"
-                    id="add-btn"> <span><i class="fa fa-plus"></i>&nbsp;Tambah </span> </a> --}}
+                    <a class="btn btn-sm btn-success text-white" href="javascript:void(0)" style="cursor: pointer"
+                    id="add-btn"> <span><i class="fa fa-plus"></i>&nbsp;Tambah </span> </a>
                 </div>
                 <div class="table-responsive p-3">
                     <table class="table align-items-center table-flush" width="100%" id="kriterias_table">
@@ -78,7 +78,7 @@
 
         $('#add-btn').click(function () {
             $('#form-create').trigger("reset"); //mereset semua input dll didalamnya
-            $('#modal-judul').html("Tamba Variasi Makanan");
+            $('#modal-judul').html("Tambah Variasi Makanan");
             $('#create-modal').modal('show'); //
         });
 
@@ -88,7 +88,7 @@
             let formData = new FormData(this);
 
             $.ajax({
-                url: "{{ route('kriteria-variasi-menu.store')}}",
+                url: "{{ route('kriteria-rasa.store')}}",
                 type: "POST",
                 data: formData,
                 cache: false,
@@ -106,7 +106,8 @@
                     }
                 },
                 error: function (response) {
-                    $('#error_name').text(response.responseJSON.errors.name);
+                    $('#error_value').text(response.responseJSON.errors.value);
+                    $('#error_standard_value').text(response.responseJSON.errors.standard_value);
                 },
             });
         });
@@ -135,7 +136,8 @@
                     }
                 },
                 error: function (response) {
-                    $('#error_edit_name').text(response.responseJSON.errors.name);
+                    $('#error_edit_value').text(response.responseJSON.errors.value);
+                    $('#error_edit_standard_value').text(response.responseJSON.errors.standard_value);
                 },
             });
         })

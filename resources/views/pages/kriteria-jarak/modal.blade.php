@@ -23,7 +23,7 @@
                               <small class="text-danger" id="error_standard_value"></small>
                           </div>
                           <div class="col-md-12">
-                              <label for="">Rentang Variasi Menu</label>
+                              <label for="">Rentang Lokasi (KM)</label>
                               <input type="text" class="form-control" name="range_value" id="range_value">
                               <small class="text-danger" id="error_range_value"></small>
                           </div>
@@ -44,7 +44,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal-edit">Edit Kriteria variasi Menu</h5>
+                <h5 class="modal-title" id="modal-edit">Edit Kriteria Jarak</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -66,7 +66,7 @@
                             <small class="text-danger" id="error_edit_standard_value"></small>
                         </div>
                         <div class="col-md-12">
-                            <label for="">Rentang Variasi Menu</label>
+                            <label for="">Rentang Lokasi (KM)</label>
                             <input type="text" class="form-control" name="range_value" id="edit_range_value">
                             <small class="text-danger" id="error_edit_range_value"></small>
                         </div>

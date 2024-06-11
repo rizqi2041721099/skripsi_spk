@@ -73,7 +73,7 @@
                 </div>
                 <div class="col-lg-6">
                     <h5 class="section-title ff-secondary text-start text-primary fw-normal">About Us</h5>
-                    <h1 class="mb-4">Welcome to <i class="fa fa-utensils text-primary me-2"></i>Restoran</h1>
+                    <h1 class="mb-4">Welcome to <i class="fa fa-utensils text-primary me-2"></i>Tempat Makan</h1>
                     <p class="mb-4">Tentu! Di sini, kami menawarkan berbagai hidangan lezat dari berbagai jenis masakan
                         lokal dan internasional. Kami memiliki menu yang beragam untuk memenuhi selera dan preferensi
                         kuliner Anda.</p>
@@ -90,7 +90,7 @@
                                     {{ $sumRestaurant }}
                                 </h1>
                                 <div class="ps-4">
-                                    <h6 class="text-uppercase mb-0">Restaurant</h6>
+                                    <h6 class="text-uppercase mb-0">Tempat Makan</h6>
                                 </div>
                             </div>
                         </div>
@@ -120,8 +120,8 @@
     <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h5 class="section-title ff-secondary text-center text-primary fw-normal">Restaurant</h5>
-                <h1 class="mb-5">Most Popular Restaurant</h1>
+                <h5 class="section-title ff-secondary text-center text-primary fw-normal">Tempat Makan</h5>
+                <h1 class="mb-5">Most Popular Tempat Makan</h1>
             </div>
             <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
                 <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">

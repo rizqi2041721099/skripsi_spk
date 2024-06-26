@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>App Name</title>
+    <title>Login APP</title>
 
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('assets/img/logo/logo.png') }}" type="image/png">
@@ -34,7 +34,7 @@
                     <div class="card-body p-0">
                         <div class="row">
                             <div class="col-lg-12">
-                                <h1 class="h4 text-gray-900 font-weight-bold mt-4 mb-0">APP NAME</h1>
+                                <h1 class="h4 text-gray-900 font-weight-bold mt-4 mb-0">Login APP</h1>
                                 <div class="login-form">
                                     <small class="text-danger" id="message-error"></small>
                                     <form method="POST" action="{{ route('login') }}" id="login">

@@ -3,7 +3,7 @@
         {{-- <div class="sidebar-brand-icon">
             <img src="{{ asset('assets/img/logo/bca_logo.png') }}">
         </div> --}}
-        <div class="sidebar-brand-text mx-3">Project Name</div>
+        <div class="sidebar-brand-text mx-3">SPK Tempat Makan</div>
     </a>
     <hr class="sidebar-divider my-0">
         <li class="nav-item {{ $page == 'dashboard' ? 'active' : '' }}">
@@ -155,7 +155,7 @@
     <li class="nav-item {{ request()->is('perhitungan.saw*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('perhitungan.saw') }}">
             <i class="far fa-fw fa-window-maximize"></i>
-            <span>Perhitungan SAE</span>
+            <span>Perhitungan SAW</span>
         </a>
     </li>
     @endif

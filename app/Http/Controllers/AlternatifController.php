@@ -19,7 +19,7 @@ class AlternatifController extends Controller
     public function index(Request $request)
     {
         $page = 'alternatif';
-        $data = Restaurant::orderBy('created_at')->get();
+        $data = Restaurant::orderBy('name')->get();
 
         $auth  = auth()->user();
 
@@ -167,7 +167,7 @@ class AlternatifController extends Controller
     public function perhitunganSaw(Request $request)
     {
         $page = 'alternatif';
-        $data = Restaurant::orderBy('created_at')->get();
+        $data = Restaurant::orderBy('name')->get();
 
         $auth  = auth()->user();
         $alternatif_hasil = [];
@@ -240,7 +240,7 @@ class AlternatifController extends Controller
     public function normalisasiAlternatif(Request $request)
     {
         $page = 'alternatif';
-        $data = Restaurant::orderBy('created_at')->get();
+        $data = Restaurant::orderBy('name')->get();
 
         $auth  = auth()->user();
         $alternatif_hasil = [];

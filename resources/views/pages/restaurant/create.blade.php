@@ -62,6 +62,7 @@
                                     <option value="{{ $item->id }}">{{ $item->standard_value }}</option>
                                 @endforeach
                             </select>
+                            <small class="text-danger" id="error_kriteria_fasilitas_id"></small>
                         </div>
                         <div class="col-md-4 mb-2">
                             <label for="">Kriteria Rasa <span class="text-danger">*</span></label>
@@ -204,7 +205,7 @@
                         $('#error_address').text(response.responseJSON.errors.address);
                         $('#error_facility').text(response.responseJSON.errors.facility);
                         // $('#error_average').text(response.responseJSON.errors.average);
-                        // $('#error_qty_variasi_makanan').text(response.responseJSON.errors.qty_variasi_makanan);
+                        $('#error_kriteria_fasilitas_id').text(response.responseJSON.errors.kriteria_fasilitas_id);
                         $('#error_map_link').text(response.responseJSON.errors.map_link);
                     }
                 });

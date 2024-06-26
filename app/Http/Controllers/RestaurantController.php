@@ -254,10 +254,12 @@ class RestaurantController extends Controller
             'average'           => 'nullable',
             'map_link'          => 'nullable',
             'menuData'          => 'nullable',
+            'kriteria_fasilitas_id' => 'required'
         ],[
             'name.required'           => 'Nama restaurant harus diisi.',
             'distance.required'       => 'Jarak restaurant harus diisi.',
-            'distance.ends_with'      => 'Format jarak tidak valid harus mengandung KM'
+            'distance.ends_with'      => 'Format jarak tidak valid harus mengandung KM',
+            'kriteria_fasilitas_id.required' => 'Kriteria fasilitas harus diisi.'
             // 'qty_variasi_makanan'       => 'Qty food variaty harus berupa angka.',
         ]);
 

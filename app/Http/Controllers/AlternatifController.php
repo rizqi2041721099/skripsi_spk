@@ -407,6 +407,10 @@ class AlternatifController extends Controller
             ];
         }
         usort($alternatif_hasil, function ($a, $b) {
+            if ($a['jumlah_nilai'] == $b['jumlah_nilai']) {
+                return strcasecmp($a['alternatif']->name, $b['alternatif']->name);
+            }
+
             return $b['jumlah_nilai'] <=> $a['jumlah_nilai'];
         });
         $auth  = auth()->user();

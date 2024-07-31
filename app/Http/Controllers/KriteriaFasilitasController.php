@@ -29,6 +29,9 @@ class KriteriaFasilitasController extends Controller
                 ->addColumn('value', function ($row) {
                     return $row->value;
                 })
+                ->addColumn('skala', function ($row) {
+                    return $row->skala;
+                })
                 ->addColumn('standard_value', function ($row) {
                     return $row->standard_value;
                 })
@@ -69,9 +72,11 @@ class KriteriaFasilitasController extends Controller
     {
         $validated = $this->validate($request,[
             'value' => 'required',
+            'skala' => 'required',
             'standard_value' => 'required',
         ],[
             'value.required'  => 'Nilai harus diisi.',
+            'skala.required' => 'Skala harus diisi.',
             'standard_value.required' => 'Standar nilai harus diisi',
         ]);
 
@@ -103,10 +108,12 @@ class KriteriaFasilitasController extends Controller
     public function update(Request $request, int $id)
     {
         $validated = $this->validate($request,[
-            'value' => 'nullable',
-            'standard_value' => 'nullable',
+            'value' => 'required',
+            'skala' => 'required',
+            'standard_value' => 'required',
         ],[
             'value.required'  => 'Nilai harus diisi.',
+            'skala.required'  => 'Skala harus diisi.',
             'standard_value.required' => 'Standar nilai harus diisi',
         ]);
 

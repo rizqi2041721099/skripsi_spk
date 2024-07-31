@@ -27,13 +27,13 @@ class KategoriJamOperasionalSeeder extends Seeder
             ],
             [
                 'value' => 2,
-                'standard_value' => 'Skala 1',
+                'standard_value' => 'Skala 4',
                 'range_value' => '12 jam <= x < 16 jam',
             ],
             [
                 'value' => 1,
-                'standard_value' => 'Skala 1',
-                'range_value' => 'x < 4 jam',
+                'standard_value' => 'Skala 5',
+                'range_value' => 'x > 16 jam',
             ],
         ];
 

@@ -34,7 +34,7 @@
                             <select name="jarak" id="jarak" class="form-control">
                                 <option value="">Pilih</option>
                                 @foreach ($getJarak as $item)
-                                    <option value="{{ $item->id }}">{{ $item->range_value }}</option>
+                                    <option value="{{ $item->id }}">{{ $item->standard_value.' | '. $item->range_value }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -99,19 +99,20 @@
                     <table id="data-restaurants" class="table table-bordered d-none" width="100%">
                         <thead>
                             <tr>
-                                <th>Restaurant</th>
-                                <th>Alamat</th>
-                                <th>Rating</th>
-                                <th>Action</th>
+                                {{-- <th rowspan="2" width="15%">No</th> --}}
+                                <th rowspan="2" width="15%">Restaurant</th>
+                                <th colspan="5" class="text-center">Kriteria</th>
+                                <th rowspan="2" width="15%">Jumlah</th>
+                            </tr>
+                            <tr>
+                                <th>Harga Makanan</th>
+                                <th>Jarak</th>
+                                <th>Fasilitas</th>
+                                <th>Jam Operasional</th>
+                                <th>Variasi Makanan</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td id="column_name"></td>
-                                <td id="column_address"></td>
-                                <td id="column_rating"></td>
-                                <td id="column_action"></td>
-                            </tr>
                         </tbody>
                    </table>
                 </div>
@@ -157,6 +158,7 @@
                 url: '{{ route("filter.restaurants") }}',
                 data: formData,
                 success: function(response) {
+                    console.log(response);
                     if(response.length != 0)
                     {
                         toastr.success('Data restuarants ditemukan',{
@@ -168,34 +170,39 @@
                         });
                         $('#data-restaurants tbody').empty();
                         $('#data-restaurants').removeClass("d-none");
-                        response.forEach(function(restaurant) {
-                            var sum = 0;
-                            var count = restaurant.comments.length;
-                            for (var i = 0; i < count; i++) {
-                                sum += restaurant.comments[i].star_rating;
-                            }
-                            var average = count > 0 ? sum / count : 0;
-                            id = restaurant.id;
+                        response.forEach(function(response) {
+                            // console.log([response.v_jarak,response,v_jam_operasional,response.v_fasilitas,response.variasi_menu]);
+                            // var sum = 0;
+                            // var count = restaurant.comments.length;
+                            // for (var i = 0; i < count; i++) {
+                            //     sum += restaurant.comments[i].star_rating;
+                            // }
+                            // var average = count > 0 ? sum / count : 0;
+                            id = response.alternatif['id'];
 
-                            var starColor = average > 0 ? '#ffcd3c' : '#aaa';
-                            var starHtml = '';
-                            if (average > 0) {
-                                for (var i = 0; i < parseInt(average); i++) {
-                                    starHtml += '<i class="fa fa-star fa-xs" style="color: ' + starColor + '; font-size: 16px" aria-hidden="true"></i>';
-                                }
-                            } else {
-                                starHtml += '<i class="fa fa-star fa-xs" style="color: ' + starColor + '; font-size: 16px" aria-hidden="true"></i>';
-                            }
+                            // var starColor = average > 0 ? '#ffcd3c' : '#aaa';
+                            // var starHtml = '';
+                            // if (average > 0) {
+                            //     for (var i = 0; i < parseInt(average); i++) {
+                            //         starHtml += '<i class="fa fa-star fa-xs" style="color: ' + starColor + '; font-size: 16px" aria-hidden="true"></i>';
+                            //     }
+                            // } else {
+                            //     starHtml += '<i class="fa fa-star fa-xs" style="color: ' + starColor + '; font-size: 16px" aria-hidden="true"></i>';
+                            // }
 
                             var row = '<tr>' +
-                                        '<td>' + restaurant.name + '</td>' +
-                                        '<td>' + restaurant.address + '</td>';
-                            row += '<td>' + starHtml + '</td>';
-                            row += '<td>' + '<a href="/restaurants/' + id + '" class="btn btn-sm btn-secondary btn-icon-only">' +
-                                    '<span class="btn-inner--icon"><i class="fas fa-eye"></i></span>' +
-                                    '</a>' +
-                                '</td>' +
-                                '</tr>';
+                                        // '<td>' + (response.index + 1)+ '</td>' +
+                                        '<td>' +
+                                            '<a href="/restaurants/' + id + '">' +
+                                             response.alternatif['name'] +
+                                        '</a>' + '</td>' +
+                                        '<td>' + response.v_harga_makanan + '</td>' +
+                                        '<td>' + response.v_jarak + '</td>' +
+                                        '<td>' + response.v_fasilitas + '</td>' +
+                                        '<td>' + response.v_jam_operasional + '</td>' +
+                                        '<td>' + response.v_variasi_makanan + '</td>' +
+                                        '<td>' + response.jumlah_nilai + '</td>' +
+                                    '</tr>';
 
                             $('#data-restaurants').append(row);
 

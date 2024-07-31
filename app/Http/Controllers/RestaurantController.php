@@ -728,7 +728,93 @@ class RestaurantController extends Controller
         //     });
         // })
         ->get();
-        return response()->json($data);
+
+        $alternatif_hasil = [];
+        $sum_v_harga_makanan = [];
+        $sum_v_variasi_makanan = [];
+        $sum_v_jam_operasional = [];
+        $sum_v_jarak = [];
+        $sum_v_fasilitas = [];
+        $bobot_v_harga = 0;
+        $bobot_v_jarak = 0;
+        $bobot_v_jam_operasional = 0;
+        $bobot_v_variasi = 0;
+        $bobot_v_fasilitas = 0;
+
+        foreach ($data as $item) {
+            // $v_harga_makanan = 1 / $item->v_harga_makanan;
+            // $v_variasi_makanan = 5 / $item->v_variasi_makanan;
+            // $v_jam_operasional = 5 / $item->v_jam_operasional;
+            // $v_jarak = 1 / $item->v_jarak;
+            // $v_fasilitas = 1 / $item->v_fasilitas;
+
+            $v_harga_makanan = round($item->harga->value, 2);
+            $sum_v_harga_makanan[] = $v_harga_makanan;
+
+            $v_variasi_makanan = round($item->variasiMenu->value, 2);
+            $sum_v_variasi_makanan[] = $v_variasi_makanan;
+
+            $v_jam_operasional = round($item->jamOperasional->value, 2);
+            $sum_v_jam_operasional[] = $v_jam_operasional;
+
+            $v_jarak = round($item->jarak->value, 2);
+            $sum_v_jarak[] = $v_jarak;
+
+            $v_fasilitas = round($item->fasilitas->value, 2);
+            $sum_v_fasilitas[] = $v_fasilitas;
+        }
+
+        $min_v_harga_makanan = min($sum_v_harga_makanan);
+        $min_v_jarak = min($sum_v_jarak);
+        $max_v_fasilitas = max($sum_v_fasilitas);
+        $max_v_jam_operasional = max($sum_v_jam_operasional);
+        $max_v_variasi_makanan = max($sum_v_variasi_makanan);
+
+        foreach ($data as $item) {
+            $bobotKriteria = BobotKriteria::first();
+            $b_harga_makanan = $bobotKriteria->bobot_harga_makanan / 100;
+            $b_jarak = $bobotKriteria->bobot_jarak / 100;
+            $b_fasilitas = $bobotKriteria->bobot_fasilitas / 100;
+            $b_jam_operasional = $bobotKriteria->bobot_jam_operasional / 100;
+            $b_variasi_menu = $bobotKriteria->bobot_variasi_menu / 100;
+
+            $v_harga_makanan = $min_v_harga_makanan / $item->harga->value;
+            $v_jarak = $min_v_jarak / $item->jarak->value;
+            $v_fasilitas = $item->fasilitas->value / $max_v_fasilitas;
+            $v_jam_operasional = $item->jamOperasional->value / $max_v_jam_operasional;
+            $v_variasi_makanan =  $item->variasiMenu->value / $max_v_variasi_makanan;
+
+            $bobot_v_harga =  round($v_harga_makanan,2) * number_format($b_harga_makanan,2);
+            $bobot_v_variasi = round($v_variasi_makanan,2) * number_format($b_variasi_menu,2);
+            $bobot_v_jam_operasional = round($v_jam_operasional,2) * number_format($b_jam_operasional,2);
+            $bobot_v_jarak = round($v_jarak,2) * number_format($b_jam_operasional,2);
+            $bobot_v_fasilitas = round($v_fasilitas,2) * number_format($b_fasilitas,2);
+
+
+            // $v_bobot_jarak += round($v_jarak,2);
+            // $value_jarak = round($v_jarak,2) / $v_bobot_jarak;
+            // $jumlah = round($v_harga_makanan, 2) + round($v_variasi_makanan, 2) + round($v_jam_operasional, 2) + round($v_jarak, 2) + round($v_fasilitas, 2);
+            $jumlah = round($bobot_v_harga, 2) + round($bobot_v_variasi, 2) + round($bobot_v_jam_operasional, 2) + round($bobot_v_jarak, 2) + round($bobot_v_fasilitas, 2);
+
+            $alternatif_hasil[] = [
+                'alternatif' => $item,
+                'v_harga_makanan' => round($bobot_v_harga,2),
+                'v_variasi_makanan' => round($bobot_v_variasi,2),
+                'v_jam_operasional'    => round($bobot_v_jam_operasional,2),
+                'v_jarak'           => round($bobot_v_jarak,2),
+                'v_fasilitas'       => round($bobot_v_fasilitas,2),
+                'jumlah_nilai'      => round($jumlah,2),
+            ];
+        }
+        usort($alternatif_hasil, function ($a, $b) {
+            if ($a['jumlah_nilai'] == $b['jumlah_nilai']) {
+                return strcasecmp($a['alternatif']->name, $b['alternatif']->name);
+            }
+
+            return $b['jumlah_nilai'] <=> $a['jumlah_nilai'];
+        });
+
+        return response()->json($alternatif_hasil);
     }
 
 

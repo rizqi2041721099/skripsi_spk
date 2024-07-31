@@ -12,7 +12,8 @@
                 <a href="#about-us" class="nav-item nav-link">About</a>
                 <a href="#service" class="nav-item nav-link">Service</a>
                 <a href="{{ route('cari.restaurant') }}" class="nav-item nav-link {{ Route::is('cari.restaurant') ? 'active' : '' }}">Search</a>
-                <a href="{{ route('login') }}" class="nav-item nav-link">Add Restaurant</a>
+                {{-- <a href="{{ route('login') }}" class="nav-item nav-link">Add Restaurant</a> --}}
+                <a href="{{ route('ranking.restaurants') }}" class="nav-item nav-link">Popular Restaurants</a>
             </div>
             @if (Auth::check())
                 <li class="nav-item navbar-dropdown dropdown-user dropdown" style="list-style: none">

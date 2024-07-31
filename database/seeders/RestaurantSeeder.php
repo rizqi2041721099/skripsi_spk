@@ -23,7 +23,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_harga_id' => 1,
                 'kriteria_jarak_id' => 1,
                 'kriteria_fasilitas_id' => 2,
-                'kriteria_rasa_id' => 2,
+                'kriteria_jam_operasional_id' => 2,
                 'variasi_menu_id' => 5,
             ],
             [
@@ -39,7 +39,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_harga_id' => 1,
                 'kriteria_jarak_id' => 1,
                 'kriteria_fasilitas_id' => 3,
-                'kriteria_rasa_id' => 1,
+                'kriteria_jam_operasional_id' => 1,
                 'variasi_menu_id' => 4,
             ],
             [
@@ -55,7 +55,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_harga_id' => 1,
                 'kriteria_jarak_id' => 2,
                 'kriteria_fasilitas_id' => 3,
-                'kriteria_rasa_id' => 2,
+                'kriteria_jam_operasional_id' => 2,
                 'variasi_menu_id' => 4,
             ],
             [
@@ -71,7 +71,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_harga_id' => 1,
                 'kriteria_jarak_id' => 2,
                 'kriteria_fasilitas_id' => 2,
-                'kriteria_rasa_id' => 2,
+                'kriteria_jam_operasional_id' => 2,
                 'variasi_menu_id' => 2,
             ],
             [
@@ -87,7 +87,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_harga_id' => 1,
                 'kriteria_jarak_id' => 2,
                 'kriteria_fasilitas_id' => 3,
-                'kriteria_rasa_id' => 4,
+                'kriteria_jam_operasional_id' => 4,
                 'variasi_menu_id' => 3,
             ],
             [
@@ -103,7 +103,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_harga_id' => 1,
                 'kriteria_jarak_id' => 3,
                 'kriteria_fasilitas_id' => 2,
-                'kriteria_rasa_id' => 4,
+                'kriteria_jam_operasional_id' => 4,
                 'variasi_menu_id' => 3,
             ],
             [
@@ -119,7 +119,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_harga_id' => 1,
                 'kriteria_jarak_id' => 1,
                 'kriteria_fasilitas_id' => 3,
-                'kriteria_rasa_id' => 4,
+                'kriteria_jam_operasional_id' => 4,
                 'variasi_menu_id' => 4,
             ],
             [
@@ -135,7 +135,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_harga_id' => 1,
                 'kriteria_jarak_id' => 2,
                 'kriteria_fasilitas_id' => 2,
-                'kriteria_rasa_id' => 4,
+                'kriteria_jam_operasional_id' => 4,
                 'variasi_menu_id' => 2,
             ],
             [
@@ -151,7 +151,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_harga_id' => 1,
                 'kriteria_jarak_id' => 2,
                 'kriteria_fasilitas_id' => 2,
-                'kriteria_rasa_id' => 4,
+                'kriteria_jam_operasional_id' => 4,
                 'variasi_menu_id' => 3,
             ],
             [
@@ -167,7 +167,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_harga_id' => 1,
                 'kriteria_jarak_id' => 3,
                 'kriteria_fasilitas_id' => 2,
-                'kriteria_rasa_id' => 4,
+                'kriteria_jam_operasional_id' => 4,
                 'variasi_menu_id' => 4,
             ],
             [
@@ -183,7 +183,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_harga_id' => 1,
                 'kriteria_jarak_id' => 2,
                 'kriteria_fasilitas_id' => 3,
-                'kriteria_rasa_id' => 4,
+                'kriteria_jam_operasional_id' => 4,
                 'variasi_menu_id' => 5,
             ],
             [
@@ -199,7 +199,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_harga_id' => 2,
                 'kriteria_jarak_id' => 1,
                 'kriteria_fasilitas_id' => 3,
-                'kriteria_rasa_id' => 5,
+                'kriteria_jam_operasional_id' => 5,
                 'variasi_menu_id' => 4,
             ],
             [
@@ -215,7 +215,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_harga_id' => 3,
                 'kriteria_jarak_id' => 3,
                 'kriteria_fasilitas_id' => 1,
-                'kriteria_rasa_id' => 1,
+                'kriteria_jam_operasional_id' => 1,
                 'variasi_menu_id' => 5,
             ],
             [
@@ -231,7 +231,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_harga_id' => 1,
                 'kriteria_jarak_id' => 1,
                 'kriteria_fasilitas_id' => 3,
-                'kriteria_rasa_id' => 3,
+                'kriteria_jam_operasional_id' => 3,
                 'variasi_menu_id' => 4,
             ],
             [
@@ -247,7 +247,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_harga_id' => 1,
                 'kriteria_jarak_id' => 1,
                 'kriteria_fasilitas_id' => 2,
-                'kriteria_rasa_id' => 4,
+                'kriteria_jam_operasional_id' => 4,
                 'variasi_menu_id' => 4,
             ],
         ];

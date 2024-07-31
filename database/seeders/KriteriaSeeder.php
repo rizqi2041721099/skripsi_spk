@@ -21,7 +21,7 @@ class KriteriaSeeder extends Seeder
                 'description'   => 'Semakin tinggi nilai keuntungannya maka semakin tinggi peluang untuk dipilih',
             ],
             [
-                'name'          => 'Rasa Makanan',
+                'name'          => 'Jam Operasional',
                 'category'      => '2',
                 'description'   => 'Semakin tinggi nilai keuntungannya maka semakin tinggi peluang untuk dipilih',
             ],

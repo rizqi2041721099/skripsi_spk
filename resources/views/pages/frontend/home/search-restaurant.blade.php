@@ -10,11 +10,14 @@
     <div class="row g-0">
         <div class="col-md-12 bg-dark d-flex align-items-center">
             <div class="p-5 wow fadeInUp" data-wow-delay="0.2s">
-                <h5 class="section-title ff-secondary text-start text-primary fw-normal">Search Restaurants</h5>
+                <div class="d-flex justify-content-between">
+                    <h5 class="section-title ff-secondary text-start text-primary fw-normal">Search Restaurants</h5>
+                    <a href="{{ route('login') }}" class="btn btn-outline-warning text-capitalize">Tambah Restaurant</a>
+                </div>
                 <h1 class="text-white mb-4">Temukan restaurant yang kamu cari!</h1>
                 <form id="filterForm">
                     <div class="row g-3">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-floating">
                                 <select name="variasi_menu" id="" class="form-control">
                                     <option value="">Pilih</option>
@@ -22,10 +25,10 @@
                                         <option value="{{ $item->id }}">{{ $item->range_value }}  variasi makanan</option>
                                     @endforeach
                                 </select>
-                                <label for="range-variasi-makanan">Range Variasi Menu Makanan</label>
+                                <label for="range-variasi-makanan">Kriteria Variasi Menu</label>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-floating">
                                 <select name="jarak" id="jarak" class="form-control">
                                     <option value="">Pilih</option>
@@ -33,33 +36,44 @@
                                         <option value="{{ $item->id }}">{{ $item->range_value }}</option>
                                     @endforeach
                                 </select>
-                                <label for="rentang-jarak">Rentang Jarak</label>
+                                <label for="rentang-jarak">Kriteria Jarak</label>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-floating">
                                 <select name="harga" id="harga" class="form-control">
                                     <option value="">Pilih</option>
                                     @foreach ($getHarga as $item)
-                                        <option value="{{ $item->id }}">{{ $item->range_value }}</option>
+                                        <option value="{{ $item->id }}">{{ $item->standard_value.' | '.$item->range_value }}</option>
                                     @endforeach
                                 </select>
-                                <label for="range-harga">Rentang Harga</label>
+                                <label for="range-harga">Kriteria Harga Makanan</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-floating">
-                                <select name="rasa" id="rasa" class="form-control">
+                                <select name="jam_operasional" id="jam_operasional" class="form-control">
                                     <option value="">Pilih</option>
-                                    @foreach ($getRasa as $item)
+                                    @foreach ($getJamOperasional as $item)
+                                        <option value="{{ $item->id }}">{{ $item->standard_value }} ({{ $item->range_value }})</option>
+                                    @endforeach
+                                </select>
+                                <label for="select1">Kriteria Jam Operasional</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select name="fasilitas" id="fasilitas" class="form-control">
+                                    <option value="">Pilih</option>
+                                    @foreach ($getFasilitas as $item)
                                         <option value="{{ $item->id }}">{{ $item->standard_value }}</option>
                                     @endforeach
                                 </select>
-                                <label for="select1">Kriteria Rasa Makanan</label>
+                                <label for="select1">Kriteria Fasilitas</label>
                             </div>
                         </div>
-                        <div class="col-12">
-                            <label for="facility" class="form-label text-white fw-bold">Fasilitas</label>
+                        {{-- <div class="col-12">
+                            <label for="facility" class="form-label text-white fw-bold">Detail Fasilitas</label>
                             <div class="d-flex flex-wrap">
                                 @foreach($facilities as $facility)
                                     <div class="form-check me-3">
@@ -68,7 +82,7 @@
                                     </div>
                                 @endforeach
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-md-6">
                             <button class="btn btn-secondary w-100 py-3" type="button" id="reset">Reset</button>
                         </div>
@@ -125,7 +139,7 @@
                 success: function(response) {
                     if(response.length != 0)
                     {
-                        toastr.success('Restaurants data found',{
+                        toastr.success('Data Restaurants ditemukan',{
                             fadeOut: 1000,
                             swing: 300,
                             fadeIn: 5000,

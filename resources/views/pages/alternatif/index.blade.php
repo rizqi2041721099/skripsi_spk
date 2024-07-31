@@ -28,7 +28,7 @@
                                 <th>Harga Makanan</th>
                                 <th>Jarak</th>
                                 <th>Fasilitas</th>
-                                <th>Rasa Makanan</th>
+                                <th>Jam Operasional</th>
                                 <th>Variasi Menu</th>
                             </tr>
                         </thead>
@@ -39,7 +39,7 @@
                                 <th>Harga Makanan</th>
                                 <th>Jarak</th>
                                 <th>Fasilitas</th>
-                                <th>Rasa Makanan</th>
+                                <th>Jam Operasional</th>
                                 <th>Variasi Menu</th>
                             </tr>
                         </tfoot>
@@ -83,7 +83,7 @@
                     data: 'v_fasilitas',
                 },
                 {
-                    data: 'v_rasa_makanan',
+                    data: 'v_jam_operasional',
                 },
                 {
                     data: 'v_variasi_makan',

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Alternatif,Restaurant};
+use App\Models\{Alternatif,Restaurant,BobotKriteria};
 use Illuminate\Http\Request;
 use DataTables;
 
@@ -37,8 +37,8 @@ class AlternatifController extends Controller
                 ->addColumn('v_fasilitas', function ($row) {
                     return $row->fasilitas->value;
                 })
-                ->addColumn('v_rasa_makanan', function ($row) {
-                    return $row->rasa->value;
+                ->addColumn('v_jam_operasional', function ($row) {
+                    return $row->jamOperasional->value;
                 })
                 ->addColumn('v_variasi_makan', function ($row) {
                     return $row->variasiMenu->value;
@@ -84,7 +84,7 @@ class AlternatifController extends Controller
             'restaurant_id'      => 'required|unique:alternatifs,restaurant_id',
             'v_harga_makanan'    => 'required',
             'v_variasi_makanan'  => 'required',
-            'v_rasa_makanan'     => 'required',
+            'v_jam_operasional'     => 'required',
             'v_jarak'            => 'required',
             'v_fasilitas'        => 'required',
         ],[
@@ -94,7 +94,7 @@ class AlternatifController extends Controller
             'v_harga_makanan'           => 'Value harga makanan harus diisi.',
             'v_variasi_makanan'         => 'Value variasi makanan harus diisi.',
             'v_fasilitas'               => 'Value fasilitas harus diisi.',
-            'v_rasa_makanan'             => 'Value rasa makanan harus diisi.',
+            'v_jam_operasional'         => 'Value jam operasional harus diisi.',
         ]);
         // dd($request->all());
         $data = Alternatif::create($validated);
@@ -126,7 +126,7 @@ class AlternatifController extends Controller
             'restaurant_id'      => 'nullable|unique:alternatifs,restaurant_id,'.$alternatif->id,
             'v_harga_makanan'    => 'nullable',
             'v_variasi_makanan'  => 'nullable',
-            'v_rasa_makanan'     => 'nullable',
+            'v_jam_operasional'     => 'nullable',
             'v_jarak'            => 'nullable',
             'v_fasilitas'        => 'nullable',
         ],[
@@ -136,7 +136,7 @@ class AlternatifController extends Controller
             'v_harga_makanan'           => 'Value harga makanan harus diisi.',
             'v_variasi_makanan'         => 'Value variasi makanan harus diisi.',
             'v_fasilitas'               => 'Value fasilitas harus diisi.',
-            'v_rasa_makanan'             => 'Value rasa makanan harus diisi.',
+            'v_jam_operasional'         => 'Value jam operasional harus diisi.',
         ]);
 
         $alternatif->update($validated);
@@ -173,14 +173,14 @@ class AlternatifController extends Controller
         $alternatif_hasil = [];
         $sum_v_harga_makanan = [];
         $sum_v_variasi_makanan = [];
-        $sum_v_rasa_makanan = [];
+        $sum_v_jam_operasional = [];
         $sum_v_jarak = [];
         $sum_v_fasilitas = [];
 
         foreach ($data as $item) {
             // $v_harga_makanan = 1 / $item->v_harga_makanan;
             // $v_variasi_makanan = 5 / $item->v_variasi_makanan;
-            // $v_rasa_makanan = 5 / $item->v_rasa_makanan;
+            // $v_jam_operasional = 5 / $item->v_jam_operasional;
             // $v_jarak = 1 / $item->v_jarak;
             // $v_fasilitas = 1 / $item->v_fasilitas;
 
@@ -190,8 +190,8 @@ class AlternatifController extends Controller
             $v_variasi_makanan = round($item->variasiMenu->value, 2);
             $sum_v_variasi_makanan[] = $v_variasi_makanan;
 
-            $v_rasa_makanan = round($item->rasa->value, 2);
-            $sum_v_rasa_makanan[] = $v_rasa_makanan;
+            $v_jam_operasional = round($item->jamOperasional->value, 2);
+            $sum_v_jam_operasional[] = $v_jam_operasional;
 
             $v_jarak = round($item->jarak->value, 2);
             $sum_v_jarak[] = $v_jarak;
@@ -203,7 +203,7 @@ class AlternatifController extends Controller
         $min_v_harga_makanan = min($sum_v_harga_makanan);
         $min_v_jarak = min($sum_v_jarak);
         $max_v_fasilitas = max($sum_v_fasilitas);
-        $max_v_rasa_makanan = max($sum_v_rasa_makanan);
+        $max_v_jam_operasional = max($sum_v_jam_operasional);
         $max_v_variasi_makanan = max($sum_v_variasi_makanan);
 
         if ($request->ajax()) {
@@ -223,9 +223,9 @@ class AlternatifController extends Controller
                     $v_fasilitas = $row->fasilitas->value / $max_v_fasilitas;
                     return round($v_fasilitas,2);
                 })
-                ->addColumn('v_rasa_makanan', function ($row) use ($max_v_rasa_makanan) {
-                    $v_rasa_makanan = $row->rasa->value / $max_v_rasa_makanan;
-                    return round($v_rasa_makanan,2);
+                ->addColumn('v_jam_operasional', function ($row) use ($max_v_jam_operasional) {
+                    $v_jam_operasional = $row->jamOperasional->value / $max_v_jam_operasional;
+                    return round($v_jam_operasional,2);
                 })
                 ->addColumn('v_variasi_makan', function ($row) use ($max_v_variasi_makanan) {
                     $v_variasi_makanan =  $row->variasiMenu->value / $max_v_variasi_makanan ;
@@ -234,7 +234,7 @@ class AlternatifController extends Controller
                 ->addIndexColumn()
                 ->make(true);
             }
-            return view('pages.alternatif.perhitungan_saw', compact('page','min_v_harga_makanan','min_v_jarak','max_v_fasilitas','max_v_rasa_makanan','max_v_variasi_makanan'));
+            return view('pages.alternatif.perhitungan_saw', compact('page','min_v_harga_makanan','min_v_jarak','max_v_fasilitas','max_v_jam_operasional','max_v_variasi_makanan'));
     }
 
     public function normalisasiAlternatif(Request $request)
@@ -246,14 +246,14 @@ class AlternatifController extends Controller
         $alternatif_hasil = [];
         $sum_v_harga_makanan = [];
         $sum_v_variasi_makanan = [];
-        $sum_v_rasa_makanan = [];
+        $sum_v_jam_operasional = [];
         $sum_v_jarak = [];
         $sum_v_fasilitas = [];
 
         foreach ($data as $item) {
             // $v_harga_makanan = 1 / $item->v_harga_makanan;
             // $v_variasi_makanan = 5 / $item->v_variasi_makanan;
-            // $v_rasa_makanan = 5 / $item->v_rasa_makanan;
+            // $v_jam_operasional = 5 / $item->v_jam_operasional;
             // $v_jarak = 1 / $item->v_jarak;
             // $v_fasilitas = 1 / $item->v_fasilitas;
 
@@ -263,8 +263,8 @@ class AlternatifController extends Controller
             $v_variasi_makanan = round($item->variasiMenu->value, 2);
             $sum_v_variasi_makanan[] = $v_variasi_makanan;
 
-            $v_rasa_makanan = round($item->rasa->value, 2);
-            $sum_v_rasa_makanan[] = $v_rasa_makanan;
+            $v_jam_operasional = round($item->jamOperasional->value, 2);
+            $sum_v_jam_operasional[] = $v_jam_operasional;
 
             $v_jarak = round($item->jarak->value, 2);
             $sum_v_jarak[] = $v_jarak;
@@ -276,28 +276,27 @@ class AlternatifController extends Controller
         $min_v_harga_makanan = min($sum_v_harga_makanan);
         $min_v_jarak = min($sum_v_jarak);
         $max_v_fasilitas = max($sum_v_fasilitas);
-        $max_v_rasa_makanan = max($sum_v_rasa_makanan);
+        $max_v_jam_operasional = max($sum_v_jam_operasional);
         $max_v_variasi_makanan = max($sum_v_variasi_makanan);
-
         // dd(['min '.min($min_v_harga_makanan),$sum_v_harga_makanan]);
         // foreach ($data as $item) {
         //     $v_harga_makanan = 1 / $item->v_harga_makanan;
         //     $v_jarak = 1 / $item->v_jarak;
         //     $v_fasilitas = 5 / $item->v_fasilitas;
-        //     $v_rasa_makanan = 5 / $item->v_rasa_makanan;
+        //     $v_jam_operasional = 5 / $item->v_jam_operasional;
         //     $v_variasi_makanan = 5 / $item->v_variasi_makanan;
 
         //     $v_harga = $min_v_harga_makanan != 0 ?   $min_v_harga_makanan / round($v_harga_makanan,2)  : 0;
         //     $v_jarak = $min_v_jarak != 0 ?  $min_v_jarak / round($v_jarak,2) : 0;
         //     $v_fasilitas = $max_v_fasilitas != 0 ? round($v_fasilitas,2) / $max_v_fasilitas : 0;
-        //     $v_rasa = $max_v_rasa_makanan != 0 ? round($v_rasa_makanan,2) / $max_v_rasa_makanan : 0;
+        //     $v_rasa = $max_v_jam_operasional != 0 ? round($v_jam_operasional,2) / $max_v_jam_operasional : 0;
         //     $v_variasi = $max_v_variasi_makanan != 0 ? round($v_variasi_makanan,2) / $max_v_variasi_makanan : 0;
 
         //     $alternatif_hasil[] = [
         //         'alternatif' => $item,
         //         'v_harga_makanan'   =>  round($v_harga,2),
         //         'v_variasi_makanan' => round($v_variasi,2),
-        //         'v_rasa_makanan'    => round($v_rasa,2),
+        //         'v_jam_operasional'    => round($v_rasa,2),
         //         'v_jarak'           => round($v_jarak,2),
         //         'v_fasilitas'       => round($v_fasilitas,2),
         //     ];
@@ -309,23 +308,23 @@ class AlternatifController extends Controller
                 })
                 ->addColumn('v_harga_makanan', function ($row) use ($min_v_harga_makanan) {
                     $v_harga_makanan = $min_v_harga_makanan / $row->harga->value;
-                    return $min_v_harga_makanan.' / '.$row->harga_makanan.' = '.round($v_harga_makanan,2);
+                    return $min_v_harga_makanan.' / '.$row->harga->value.' = '.round($v_harga_makanan,2);
                 })
                 ->addColumn('v_jarak', function ($row) use ($min_v_jarak){
                     $v_jarak = $min_v_jarak / $row->jarak->value;
-                    return $min_v_jarak.' / '.$row->v_jarak.' = '.round($v_jarak,2);
+                    return $min_v_jarak.' / '.$row->jarak->value.' = '.round($v_jarak,2);
                 })
                 ->addColumn('v_fasilitas', function ($row) use ($max_v_fasilitas) {
                     $v_fasilitas = $row->fasilitas->value / $max_v_fasilitas;
-                    return $row->v_fasilitas.' / '.$max_v_fasilitas.' = '.round($v_fasilitas,2);
+                    return $row->fasilitas->value.' / '.$max_v_fasilitas.' = '.round($v_fasilitas,2);
                 })
-                ->addColumn('v_rasa_makanan', function ($row) use ($max_v_rasa_makanan) {
-                    $v_rasa_makanan = $row->rasa->value / $max_v_rasa_makanan;
-                    return $row->v_rasa_makanan.' / '.$max_v_rasa_makanan.' = '.round($v_rasa_makanan,2);
+                ->addColumn('v_jam_operasional', function ($row) use ($max_v_jam_operasional) {
+                    $v_jam_operasional = $row->jamOperasional->value / $max_v_jam_operasional;
+                    return $row->jamOperasional->value.' / '.$max_v_jam_operasional.' = '.round($v_jam_operasional,2);
                 })
                 ->addColumn('variasi_makanan', function ($row) use ($max_v_variasi_makanan) {
                     $v_variasi_makanan =  $row->variasiMenu->value / $max_v_variasi_makanan ;
-                    return $row->v_variasi_makanan.' / '.$max_v_variasi_makanan.' = '.round($v_variasi_makanan,2);
+                    return $row->variasiMenu->value.' / '.$max_v_variasi_makanan.' = '.round($v_variasi_makanan,2);
                 })
                 ->addIndexColumn()
                 ->make(true);
@@ -339,19 +338,19 @@ class AlternatifController extends Controller
         $alternatif_hasil = [];
         $sum_v_harga_makanan = [];
         $sum_v_variasi_makanan = [];
-        $sum_v_rasa_makanan = [];
+        $sum_v_jam_operasional = [];
         $sum_v_jarak = [];
         $sum_v_fasilitas = [];
         $bobot_v_harga = 0;
         $bobot_v_jarak = 0;
-        $bobot_v_rasa = 0;
+        $bobot_v_jam_operasional = 0;
         $bobot_v_variasi = 0;
         $bobot_v_fasilitas = 0;
 
         foreach ($data as $item) {
             // $v_harga_makanan = 1 / $item->v_harga_makanan;
             // $v_variasi_makanan = 5 / $item->v_variasi_makanan;
-            // $v_rasa_makanan = 5 / $item->v_rasa_makanan;
+            // $v_jam_operasional = 5 / $item->v_jam_operasional;
             // $v_jarak = 1 / $item->v_jarak;
             // $v_fasilitas = 1 / $item->v_fasilitas;
 
@@ -361,8 +360,8 @@ class AlternatifController extends Controller
             $v_variasi_makanan = round($item->variasiMenu->value, 2);
             $sum_v_variasi_makanan[] = $v_variasi_makanan;
 
-            $v_rasa_makanan = round($item->rasa->value, 2);
-            $sum_v_rasa_makanan[] = $v_rasa_makanan;
+            $v_jam_operasional = round($item->jamOperasional->value, 2);
+            $sum_v_jam_operasional[] = $v_jam_operasional;
 
             $v_jarak = round($item->jarak->value, 2);
             $sum_v_jarak[] = $v_jarak;
@@ -374,33 +373,40 @@ class AlternatifController extends Controller
         $min_v_harga_makanan = min($sum_v_harga_makanan);
         $min_v_jarak = min($sum_v_jarak);
         $max_v_fasilitas = max($sum_v_fasilitas);
-        $max_v_rasa_makanan = max($sum_v_rasa_makanan);
+        $max_v_jam_operasional = max($sum_v_jam_operasional);
         $max_v_variasi_makanan = max($sum_v_variasi_makanan);
 
         foreach ($data as $item) {
+            $bobotKriteria = BobotKriteria::first();
+            $b_harga_makanan = $bobotKriteria->bobot_harga_makanan / 100;
+            $b_jarak = $bobotKriteria->bobot_jarak / 100;
+            $b_fasilitas = $bobotKriteria->bobot_fasilitas / 100;
+            $b_jam_operasional = $bobotKriteria->bobot_jam_operasional / 100;
+            $b_variasi_menu = $bobotKriteria->bobot_variasi_menu / 100;
+
             $v_harga_makanan = $min_v_harga_makanan / $item->harga->value;
             $v_jarak = $min_v_jarak / $item->jarak->value;
             $v_fasilitas = $item->fasilitas->value / $max_v_fasilitas;
-            $v_rasa_makanan = $item->rasa->value / $max_v_rasa_makanan;
+            $v_jam_operasional = $item->jamOperasional->value / $max_v_jam_operasional;
             $v_variasi_makanan =  $item->variasiMenu->value / $max_v_variasi_makanan;
 
-            $bobot_v_harga =  round($v_harga_makanan,2) * 0.30;
-            $bobot_v_variasi = round($v_variasi_makanan,2) * 0.10;
-            $bobot_v_rasa = round($v_rasa_makanan,2) * 0.10;
-            $bobot_v_jarak = round($v_jarak,2) * 0.25;
-            $bobot_v_fasilitas = round($v_fasilitas,2) * 0.25;
+            $bobot_v_harga =  round($v_harga_makanan,2) * number_format($b_harga_makanan,2);
+            $bobot_v_variasi = round($v_variasi_makanan,2) * number_format($b_variasi_menu,2);
+            $bobot_v_jam_operasional = round($v_jam_operasional,2) * number_format($b_jam_operasional,2);
+            $bobot_v_jarak = round($v_jarak,2) * number_format($b_jam_operasional,2);
+            $bobot_v_fasilitas = round($v_fasilitas,2) * number_format($b_fasilitas,2);
 
 
             // $v_bobot_jarak += round($v_jarak,2);
             // $value_jarak = round($v_jarak,2) / $v_bobot_jarak;
-            // $jumlah = round($v_harga_makanan, 2) + round($v_variasi_makanan, 2) + round($v_rasa_makanan, 2) + round($v_jarak, 2) + round($v_fasilitas, 2);
-            $jumlah = round($bobot_v_harga, 2) + round($bobot_v_variasi, 2) + round($bobot_v_rasa, 2) + round($bobot_v_jarak, 2) + round($bobot_v_fasilitas, 2);
+            // $jumlah = round($v_harga_makanan, 2) + round($v_variasi_makanan, 2) + round($v_jam_operasional, 2) + round($v_jarak, 2) + round($v_fasilitas, 2);
+            $jumlah = round($bobot_v_harga, 2) + round($bobot_v_variasi, 2) + round($bobot_v_jam_operasional, 2) + round($bobot_v_jarak, 2) + round($bobot_v_fasilitas, 2);
 
             $alternatif_hasil[] = [
                 'alternatif' => $item,
                 'v_harga_makanan' => $bobot_v_harga,
                 'v_variasi_makanan' => $bobot_v_variasi,
-                'v_rasa_makanan'    => $bobot_v_rasa,
+                'v_jam_operasional'    => $bobot_v_jam_operasional,
                 'v_jarak'           => $bobot_v_jarak,
                 'v_fasilitas'       => $bobot_v_fasilitas,
                 'jumlah_nilai'      => $jumlah,
@@ -429,8 +435,8 @@ class AlternatifController extends Controller
                 ->addColumn('v_fasilitas', function ($row) {
                     return round($row['v_fasilitas'],2);
                 })
-                ->addColumn('v_rasa_makanan', function ($row) {
-                    return round($row['v_rasa_makanan'],2);
+                ->addColumn('v_jam_operasional', function ($row) {
+                    return round($row['v_jam_operasional'],2);
                 })
                 ->addColumn('v_variasi_makanan', function ($row) {
                     return round($row['v_variasi_makanan'],2);

@@ -27,7 +27,7 @@
                         <th>Alamat</th>
                         <td class="text-end">{{ $restaurant->address }}</td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <th>Fasilitas</th>
                         <td class="text-end">
                             @if (!$restaurant->facilities)
@@ -38,10 +38,30 @@
                                 @endforeach
                             @endif
                         </td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <th>Jarak</th>
                         <td class="text-end">{{ $restaurant->distance }}</td>
+                    </tr>
+                    <tr>
+                        <th>Kriteria Jarak</th>
+                        <td class="text-end">{{ $restaurant->jarak->standard_value.' | '.$restaurant->jarak->range_value }}</td>
+                    </tr>
+                    <tr>
+                        <th>Kriteria Variasi Menu</th>
+                        <td class="text-end">{{ $restaurant->variasiMenu->standard_value.' | '.$restaurant->variasiMenu->range_value }}</td>
+                    </tr>
+                    <tr>
+                        <th>Kriteria Harga Makanan</th>
+                        <td class="text-end">{{ $restaurant->harga->standard_value.' | '.$restaurant->harga->range_value }}</td>
+                    </tr>
+                    <tr>
+                        <th>Kriteria Fasilitas</th>
+                        <td class="text-end">{{ $restaurant->fasilitas->standard_value }}</td>
+                    </tr>
+                    <tr>
+                        <th>Kriteria Jam Operasional</th>
+                        <td class="text-end">{{ $restaurant->jamOperasional->standard_value.' | '.$restaurant->jamOperasional->range_value }}</td>
                     </tr>
                     <tr>
                         <th>Link Gmaps</th>
@@ -55,17 +75,17 @@
                         @endif
                         </td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <th>Rata - Rata Harga</th>
                         <td class="text-end"> {{ number_format($restaurant->average) }}</td>
-                    </tr>
-                    <tr>
+                    </tr> --}}
+                    {{-- <tr>
                         <th>Qty Variasi Makanan</th>
                         <td class="text-end">  {{ $restaurant->qty_variasi_makanan }}</td>
-                    </tr>
+                    </tr> --}}
                 </table>
             </div>
-            <div class="col-md-12">
+            {{-- <div class="col-md-12">
                 <h4>Variasi Menu</h4>
                 <table class="table table-bordered" width="100%">
                     <thead>
@@ -92,7 +112,7 @@
                         </tr>
                     </tfoot>
                 </table>
-            </div>
+            </div> --}}
             <div class="col-md-12">
                 <h4>Data Alternatif</h4>
                 <table class="table table-bordered" width="100%" id="alternatif_table">
@@ -105,7 +125,7 @@
                             <th>Harga Makanan</th>
                             <th>Jarak</th>
                             <th>Fasilitas</th>
-                            <th>Rasa Makanan</th>
+                            <th>Jam Operasional</th>
                             <th>Variasi Makanan</th>
                         </tr>
                     </thead>
@@ -115,7 +135,7 @@
                             <td>{{ $restaurant->harga->value }}</td>
                             <td>{{ $restaurant->jarak->value }}</td>
                             <td>{{ $restaurant->fasilitas->value }}</td>
-                            <td>{{ $restaurant->rasa->value }}</td>
+                            <td>{{ $restaurant->jamOperasional->value }}</td>
                             <td>{{ $restaurant->variasiMenu->value }}</td>
                         </tr>
                     </tbody>
@@ -125,7 +145,7 @@
                             <th>Harga Makanan</th>
                             <th>Jarak</th>
                             <th>Fasilitas</th>
-                            <th>Rasa Makanan</th>
+                            <th>Jam Operasional</th>
                             <th>Variasi Makanan</th>
                         </tr>
                     </tfoot>
@@ -199,7 +219,7 @@
                                                     <div class="mx-2 d-flex flex-grow-1 justify-content-between align-items-center">
                                                         <div>
                                                             <h6 class="mb-1">
-                                                                <span class="font-weight-bold">{{ $comment->user->name }}</span>
+                                                                <span class="font-weight-bold">{{ $comment->user ? $comment->user->name : '' }}</span>
                                                                 <span><small>{{ \Carbon\Carbon::parse($comment->created_at)->diffForHumans() }}</small></span>
                                                             </h6>
                                                             <p class="mb-0">

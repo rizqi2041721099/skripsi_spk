@@ -47,7 +47,7 @@
                             <small class="text-danger" id="error_v_fasilitas"></small>
                        </div>
                        <div class="col-md-12 mt-2">
-                            <label class="form-label">Rasa Makanan</label>
+                            <label class="form-label">Jam Operasional</label>
                             <input type="text" class="form-control" id="v_rasa_makanan" name="v_rasa_makanan">
                             <small class="text-danger" id="error_v_rasa_makanan"></small>
                        </div>

@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\{Restaurant,Facility,
-                KriteriaFasilitas,KriteriaRasa,
+                KriteriaFasilitas,
                 FoodVariaty,Comment,KriteriaVariasiMenu,KriteriaJarak,KriteriaHarga,
+                KategoriJamOperasional,BobotKriteria
             };
 use Illuminate\Http\Request;
 use DataTables;
@@ -54,17 +55,17 @@ class RestaurantController extends Controller
                     }
                     return $image = '<img src="'. $url . '" class="rounded" style="width: 70px; height: 70px;">';
                 })
-                ->addColumn('facility', function ($row) use ($data) {
-                    return $row->facilities ? $row->facilities->count() : 0;
-                })
-                ->addColumn('qty_variasi_makanan', function ($row) {
-                    return $row->qty_variasi_makanan ?? '-';
-                })
-                ->addColumn('average', function ($row) {
-                    return number_format($row->average) ?? '-';
-                })
-                ->addColumn('rasa', function ($row) {
-                    return $row->rasa->standard_value;
+                // ->addColumn('facility', function ($row) use ($data) {
+                //     return $row->facilities ? $row->facilities->count() : 0;
+                // })
+                // ->addColumn('qty_variasi_makanan', function ($row) {
+                //     return $row->qty_variasi_makanan ?? '-';
+                // })
+                // ->addColumn('average', function ($row) {
+                //     return number_format($row->average) ?? '-';
+                // })
+                ->addColumn('jam_operasional', function ($row) {
+                    return $row->jamOperasional->range_value;
                 })
                 ->addColumn('status', function ($row) {
                     $span = '';
@@ -236,30 +237,39 @@ class RestaurantController extends Controller
     {
         $page = 'restaurant';
         $facilities = Facility::get();
-        $getRasa = KriteriaRasa::get();
+        $getJamOperasional = KategoriJamOperasional::get();
         $getFasilitas = KriteriaFasilitas::get();
-
-        return view('pages.restaurant.create', compact('page','facilities','getFasilitas','getRasa'));
+        $getVariasiMenu = KriteriaVariasiMenu::get();
+        $getFasilitas = KriteriaFasilitas::get();
+        $getHarga = KriteriaHarga::get();
+        return view('pages.restaurant.create', compact('page','facilities','getFasilitas','getJamOperasional','getVariasiMenu','getFasilitas','getHarga'));
     }
 
     public function store(Request $request)
     {
         $this->validate($request,[
-            'restaurant_name'   => 'required|unique:restaurants,name,',
-            'distance'          => 'required|ends_with:KM',
-            'images'            => 'nullable',
-            'address'           => 'nullable',
-            'facility'          => 'nullable',
-            'qty_variasi_makanan'    => 'nullable|integer',
-            'average'           => 'nullable',
-            'map_link'          => 'nullable',
-            'menuData'          => 'nullable',
-            'kriteria_fasilitas_id' => 'required'
+        'restaurant_name'               => 'required|unique:restaurants,name,',
+        'distance'                      => 'required|ends_with:KM',
+        'images'                        => 'nullable',
+        'address'                       => 'nullable',
+        'facility'                      => 'nullable',
+        'qty_variasi_makanan'           => 'nullable|integer',
+        'average'                       => 'nullable',
+        'map_link'                      => 'nullable',
+        'menuData'                      => 'nullable',
+        'kriteria_fasilitas_id'         => 'required',
+        'variasi_menu_id'               => 'required',
+        'kriteria_jam_operasional_id'   => 'required',
+        'kriteria_harga_id'             => 'required',
         ],[
-            'name.required'           => 'Nama restaurant harus diisi.',
-            'distance.required'       => 'Jarak restaurant harus diisi.',
-            'distance.ends_with'      => 'Format jarak tidak valid harus mengandung KM',
-            'kriteria_fasilitas_id.required' => 'Kriteria fasilitas harus diisi.'
+            'name.required'                  => 'Nama restaurant harus diisi.',
+            'distance.required'              => 'Jarak restaurant harus diisi.',
+            'distance.ends_with'             => 'Format jarak tidak valid harus mengandung KM',
+            'kriteria_fasilitas_id.required' => 'Kriteria fasilitas harus diisi.',
+            'variasi_menu_id.required'       => 'Variasi menu harus diisi.',
+            'variasi_menu_id.required'       => 'Variasi menu harus diisi.',
+            'kriteria_harga_id.required'     => 'Kriteria harga harus diisi.',
+            'kriteria_jam_operasional_id.required'       => 'Kriteria Jam Operasional harus diisi.',
             // 'qty_variasi_makanan'       => 'Qty food variaty harus berupa angka.',
         ]);
 
@@ -292,71 +302,95 @@ class RestaurantController extends Controller
         }
 
         $auth = auth()->user();
-        $menuData = json_decode($request->input('menuData'), TRUE);
 
         $data = Restaurant::create([
-            'name'      => $request->restaurant_name,
-            'distance'  => $request->distance,
-            'added_by'  => auth()->user()->name,
-            'address'   => $request->address,
-            'facility'   => $request->facility,
-            'status'    => $auth->hasRole('ADMIN') ? 1 : 0,
-            'images'    => isset($request->images) ? $request->images : null,
-            'kriteria_fasilitas_id' => $request->kriteria_fasilitas_id,
-            'kriteria_rasa_id' => $request->kriteria_rasa_id,
-            'kriteria_jarak_id' => $v_jarak,
-            'map_link'  => $request->map_link,
+            'name'                         => $request->restaurant_name,
+            'distance'                     => $request->distance,
+            'added_by'                     => auth()->user()->name,
+            'address'                      => $request->address,
+            'facility'                     => $request->facility,
+            'status'                       => $auth->hasRole('ADMIN') ? 1 : 0,
+            'images'                       => isset($request->images) ? $request->images : null,
+            'kriteria_fasilitas_id'        => $request->kriteria_fasilitas_id,
+            'kriteria_jam_operasional_id'  => $request->kriteria_jam_operasional_id,
+            'kriteria_harga_id'            => $request->kriteria_harga_id,
+            'variasi_menu_id'              => $request->variasi_menu_id,
+            'kriteria_jarak_id'            => $v_jarak,
+            'map_link'                     => $request->map_link,
         ]);
-        $data->facilities()->attach($request->facility_id);
 
-        $totalPrice = 0;
-        $totalData = count($menuData);
+        // if($request->has('facility_id') || $request->has('menuData')) {
+        //     if($request->has('facility_id')){
+        //         $data->facilities()->attach($request->facility_id);
+        //     }
+        //     if($request->has('menuData')){
+        //         $menuData = json_decode($request->input('menuData'), TRUE);
+        //         $totalPrice = 0;
+        //         $totalData = count($menuData);
 
-        if($totalData > 20)
-        {
-           $v_variasi_menu = 1;
-        } elseif ($totalData >= 15 && $totalData <= 20) {
-            $v_variasi_menu = 2;
-        } elseif($totalData >=10 && $totalData <= 15) {
-            $v_variasi_menu = 3;
-        } elseif($totalData >= 5 && $totalData <= 10) {
-            $v_variasi_menu = 4;
-        } elseif($totalData <= 5) {
-            $v_variasi_menu = 5;
-        }
+        //         if($totalData > 20)
+        //         {
+        //            $v_variasi_menu = 1;
+        //         } elseif ($totalData >= 15 && $totalData <= 20) {
+        //             $v_variasi_menu = 2;
+        //         } elseif($totalData >=10 && $totalData <= 15) {
+        //             $v_variasi_menu = 3;
+        //         } elseif($totalData >= 5 && $totalData <= 10) {
+        //             $v_variasi_menu = 4;
+        //         } elseif($totalData <= 5) {
+        //             $v_variasi_menu = 5;
+        //         }
 
-        foreach ($menuData as $menu) {
-            $name = $menu['name'];
-            $price = $menu['price'];
-            $priceNumeric = (int) str_replace([",", "."], "", $price);
+        //         foreach ($menuData as $menu) {
+        //             $name = $menu['name'];
+        //             $price = $menu['price'];
+        //             $priceNumeric = (int) str_replace([",", "."], "", $price);
 
-            $totalPrice += $priceNumeric;
+        //             $totalPrice += $priceNumeric;
 
-            FoodVariaty::create([
-                'restaurant_id' => $data->id,
-                'name' => $name,
-                'price' => $priceNumeric,
-            ]);
-        }
-        $averagePrice = $totalData > 0 ? $totalPrice / $totalData : 0;
-        $v_harga = 0;
-        switch ($averagePrice) {
-            case ($averagePrice >= 2000 && $averagePrice < 15000):
-                $v_harga = 1;
-                break;
-            case ($averagePrice >= 15000 && $averagePrice < 25000):
-                $v_harga = 2;
-                break;
-            case ($averagePrice >= 25000):
-                $v_harga = 3;
-                break;
-        }
+        //             FoodVariaty::create([
+        //                 'restaurant_id' => $data->id,
+        //                 'name' => $name,
+        //                 'price' => $priceNumeric,
+        //             ]);
+        //         }
 
-        $data->qty_variasi_makanan = $totalData;
-        $data->average = $averagePrice;
-        $data->variasi_menu_id = $v_variasi_menu;
-        $data->kriteria_harga_id = $v_harga;
-        $data->save();
+        //         $averagePrice = $totalData > 0 ? $totalPrice / $totalData : 0;
+        //         $v_harga = 0;
+        //         switch ($averagePrice) {
+        //             case ($averagePrice >= 2000 && $averagePrice < 15000):
+        //                 $v_harga = 1;
+        //                 break;
+        //             case ($averagePrice >= 15000 && $averagePrice < 25000):
+        //                 $v_harga = 2;
+        //                 break;
+        //             case ($averagePrice >= 25000):
+        //                 $v_harga = 3;
+        //                 break;
+        //         }
+
+        //         if($v_harga != $data->kriteria_harga_id){
+        //             return response()->json([
+        //                 'success'   => false,
+        //                 'message'   => 'Rata-rata harga makanan tidak sama dengan harga pada kriteria harga makanan'
+        //             ]);
+        //         }
+        //         if($v_variasi_menu != $data->variasi_menu_id){
+        //             return response()->json([
+        //                 'success'   => false,
+        //                 'message'   => 'Variasi menu tidak sama dengan kriteria variasi menu'
+        //             ]);
+        //         }
+
+        //         $data->qty_variasi_makanan = $totalData;
+        //         $data->average = $averagePrice;
+        //         // $data->variasi_menu_id = $v_variasi_menu;
+        //         // $data->kriteria_harga_id = $v_harga;
+        //     }
+
+        //     $data->save();
+        // }
+
 
         if($data){
             return response()->json([
@@ -375,11 +409,13 @@ class RestaurantController extends Controller
     {
         $page = 'restaurant';
         $facilities = Facility::get();
-        $getRasa = KriteriaRasa::get();
+        $getJamOperasional = KategoriJamOperasional::get();
         $getFasilitas = KriteriaFasilitas::get();
         $foodVariaty = FoodVariaty::where('restaurant_id',$restaurant->id)->get();
+        $getVariasiMenu = KriteriaVariasiMenu::get();
+        $getHarga = KriteriaHarga::get();
 
-        return view('pages.restaurant.edit',compact('restaurant','page','facilities','getRasa','getFasilitas','foodVariaty'));
+        return view('pages.restaurant.edit',compact('restaurant','page','facilities','getJamOperasional','getFasilitas','foodVariaty','getVariasiMenu','getHarga'));
     }
 
     public function show(Restaurant $restaurant)
@@ -388,8 +424,8 @@ class RestaurantController extends Controller
         $facilities = Facility::get();
         $food_variaty = FoodVariaty::where('restaurant_id',$restaurant->id)->get();
         $commentList = Comment::where('restaurant_id',$restaurant->id)->whereNull('parent_id')->get();
-        $getRasa = KriteriaRasa::get();
-        return view('pages.restaurant.show',compact('restaurant','page','facilities','food_variaty','commentList','getRasa'));
+        $getJamOperasional = KategoriJamOperasional::get();
+        return view('pages.restaurant.show',compact('restaurant','page','facilities','food_variaty','commentList','getJamOperasional'));
     }
 
     public function detailRestaurant(Restaurant $restaurant)
@@ -398,14 +434,14 @@ class RestaurantController extends Controller
         $facilities = Facility::get();
         $food_variaty = FoodVariaty::where('restaurant_id',$restaurant->id)->get();
         $commentList = Comment::where('restaurant_id',$restaurant->id)->whereNull('parent_id')->get();
-        $getRasa = KriteriaRasa::get();
-        return view('pages.frontend.home.detail-restaurant',compact('restaurant','facilities','food_variaty','commentList','getRasa'));
+        $getJamOperasional = KategoriJamOperasional::get();
+        return view('pages.frontend.home.detail-restaurant',compact('restaurant','facilities','food_variaty','commentList','getJamOperasional'));
     }
 
-    public function update(Request $request, Restaurant $restaurant)
+    public function update(Request $request, int $id)
     {
         $this->validate($request, [
-            'restaurant_name'  => 'nullable|unique:restaurants,name,'.$restaurant->id,
+            'restaurant_name'  => 'nullable|unique:restaurants,name,'.$id,
             'distance'  => 'nullable|ends_with:KM',
             'image'     => 'nullable|image',
             'address'   => 'nullable',
@@ -413,7 +449,9 @@ class RestaurantController extends Controller
             'qty_variasi_makanan'    => 'nullable|integer',
             'average'           => 'nullable',
             'kriteria_fasilitas_id' => 'nullable',
-            'kriteria_rasa_id' => 'nullable'
+            'kriteria_jam_operasional_id' => 'nullable',
+            'variasi_menu_id' => 'nullable',
+            'kriteria_harga_id' => 'nullable',
         ], [
             'name.unique' => 'Restaurant sudah ada.',
             'image.image' => 'File yang diunggah harus berupa gambar.',
@@ -436,6 +474,7 @@ class RestaurantController extends Controller
             $v_jarak = 5;
         }
 
+        $restaurant = Restaurant::find($id);
 
         $temp = null;
         if ($request->hasFile('image')) {
@@ -445,93 +484,92 @@ class RestaurantController extends Controller
             $request->image = $originalFileName;
         }
         // $menuData = json_decode($request->input('menuData'), TRUE);
-        $menuData = collect(json_decode($request->input('menuData'), TRUE));
+        // $menuData = collect(json_decode($request->input('menuData'), TRUE));
 
         if ($restaurant->wasChanged('images') && $temp) {
             Storage::delete('public/images/restaurants/'.$temp);
         }
 
-        $restaurant->facilities()->sync($request->facility_id);
+        // $restaurant->facilities()->sync($request->facility_id);
 
-        $totalPrice = 0;
-        $totalData = count($menuData);
+        // $totalPrice = 0;
+        // $totalData = count($menuData);
 
-        if($totalData > 20)
-        {
-           $v_variasi_menu = 1;
-        } elseif ($totalData >= 15 && $totalData <= 20) {
-            $v_variasi_menu = 2;
-        } elseif($totalData >=10 && $totalData <= 15) {
-            $v_variasi_menu = 3;
-        } elseif($totalData >= 5 && $totalData <= 10) {
-            $v_variasi_menu = 4;
-        } elseif($totalData <= 5) {
-            $v_variasi_menu = 5;
-        }
+        // if($totalData > 20)
+        // {
+        //    $v_variasi_menu = 1;
+        // } elseif ($totalData >= 15 && $totalData <= 20) {
+        //     $v_variasi_menu = 2;
+        // } elseif($totalData >=10 && $totalData <= 15) {
+        //     $v_variasi_menu = 3;
+        // } elseif($totalData >= 5 && $totalData <= 10) {
+        //     $v_variasi_menu = 4;
+        // } elseif($totalData <= 5) {
+        //     $v_variasi_menu = 5;
+        // }
 
-        $existingVariety = FoodVariaty::where('restaurant_id',$restaurant->id)->select('id','name','price')->get();
-        foreach ($existingVariety as $foodVariety) {
-            if (!$menuData->contains('id', $foodVariety->id)) {
-                $foodVariety->delete();
-            }
-        }
+        // $existingVariety = FoodVariaty::where('restaurant_id',$restaurant->id)->select('id','name','price')->get();
+        // foreach ($existingVariety as $foodVariety) {
+        //     if (!$menuData->contains('id', $foodVariety->id)) {
+        //         $foodVariety->delete();
+        //     }
+        // }
 
-        foreach ($menuData as $menu) {
-            $name = $menu['name'];
-            $price = (int) str_replace([",", "."], "", $menu['price']);
-            $totalPrice += $price;
-            if($existingVariety->isEmpty()){
-                FoodVariaty::create([
-                    'restaurant_id' => $restaurant->id,
-                    'name' => $name,
-                    'price' => $price,
-                ]);
-            } else {
-                $existing = $existingVariety->where('id',$menu['id'])->first();
-                if ($existing) {
-                        $existing->update([
-                            'price' => $price,
-                            'name' => $name,
-                        ]);
-                } else {
-                    FoodVariaty::create([
-                        'restaurant_id' => $restaurant->id,
-                        'name' => $name,
-                        'price' => $price,
-                    ]);
-                }
-            }
+        // foreach ($menuData as $menu) {
+        //     $name = $menu['name'];
+        //     $price = (int) str_replace([",", "."], "", $menu['price']);
+        //     $totalPrice += $price;
+        //     if($existingVariety->isEmpty()){
+        //         FoodVariaty::create([
+        //             'restaurant_id' => $restaurant->id,
+        //             'name' => $name,
+        //             'price' => $price,
+        //         ]);
+        //     } else {
+        //         $existing = $existingVariety->where('id',$menu['id'])->first();
+        //         if ($existing) {
+        //                 $existing->update([
+        //                     'price' => $price,
+        //                     'name' => $name,
+        //                 ]);
+        //         } else {
+        //             FoodVariaty::create([
+        //                 'restaurant_id' => $restaurant->id,
+        //                 'name' => $name,
+        //                 'price' => $price,
+        //             ]);
+        //         }
+        //     }
 
-        }
+        // }
 
-        $averagePrice = $totalData > 0 ? $totalPrice / $totalData : 0;
-        $v_harga = 0;
-        switch ($averagePrice) {
-            case ($averagePrice >= 2000 && $averagePrice < 15000):
-                $v_harga = 1;
-                break;
-            case ($averagePrice >= 15000 && $averagePrice < 25000):
-                $v_harga = 2;
-                break;
-            case ($averagePrice >= 25000):
-                $v_harga = 3;
-                break;
-        }
-
+        // $averagePrice = $totalData > 0 ? $totalPrice / $totalData : 0;
+        // $v_harga = 0;
+        // switch ($averagePrice) {
+        //     case ($averagePrice >= 2000 && $averagePrice < 15000):
+        //         $v_harga = 1;
+        //         break;
+        //     case ($averagePrice >= 15000 && $averagePrice < 25000):
+        //         $v_harga = 2;
+        //         break;
+        //     case ($averagePrice >= 25000):
+        //         $v_harga = 3;
+        //         break;
+        // }
         $restaurant->update([
             'name'      => $request->restaurant_name,
             'distance'  => $request->distance,
             'address'   => $request->address,
-            'facility'   => $request->facility,
+            // 'facility'   => $request->facility,
             'images'    => $request->hasFile('image') ? $originalFileName : $restaurant->images,
             'kriteria_fasilitas_id' => $request->kriteria_fasilitas_id,
-            'kriteria_rasa_id' => $request->kriteria_rasa_id,
+            'kriteria_jam_operasional_id' => $request->kriteria_jam_operasional_id,
             'kriteria_jarak_id' => $v_jarak,
             'map_link'  => $request->map_link,
-            'qty_variasi_makanan' => $totalData,
-            'average' => $averagePrice,
-            'variasi_menu_id' => $v_variasi_menu,
-            'kriteria_harga_id' => $v_harga,
+            // 'qty_variasi_makanan' => $totalData,
+            // 'average' => $averagePrice,
+            'variasi_menu_id' => $request->variasi_menu_id,
+            'kriteria_harga_id' => $request->kriteria_harga_id,
         ]);
 
         if ($restaurant) {
@@ -592,22 +630,24 @@ class RestaurantController extends Controller
     {
         $page = 'search';
         $facilities = Facility::get();
-        $getRasa = KriteriaRasa::get();
+        $getJamOperasional = KategoriJamOperasional::get();
         $getJarak = KriteriaJarak::get();
         $getVariasiMenu = KriteriaVariasiMenu::get();
         $getHarga = KriteriaHarga::get();
-        return view('pages.restaurant.search',compact('page','facilities','getRasa','getJarak','getVariasiMenu','getHarga'));
+        $getFasilitas = KriteriaFasilitas::get();
+        return view('pages.restaurant.search',compact('page','facilities','getJamOperasional','getJarak','getVariasiMenu','getHarga','getFasilitas'));
     }
 
     public function searchRestaurant()
     {
-        $getRasa = KriteriaRasa::get();
+        $getJamOperasional = KategoriJamOperasional::get();
         $getJarak = KriteriaJarak::get();
         $getVariasiMenu = KriteriaVariasiMenu::get();
         $getHarga = KriteriaHarga::get();
         $facilities = Facility::get();
-        $getRasa = KriteriaRasa::get();
-        return view('pages.frontend.home.search-restaurant',compact('getRasa','getJarak','getVariasiMenu','getHarga','facilities','getRasa'));
+        $getJamOperasional = KategoriJamOperasional::get();
+        $getFasilitas = KriteriaFasilitas::get();
+        return view('pages.frontend.home.search-restaurant',compact('getJamOperasional','getJarak','getVariasiMenu','getHarga','facilities','getJamOperasional','getFasilitas'));
     }
 
     public function filter(Request $request)
@@ -615,10 +655,11 @@ class RestaurantController extends Controller
         $maxQty = $request->input('variasi_menu');
         $jarak = $request->input('jarak');
         $harga = $request->input('harga');
-        $rasa = $request->input('rasa');
-        $selectedFacilities = $request->input('facility_id', []);
+        $jam_operasional = $request->input('jam_operasional');
+        $fasilitas = $request->input('fasilitas');
+        // $selectedFacilities = $request->input('facility_id', []);
 
-        $data = Restaurant::where(function($query) use ($jarak, $harga, $maxQty, $rasa) {
+        $data = Restaurant::where(function($query) use ($jarak, $harga, $maxQty, $jam_operasional, $fasilitas) {
             $query->where(function($query) use ($maxQty) {
                 if ($maxQty == 5) {
                     $query->where('variasi_menu_id', 5);
@@ -645,17 +686,30 @@ class RestaurantController extends Controller
                     $query->where('kriteria_jarak_id',1);
                 }
             })
-            ->where(function($query) use ($rasa) {
-                if ($rasa == 5) {
-                    $query->where('kriteria_rasa_id', 5);
-                } elseif ($rasa == 4) {
-                    $query->where('kriteria_rasa_id',4);
-                } elseif ($rasa == 3) {
-                    $query->where('kriteria_rasa_id', 3);
-                } elseif ($rasa == 2) {
-                    $query->where('kriteria_rasa_id', 2);
-                } elseif ($rasa == 1) {
-                    $query->where('kriteria_rasa_id',1);
+            ->where(function($query) use ($jam_operasional) {
+                if ($jam_operasional == 5) {
+                    $query->where('kriteria_jam_operasional_id', 5);
+                } elseif ($jam_operasional == 4) {
+                    $query->where('kriteria_jam_operasional_id',4);
+                } elseif ($jam_operasional == 3) {
+                    $query->where('kriteria_jam_operasional_id', 3);
+                } elseif ($jam_operasional == 2) {
+                    $query->where('kriteria_jam_operasional_id', 2);
+                } elseif ($jam_operasional == 1) {
+                    $query->where('kriteria_jam_operasional_id',1);
+                }
+            })
+            ->where(function($query) use ($fasilitas) {
+                if ($fasilitas == 5) {
+                    $query->where('kriteria_fasilitas_id', 5);
+                } elseif ($fasilitas == 4) {
+                    $query->where('kriteria_fasilitas_id',4);
+                } elseif ($fasilitas == 3) {
+                    $query->where('kriteria_fasilitas_id', 3);
+                } elseif ($fasilitas == 2) {
+                    $query->where('kriteria_fasilitas_id', 2);
+                } elseif ($fasilitas == 1) {
+                    $query->where('kriteria_fasilitas_id',1);
                 }
             })
             ->where(function($query) use ($harga) {
@@ -668,11 +722,11 @@ class RestaurantController extends Controller
                 }
             });
         })
-        ->when(!empty($selectedFacilities), function ($query) use ($selectedFacilities) {
-            $query->whereHas('facilities', function ($query) use ($selectedFacilities) {
-                $query->whereIn('facilities.id', $selectedFacilities);
-            });
-        })
+        // ->when(!empty($selectedFacilities), function ($query) use ($selectedFacilities) {
+        //     $query->whereHas('facilities', function ($query) use ($selectedFacilities) {
+        //         $query->whereIn('facilities.id', $selectedFacilities);
+        //     });
+        // })
         ->get();
         return response()->json($data);
     }
@@ -743,4 +797,125 @@ class RestaurantController extends Controller
         }
     }
 
+
+    public function rankingRestaurants(Request $request)
+    {
+        $page = 'restaurants';
+
+        $data = Restaurant::get();
+        $alternatif_hasil = [];
+        $sum_v_harga_makanan = [];
+        $sum_v_variasi_makanan = [];
+        $sum_v_jam_operasional = [];
+        $sum_v_jarak = [];
+        $sum_v_fasilitas = [];
+        $bobot_v_harga = 0;
+        $bobot_v_jarak = 0;
+        $bobot_v_jam_operasional = 0;
+        $bobot_v_variasi = 0;
+        $bobot_v_fasilitas = 0;
+
+        foreach ($data as $item) {
+            // $v_harga_makanan = 1 / $item->v_harga_makanan;
+            // $v_variasi_makanan = 5 / $item->v_variasi_makanan;
+            // $v_jam_operasional = 5 / $item->v_jam_operasional;
+            // $v_jarak = 1 / $item->v_jarak;
+            // $v_fasilitas = 1 / $item->v_fasilitas;
+
+            $v_harga_makanan = round($item->harga->value, 2);
+            $sum_v_harga_makanan[] = $v_harga_makanan;
+
+            $v_variasi_makanan = round($item->variasiMenu->value, 2);
+            $sum_v_variasi_makanan[] = $v_variasi_makanan;
+
+            $v_jam_operasional = round($item->jamOperasional->value, 2);
+            $sum_v_jam_operasional[] = $v_jam_operasional;
+
+            $v_jarak = round($item->jarak->value, 2);
+            $sum_v_jarak[] = $v_jarak;
+
+            $v_fasilitas = round($item->fasilitas->value, 2);
+            $sum_v_fasilitas[] = $v_fasilitas;
+        }
+
+        $min_v_harga_makanan = min($sum_v_harga_makanan);
+        $min_v_jarak = min($sum_v_jarak);
+        $max_v_fasilitas = max($sum_v_fasilitas);
+        $max_v_jam_operasional = max($sum_v_jam_operasional);
+        $max_v_variasi_makanan = max($sum_v_variasi_makanan);
+
+        foreach ($data as $item) {
+            $bobotKriteria = BobotKriteria::first();
+            $b_harga_makanan = $bobotKriteria->bobot_harga_makanan / 100;
+            $b_jarak = $bobotKriteria->bobot_jarak / 100;
+            $b_fasilitas = $bobotKriteria->bobot_fasilitas / 100;
+            $b_jam_operasional = $bobotKriteria->bobot_jam_operasional / 100;
+            $b_variasi_menu = $bobotKriteria->bobot_variasi_menu / 100;
+
+            $v_harga_makanan = $min_v_harga_makanan / $item->harga->value;
+            $v_jarak = $min_v_jarak / $item->jarak->value;
+            $v_fasilitas = $item->fasilitas->value / $max_v_fasilitas;
+            $v_jam_operasional = $item->jamOperasional->value / $max_v_jam_operasional;
+            $v_variasi_makanan =  $item->variasiMenu->value / $max_v_variasi_makanan;
+
+            $bobot_v_harga =  round($v_harga_makanan,2) * number_format($b_harga_makanan,2);
+            $bobot_v_variasi = round($v_variasi_makanan,2) * number_format($b_variasi_menu,2);
+            $bobot_v_jam_operasional = round($v_jam_operasional,2) * number_format($b_jam_operasional,2);
+            $bobot_v_jarak = round($v_jarak,2) * number_format($b_jam_operasional,2);
+            $bobot_v_fasilitas = round($v_fasilitas,2) * number_format($b_fasilitas,2);
+
+
+            // $v_bobot_jarak += round($v_jarak,2);
+            // $value_jarak = round($v_jarak,2) / $v_bobot_jarak;
+            // $jumlah = round($v_harga_makanan, 2) + round($v_variasi_makanan, 2) + round($v_jam_operasional, 2) + round($v_jarak, 2) + round($v_fasilitas, 2);
+            $jumlah = round($bobot_v_harga, 2) + round($bobot_v_variasi, 2) + round($bobot_v_jam_operasional, 2) + round($bobot_v_jarak, 2) + round($bobot_v_fasilitas, 2);
+
+            $alternatif_hasil[] = [
+                'alternatif' => $item,
+                'v_harga_makanan' => $bobot_v_harga,
+                'v_variasi_makanan' => $bobot_v_variasi,
+                'v_jam_operasional'    => $bobot_v_jam_operasional,
+                'v_jarak'           => $bobot_v_jarak,
+                'v_fasilitas'       => $bobot_v_fasilitas,
+                'jumlah_nilai'      => $jumlah,
+            ];
+        }
+        usort($alternatif_hasil, function ($a, $b) {
+            if ($a['jumlah_nilai'] == $b['jumlah_nilai']) {
+                return strcasecmp($a['alternatif']->name, $b['alternatif']->name);
+            }
+
+            return $b['jumlah_nilai'] <=> $a['jumlah_nilai'];
+        });
+
+        if ($request->ajax()) {
+            return DataTables::of($alternatif_hasil)
+                ->addColumn('name', function ($row) {
+                    return '<a href="'.route('detail.restaurant', $row['alternatif']->id).'">'.$row['alternatif']->name.'</a>';
+                })
+                ->addColumn('v_harga_makanan', function ($row) {
+                    return round($row['v_harga_makanan'],2);
+                  })
+                  ->addColumn('v_jarak', function ($row) {
+                      return round($row['v_jarak'],2);
+                  })
+                  ->addColumn('v_fasilitas', function ($row) {
+                      return round($row['v_fasilitas'],2);
+                  })
+                  ->addColumn('v_jam_operasional', function ($row) {
+                      return round($row['v_jam_operasional'],2);
+                  })
+                  ->addColumn('v_variasi_makanan', function ($row) {
+                      return round($row['v_variasi_makanan'],2);
+                  })
+                  ->addColumn('jumlah', function ($row) {
+                    return round($row['jumlah_nilai'],2);
+                  })
+                ->addIndexColumn()
+                ->rawColumns(['name'])
+                ->make(true);
+        }
+
+        return view('pages.frontend.home.ranking-restaurants',compact('page'));
+    }
 }

@@ -64,16 +64,40 @@
                             </select>
                         </div>
                         <div class="col-md-4 mb-2">
+                            <label for="">Kriteria Jam Operasional <span class="text-danger">*</span></label>
+                            <select name="kriteria_jam_operasional_id" id="kriteria_jam_operasional_id" class="form-control">
+                                @foreach($getJamOperasional as $item)
+                                    <option value="{{ $item->id }}" {{ $item->id == $restaurant->kriteria_jam_operasional_id ? 'selected' : '' }}>{{ $item->standard_value }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="">Kriteria Variasi Menu <span class="text-danger">*</span></label>
+                            <select name="variasi_menu_id" id="variasi_menu_id" class="form-control">
+                                @foreach($getVariasiMenu as $item)
+                                    <option value="{{ $item->id }}" {{ $item->id == $restaurant->variasi_menu_id ? 'selected' : '' }}>{{ $item->standard_value }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="">Kriteria Harga Makanan <span class="text-danger">*</span></label>
+                            <select name="kriteria_harga_id" id="kriteria_harga_id" class="form-control">
+                                @foreach($getHarga as $item)
+                                    <option value="{{ $item->id }}" {{ $item->id == $restaurant->kriteria_harga_id ? 'selected' : '' }}>{{ $item->standard_value }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        {{-- <div class="col-md-4 mb-2">
                             <label for="">Kriteria Rasa <span class="text-danger">*</span></label>
                             <select name="kriteria_rasa_id" id="kriteria_rasa_id" class="form-control">
                                 @foreach($getRasa as $item)
                                 <option value="{{ $item->id }}" {{ $item->id == $restaurant->kriteria_rasa_id ? 'selected' : '' }}>{{ $item->standard_value }}</option>
                             @endforeach
                             </select>
-                        </div>
+                        </div> --}}
                     </div>
                     <hr>
-                    <h6>Variasi Menu <span class="text-danger">*</span></h6>
+                    {{-- <h6>Variasi Menu <span class="text-danger">*</span></h6>
                     <div id="menu-container">
                         @if (!$foodVariaty->isEmpty())
                             @foreach ($foodVariaty as $index => $key)
@@ -143,7 +167,7 @@
                                 </table>
                             </div>
                         @endforeach
-                    </div>
+                    </div> --}}
                     <div class="mt-2">
                         <a href="{{ route('restaurants.index') }}" class="btn btn-light">Kembali</a>
                         <button type="submit" id="tombol-simpan" value="create" class="btn btn-primary">Simpan</button>
@@ -155,49 +179,49 @@
     </div>
     <script type="application/javascript">
         $(document).ready(function () {
-            $('#menu-container').on('click', '.delete-row', function() {
-                $(this).closest('.row').remove();
-            });
+            // $('#menu-container').on('click', '.delete-row', function() {
+            //     $(this).closest('.row').remove();
+            // });
 
-            $('#menu-container').on('click', '#add-row', function() {
-                var row = '<div class="row mb-3">' +
-                '<div class="col-md-4">' +
-                '<label for="">Nama Menu</label>' +
-                '<input type="hidden" name="id[]">' +
-                '<input type="text" class="form-control" name="name[]">' +
-                '</div>' +
-                '<div class="col-md-4">' +
-                '<label for="">Harga</label>' +
-                '<input type="text" class="form-control price-input" name="price[]" data-type="currency" value="0">' +
-                '</div>' +
-                '<div class="col-md-4 d-flex align-items-end">' +
-                '<button class="btn btn-md btn-danger delete-row"><i class="fas fa-trash"></i></button>' +
-                '</div>' +
-                '</div>';
+            // $('#menu-container').on('click', '#add-row', function() {
+            //     var row = '<div class="row mb-3">' +
+            //     '<div class="col-md-4">' +
+            //     '<label for="">Nama Menu</label>' +
+            //     '<input type="hidden" name="id[]">' +
+            //     '<input type="text" class="form-control" name="name[]">' +
+            //     '</div>' +
+            //     '<div class="col-md-4">' +
+            //     '<label for="">Harga</label>' +
+            //     '<input type="text" class="form-control price-input" name="price[]" data-type="currency" value="0">' +
+            //     '</div>' +
+            //     '<div class="col-md-4 d-flex align-items-end">' +
+            //     '<button class="btn btn-md btn-danger delete-row"><i class="fas fa-trash"></i></button>' +
+            //     '</div>' +
+            //     '</div>';
 
-                $('#menu-container').append(row);
-                $('.price-input').each(function () {
-                    var cleave = new Cleave(this, {
-                        numeral: true,
-                        numeralThousandsGroupStyle: 'thousand'
-                    });
-                })
-            });
+            //     $('#menu-container').append(row);
+            //     $('.price-input').each(function () {
+            //         var cleave = new Cleave(this, {
+            //             numeral: true,
+            //             numeralThousandsGroupStyle: 'thousand'
+            //         });
+            //     })
+            // });
 
             $('#form-create').on('submit', function(event) {
                 event.preventDefault();
                 // Mengumpulkan data dari input dinamis
-                var menuData = [];
-                $('[name="name[]"]').each(function(index) {
-                    var name = $(this).val();
-                    var id = $('[name="id[]"]').eq(index).val();
-                    var price = $('[name="price[]"]').eq(index).val();
-                    menuData.push({ name: name, price: price, id: id });
-                });
+                // var menuData = [];
+                // $('[name="name[]"]').each(function(index) {
+                //     var name = $(this).val();
+                //     var id = $('[name="id[]"]').eq(index).val();
+                //     var price = $('[name="price[]"]').eq(index).val();
+                //     menuData.push({ name: name, price: price, id: id });
+                // });
 
                 var formData = new FormData(this);
 
-                formData.append('menuData', JSON.stringify(menuData));
+                // formData.append('menuData', JSON.stringify(menuData));
 
                 var btn = $('#submit-button');
                 btn.attr('disabled', true);

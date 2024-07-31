@@ -25,10 +25,10 @@
                                 <th>Alamat</th>
                                 <th>Jarak</th>
                                 <th>Image</th>
-                                <th>Qty Fasilitas</th>
+                                {{-- <th>Qty Fasilitas</th>
                                 <th>Qty Variasi Makanan</th>
-                                <th>Rata-Rata Harga Makanan</th>
-                                <th>Rasa Makanan</th>
+                                <th>Rata-Rata Harga Makanan</th> --}}
+                                <th>Jam Operasional</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -40,9 +40,9 @@
                                 <th>Alamat</th>
                                 <th>Jarak</th>
                                 <th>Image</th>
-                                <th>Qty Fasilitas</th>
-                                <th>Qty Variasi Makanan</th>
-                                <th>Rasa Makanan</th>
+                                {{-- <th>Qty Fasilitas</th>
+                                <th>Qty Variasi Makanan</th> --}}
+                                <th>Jam Operasional</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -88,17 +88,17 @@
                 {
                     data: 'image',
                 },
+                // {
+                //     data: 'facility',
+                // },
+                // {
+                //     data: 'qty_variasi_makanan',
+                // },
+                // {
+                //     data: 'average',
+                // },
                 {
-                    data: 'facility',
-                },
-                {
-                    data: 'qty_variasi_makanan',
-                },
-                {
-                    data: 'average',
-                },
-                {
-                    data: 'rasa',
+                    data: 'jam_operasional',
                 },
                 {
                     data: 'status',

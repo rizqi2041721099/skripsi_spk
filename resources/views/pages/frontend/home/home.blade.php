@@ -217,7 +217,7 @@
                             <img class="img-fluid flex-shrink-0 rounded-circle" src="{{ asset('assets/img/boy.png') }}"
                                 style="width: 50px; height: 50px;">
                             <div class="ps-3">
-                                <h5 class="mb-1">{{ $item->user->name }}</h5>
+                                <h5 class="mb-1">{{ $item->user ? $item->user->name  : ''}}</h5>
                                 {{-- <small>Profession</small> --}}
                             </div>
                         </div>

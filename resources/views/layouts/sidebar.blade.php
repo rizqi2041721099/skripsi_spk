@@ -40,6 +40,8 @@
                     href="{{ route('food-variaties.index') }}">Variasi Menu</a> --}}
                 <a class="collapse-item {{ request()->is('facilities*') ? 'active' : '' }}"
                     href="{{ route('facilities.index') }}">Fasilitas</a>
+                <a class="collapse-item {{ request()->is('bobot-kriteria*') ? 'active' : '' }}"
+                    href="{{ route('bobot-kriteria.index') }}">Bobot Kriteria</a>
             </div>
         </div>
     </li>
@@ -105,8 +107,10 @@
                     <a class="collapse-item {{ request()->is('kriteria-variasi-menu*') ? 'active' : '' }}"
                         href="{{ route('kriteria-variasi-menu.index') }}">Kriteria Variasi Menu</a>
                     @endcan
-                    <a class="collapse-item {{ request()->is('kriteria-rasa*') ? 'active' : '' }}"
-                        href="{{ route('kriteria-rasa.index') }}">Kriteria Rasa Makanan</a>
+                    {{-- <a class="collapse-item {{ request()->is('kriteria-rasa*') ? 'active' : '' }}"
+                        href="{{ route('kriteria-rasa.index') }}">Kriteria Jam Operasional</a> --}}
+                    <a class="collapse-item {{ request()->is('kriteria-jam-operasional*') ? 'active' : '' }}"
+                        href="{{ route('kriteria-jam-operasional.index') }}">Kriteria Jam Operasional</a>
                 </div>
             </div>
         </li>

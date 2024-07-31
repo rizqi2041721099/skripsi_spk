@@ -65,61 +65,96 @@
                             <small class="text-danger" id="error_kriteria_fasilitas_id"></small>
                         </div>
                         <div class="col-md-4 mb-2">
-                            <label for="">Kriteria Rasa <span class="text-danger">*</span></label>
-                            <select name="kriteria_rasa_id" id="kriteria_rasa_id" class="form-control">
+                            <label for="">Kriteria Jam Operasional <span class="text-danger">*</span></label>
+                            <select name="kriteria_jam_operasional_id" id="kriteria_jam_operasional_id" class="form-control">
                                 <option value="">pilih</option>
-                                @foreach ($getRasa as $item)
-                                    <option value="{{ $item->id }}">{{ $item->standard_value }}</option>
+                                @foreach ($getJamOperasional as $item)
+                                    <option value="{{ $item->id }}">{{ $item->standard_value }} ({{ $item->range_value }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="">Kriteria Variasi Menu <span class="text-danger">*</span></label>
+                            <select name="variasi_menu_id" id="kriteria_variasi_menu_id" class="form-control">
+                                <option value="">pilih</option>
+                                @foreach ($getVariasiMenu as $item)
+                                    <option value="{{ $item->id }}">{{ $item->standard_value }} ({{ $item->range_value }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="">Kriteria Harga Makanan <span class="text-danger">*</span></label>
+                            <select name="kriteria_harga_id" id="kriteria_harga_id" class="form-control">
+                                <option value="">pilih</option>
+                                @foreach ($getHarga as $item)
+                                    <option value="{{ $item->id }}">{{ $item->standard_value }} ({{ $item->range_value }})</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     <hr>
-                    <h6>Variasi Menu <span class="text-danger">*</span></h6>
-                    <div id="menu-container">
-                        <div class="row  mb-3">
-                            <div class="col-md-4">
-                                <label for="">Nama Menu</label>
-                                <input type="text" class="form-control" name="name[]">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="">Harga</label>
-                                <input type="text" class="form-control" name="price[]" data-type="currency" value="0">
-                            </div>
-                            <div class="col-md-4 d-flex align-items-end">
-                                <button class="btn btn-md btn-primary" id="add-row" type="button"><i
-                                    class="fas fa-plus"></i></button>
+                    {{-- <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" value="" id="detailMenu">
+                        <label class="form-check-label" for="detailMenu">
+                          Checklist jika ingin menambahkan detail menu
+                        </label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" value="" id="detailFasilitas">
+                        <label class="form-check-label" for="detailFasilitas">
+                          Checklist jika ingin menambahkan detail fasilitas
+                        </label>
+                    </div>
+
+                    <div id="variasiMenu" style="display: none">
+                        <h6 class="font-weight-bold">Detail Menu <span class="text-danger">*</span></h6>
+                        <div id="menu-container">
+                            <div class="row  mb-3">
+                                <div class="col-md-4">
+                                    <label for="">Nama Menu</label>
+                                    <input type="text" class="form-control" name="name[]">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="">Harga</label>
+                                    <input type="text" class="form-control" name="price[]" data-type="currency" value="0">
+                                </div>
+                                <div class="col-md-4 d-flex align-items-end">
+                                    <button class="btn btn-md btn-primary" id="add-row" type="button"><i
+                                        class="fas fa-plus"></i></button>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <hr>
-                    <div class="row ml-3">
-                        <h6>Fasilitas <span class="text-danger">*</span> :</h6>
-                        <hr>
-                        @foreach ($facilities as $item)
-                            <div class="col-lg-3 col-md-6 col-sm-6">
-                                <table class="table-hover">
-                                    <tr>
-                                        <td class="align-top">
-                                            <div class="form-check">
-                                                <input type="checkbox" name="facility_id[]"
-                                                    value="{{ $item->id }}"
-                                                    id="facility_{{ $item->id }}"
-                                                    class="form-check-input">
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="form-group">
-                                                <label class="form-check-label">
-                                                    {{ $item->name }}
-                                                </label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        @endforeach
-                    </div>
+                    <div id="dataDetailFasilitas" style="display: none">
+                        <div class="row ml-3">
+                            <h6>Pilih detail fasilitas <span class="text-danger">*</span> :</h6>
+                            <hr>
+                            @foreach ($facilities as $item)
+                                <div class="col-lg-3 col-md-6 col-sm-6">
+                                    <table class="table-hover">
+                                        <tr>
+                                            <td class="align-top">
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="facility_id[]"
+                                                        value="{{ $item->id }}"
+                                                        id="facility_{{ $item->id }}"
+                                                        class="form-check-input">
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="form-group">
+                                                    <label class="form-check-label">
+                                                        {{ $item->name }}
+                                                    </label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div> --}}
                     <div class="mt-2">
                         <a href="{{ route('restaurants.index') }}" class="btn btn-light">Kembali</a>
                         <button type="submit" id="tombol-simpan" value="create" class="btn btn-primary">Simpan</button>
@@ -265,6 +300,34 @@
                     reader.readAsDataURL(file);
                 }
             });
+
+            // // variasi menu
+            // const detailMenuCheckbox = document.getElementById('detailMenu');
+            // const variasiMenuDiv = document.getElementById('variasiMenu');
+            // const variasiMenuInputs = variasiMenuDiv.querySelectorAll('input, textarea, select');
+
+            // detailMenuCheckbox.addEventListener('change', function() {
+            // if (this.checked) {
+            //     variasiMenuDiv.style.display = 'block';
+            // } else {
+            //     variasiMenuDiv.style.display = 'none';
+            //     variasiMenuInputs.forEach(input => {
+            //         input.value = '';
+            //         });
+            // }
+            // });
+
+            // // detail fasilitas
+            // const detailFasilitasCheckbox = document.getElementById('detailFasilitas');
+            // const detailFasilitas = document.getElementById('dataDetailFasilitas');
+
+            // detailFasilitasCheckbox.addEventListener('change', function() {
+            // if (this.checked) {
+            //     detailFasilitas.style.display = 'block';
+            // } else {
+            //     detailFasilitas.style.display = 'none';
+            // }
+            // });
         });
 
     </script>

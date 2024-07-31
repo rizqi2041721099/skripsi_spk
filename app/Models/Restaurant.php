@@ -12,7 +12,7 @@ class Restaurant extends Model
 
     public $guarded = [];
     public $table = 'restaurants';
-    public $with = ['facilities','jarak','fasilitas','rasa','harga','variasiMenu','comments'];
+    public $with = ['facilities','jarak','fasilitas','rasa','harga','variasiMenu','comments','jamOperasional'];
 
     public function alternatif()
     {
@@ -42,6 +42,11 @@ class Restaurant extends Model
     public function rasa()
     {
         return $this->belongsTo(KriteriaRasa::class, 'kriteria_rasa_id');
+    }
+
+    public function jamOperasional()
+    {
+        return $this->belongsTo(KategoriJamOperasional::class, 'kriteria_jam_operasional_id');
     }
 
     public function fasilitas()

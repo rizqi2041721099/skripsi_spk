@@ -51,8 +51,8 @@
                         <button class="nav-link" id="nav-contact-tab" data-toggle="tab" data-target="#nav-contact"
                             type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Data
                             Alternatif</button>
-                        <button class="nav-link" id="nav-menu-tab" data-toggle="tab" data-target="#nav-menu" type="button"
-                            role="tab" aria-controls="nav-menu" aria-selected="false">Variasi Menu</button>
+                        {{-- <button class="nav-link" id="nav-menu-tab" data-toggle="tab" data-target="#nav-menu" type="button"
+                            role="tab" aria-controls="nav-menu" aria-selected="false">Variasi Menu</button> --}}
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
@@ -72,7 +72,7 @@
                                     {{ $restaurant->address }}</p>
                                 <p class="mb-0"><span class="font-weight-bold">Jarak</span> : {{ $restaurant->distance }}
                                 </p>
-                                <p class="mb-0"><span class="font-weight-bold">Fasilitas</span> :
+                                {{-- <p class="mb-0"><span class="font-weight-bold">Fasilitas</span> :
                                     @if (!$restaurant->facilities)
                                         -
                                     @else
@@ -84,7 +84,8 @@
                                 <p class="mb-0"><span class="font-weight-bold">Rata - Rata Harga</span> :
                                     {{ number_format($restaurant->average) }}</p>
                                 <p class="mb-0"><span class="font-weight-bold">Qty Variasi Makanan</span> :
-                                    {{ $restaurant->qty_variasi_makanan }}</p>
+                                    {{ $restaurant->qty_variasi_makanan }}</p> --}}
+
                                 {{-- <p class="mb-0"><span class="font-weight-bold">Kriteria Rasa</span>:
                                    @if ($restaurant->kriteria_rasa_id == 5)
                                         @php
@@ -137,7 +138,7 @@
                                         <th>Harga Makanan</th>
                                         <th>Jarak</th>
                                         <th>Fasilitas</th>
-                                        <th>Rasa Makanan</th>
+                                        <th>Jam Operasional</th>
                                         <th>Variasi Makanan</th>
                                     </tr>
                                 </thead>
@@ -147,7 +148,7 @@
                                         <td>{{ $restaurant->harga->value }}</td>
                                         <td>{{ $restaurant->jarak->value }}</td>
                                         <td>{{ $restaurant->fasilitas->value }}</td>
-                                        <td>{{ $restaurant->rasa->value }}</td>
+                                        <td>{{ $restaurant->jamOperasional->value }}</td>
                                         <td>{{ $restaurant->variasiMenu->value }}</td>
                                     </tr>
                                 </tbody>
@@ -157,14 +158,14 @@
                                         <th>Harga Makanan</th>
                                         <th>Jarak</th>
                                         <th>Fasilitas</th>
-                                        <th>Rasa Makanan</th>
+                                        <th>Jam Operasional</th>
                                         <th>Variasi Makanan</th>
                                     </tr>
                                 </tfoot>
                             </table>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="nav-menu" role="tabpanel" aria-labelledby="nav-menu-tab">
+                    {{-- <div class="tab-pane fade" id="nav-menu" role="tabpanel" aria-labelledby="nav-menu-tab">
                         <div class="table-responsive my-5">
                             <table class="table table-bordered" width="100%" id="alternatif_table">
                                 <thead>
@@ -192,7 +193,7 @@
                                 </tfoot>
                             </table>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

@@ -22,9 +22,11 @@ class DatabaseSeeder extends Seeder
             KriteriaHargaSeeder::class,
             KriteriaRasaSeeder::class,
             KriteriaFasilitasSeeder::class,
+            KategoriJamOperasionalSeeder::class,
             RestaurantSeeder::class,
             AlternatifSeeder::class,
             FasilitasSeeder::class,
+            BobotKriteriaSeeder::class,
             // FoodVariatiesSeeder::class,
         ]);
     }

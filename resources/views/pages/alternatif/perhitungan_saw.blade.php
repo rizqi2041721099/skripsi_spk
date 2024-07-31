@@ -29,16 +29,32 @@
                             <td>{{ $min_v_harga_makanan }}</td>
                             <td>{{ $min_v_jarak }}</td>
                             <td>{{ $max_v_fasilitas }}</td>
-                            <td>{{ $max_v_rasa_makanan }}</td>
+                            <td>{{ $max_v_jam_operasional }}</td>
                             <td>{{ $max_v_variasi_makanan }}</td>
                         </tr>
                         <tr>
                             <th scope="row">Bobot</th>
-                            <td>0.30</td>
-                            <td>0.25</td>
-                            <td>0.25</td>
-                            <td>0.10</td>
-                            <td>0.10</td>
+                            @php
+                                $bobotKriteria = App\Models\BobotKriteria::first();
+                                $b_harga_makanan = $bobotKriteria->bobot_harga_makanan / 100;
+                                $b_jarak = $bobotKriteria->bobot_jarak / 100;
+                                $b_fasilitas = $bobotKriteria->bobot_fasilitas / 100;
+                                $b_jam_operasional = $bobotKriteria->bobot_jam_operasional / 100;
+                                $b_variasi_menu = $bobotKriteria->bobot_variasi_menu / 100;
+                            @endphp
+                            @if (!empty($bobotKriteria))
+                                <th>{{ number_format($b_harga_makanan,2) }}</th>
+                                <th>{{ number_format($b_jarak,2) }}</th>
+                                <th>{{ number_format($b_fasilitas,2) }}</th>
+                                <th>{{ number_format($b_jam_operasional,2) }}</th>
+                                <th>{{ number_format($b_variasi_menu,2) }}</th>
+                            @else
+                                <th>0.30</th>
+                                <th>0.25</th>
+                                <th>0.25</th>
+                                <th>0.10</th>
+                                <th>0.10</th>
+                            @endif
                         </tr>
                     </table>
                     <table class="table table-bordered" width="100%" id="alternatif_table">
@@ -52,18 +68,26 @@
                                 <th>Harga Makanan</th>
                                 <th>Jarak</th>
                                 <th>Fasilitas</th>
-                                <th>Rasa Makanan</th>
+                                <th>Jam Operasional</th>
                                 <th>Variasi Menu</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th colspan="2">Bobot</th>
+                            @if (!empty($bobotKriteria))
+                                <th id="sum_v_harga">{{ number_format($b_harga_makanan,2) }}</th>
+                                <th id="sum_v_jarak">{{ number_format($b_jarak,2) }}</th>
+                                <th id="sum_v_fasilitas">{{ number_format($b_fasilitas,2) }}</th>
+                                <th id="sum_v_jam_operasional">{{ number_format($b_jam_operasional,2) }}</th>
+                                <th id="sum_v_variasi">{{ number_format($b_variasi_menu,2) }}</th>
+                            @else
                                 <th id="sum_v_harga">0.30</th>
                                 <th id="sum_v_jarak">0.25</th>
                                 <th id="sum_v_fasilitas">0.25</th>
-                                <th id="sum_v_rasa">0.10</th>
+                                <th id="sum_v_jam_operasional">0.10</th>
                                 <th id="sum_v_variasi">0.10</th>
+                            @endif
                             </tr>
                         </tfoot>
                     </table>
@@ -80,19 +104,27 @@
                             </tr>
                             <tr>
                                 <th scope="row">Nilai Pembagi</th>
-                                <td>{{ $min_v_harga_makanan }}</td>
-                                <td>{{ $min_v_jarak }}</td>
-                                <td>{{ $max_v_fasilitas }}</td>
-                                <td>{{ $max_v_rasa_makanan }}</td>
-                                <td>{{ $max_v_variasi_makanan }}</td>
+                                <td>{{ $min_v_harga_makanan / 100 }}</td>
+                                <td>{{ $min_v_jarak / 100 }}</td>
+                                <td>{{ $max_v_fasilitas / 100 }}</td>
+                                <td>{{ $max_v_jam_operasional / 100 }}</td>
+                                <td>{{ $max_v_variasi_makanan / 100 }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Bobot</th>
-                                <td>0.30</td>
-                                <td>0.25</td>
-                                <td>0.25</td>
-                                <td>0.10</td>
-                                <td>0.10</td>
+                                @if (!empty($bobotKriteria))
+                                    <th>{{ number_format($b_harga_makanan,2) }}</th>
+                                    <th>{{ number_format($b_jarak,2) }}</th>
+                                    <th>{{ number_format($b_fasilitas,2) }}</th>
+                                    <th>{{ number_format($b_jam_operasional,2) }}</th>
+                                    <th>{{ number_format($b_variasi_menu,2) }}</th>
+                                @else
+                                    <th>0.30</th>
+                                    <th>0.25</th>
+                                    <th>0.25</th>
+                                    <th>0.10</th>
+                                    <th>0.10</th>
+                                @endif
                             </tr>
                         </table>
                         <table class="table table-bordered" width="100%" id="normalisasi_table">
@@ -106,7 +138,7 @@
                                     <th>Harga Makanan</th>
                                     <th>Jarak</th>
                                     <th>Fasilitas</th>
-                                    <th>Rasa Makanan</th>
+                                    <th>Jam Operasional</th>
                                     <th>Variasi Makanan</th>
                                 </tr>
                             </thead>
@@ -117,7 +149,7 @@
                                     <th>Harga Makanan</th>
                                     <th>Jarak</th>
                                     <th>Fasilitas</th>
-                                    <th>Rasa Makanan</th>
+                                    <th>Jam Operasional</th>
                                     <th>Variasi Makanan</th>
                                 </tr>
                             </tfoot>
@@ -137,7 +169,7 @@
                                     <th>Harga Makanan</th>
                                     <th>Jarak</th>
                                     <th>Fasilitas</th>
-                                    <th>Rasa Makanan</th>
+                                    <th>Jam Operasional</th>
                                     <th>Variasi Makanan</th>
                                 </tr>
                             </thead>
@@ -148,7 +180,7 @@
                                     <th>Harga Makanan</th>
                                     <th>Jarak</th>
                                     <th>Fasilitas</th>
-                                    <th>Rasa Makanan</th>
+                                    <th>Jam Operasional</th>
                                     <th>Variasi Makanan</th>
                                     <th>Jumlah</th>
                                 </tr>
@@ -195,7 +227,7 @@
                     data: 'v_fasilitas',
                 },
                 {
-                    data: 'v_rasa_makanan',
+                    data: 'v_jam_operasional',
                 },
                 {
                     data: 'v_variasi_makan',
@@ -221,14 +253,14 @@
             //             }, 0);
             //         $('#sum_v_variasi').html(sum_v_variasi);
 
-            //         var sum_v_rasa = api
+            //         var sum_v_jam_operasional = api
             //             .column(4)
             //             .data()
             //             .toArray();
-            //         var totalSum = sum_v_rasa.reduce(function(total, num) {
+            //         var totalSum = sum_v_jam_operasional.reduce(function(total, num) {
             //             return total + parseFloat(num);
             //         }, 0);
-            //         $('#sum_v_rasa').html(totalSum);
+            //         $('#sum_v_jam_operasional').html(totalSum);
 
             //         sum_v_jarak = api
             //             .column(5)
@@ -281,7 +313,7 @@
                     data: 'v_fasilitas',
                 },
                 {
-                    data: 'v_rasa_makanan',
+                    data: 'v_jam_operasional',
                 },
                 {
                     data: 'variasi_makanan',
@@ -325,7 +357,7 @@
                     data: 'v_fasilitas',
                 },
                 {
-                    data: 'v_rasa_makanan',
+                    data: 'v_jam_operasional',
                 },
                 {
                     data: 'v_variasi_makanan',

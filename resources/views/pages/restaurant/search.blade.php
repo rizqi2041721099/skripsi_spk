@@ -20,7 +20,7 @@
                             <label for="">Restaurant</label>
                             <select  class="select2-single form-control" data-toggle="select" id="restaurant" name="restaurant_id" width="100%"></select>
                         </div> --}}
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="">Rentang Variasi Menu Makanan</label>
                             <select name="variasi_menu" id="maxQty" class="form-control">
                                 <option value="">Pilih</option>
@@ -29,7 +29,7 @@
                             @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="">Rentang Jarak</label>
                             <select name="jarak" id="jarak" class="form-control">
                                 <option value="">Pilih</option>
@@ -38,26 +38,35 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="">Rentang Harga</label>
                             <select name="harga" id="harga" class="form-control">
                                 <option value="">Pilih</option>
                                 @foreach ($getHarga as $item)
-                                    <option value="{{ $item->id }}">{{ $item->range_value }}</option>
+                                    <option value="{{ $item->id }}">{{ $item->standard_value.' | '.$item->range_value }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-3">
-                            <label for="">Kriteria Rasa Makanan</label>
-                            <select name="rasa" id="rasa" class="form-control">
+                        <div class="col-md-6 mt-2">
+                            <label for="">Kriteria Jam Operasional</label>
+                            <select name="jam_operasional" id="jam_operasional" class="form-control">
                                 <option value="">Pilih</option>
-                                @foreach ($getRasa as $item)
+                                @foreach ($getJamOperasional as $item)
+                                    <option value="{{ $item->id }}">{{ $item->standard_value }} ({{ $item->range_value }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6 mt-2">
+                            <label for="">Kriteria Fasilitas</label>
+                            <select name="fasilitas" id="fasilitas" class="form-control">
+                                <option value="">Pilih</option>
+                                @foreach ($getFasilitas as $item)
                                     <option value="{{ $item->id }}">{{ $item->standard_value }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
-                    <label for="" class="ml-4 mt-3">fasilitas</label>
+                    {{-- <label for="" class="ml-4 mt-3">Fasilitas</label>
                     <div class="row">
                         @foreach($facilities as $facility)
                             <div class="col-md-2">
@@ -67,7 +76,7 @@
                                 </div>
                             </div>
                         @endforeach
-                    </div>
+                    </div> --}}
                     <div class="row m-3 ">
                         <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12">
                             <div style="margin-top: 35px;">
@@ -150,7 +159,7 @@
                 success: function(response) {
                     if(response.length != 0)
                     {
-                        toastr.success('Restaurants data found',{
+                        toastr.success('Data restuarants ditemukan',{
                             fadeOut: 1000,
                             swing: 300,
                             fadeIn: 5000,

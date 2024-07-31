@@ -44,6 +44,10 @@
     <link href="{{ asset('frontend/css/style.css')}}" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js"></script>
 
+    {{-- Datatatble --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://nightly.datatables.net/buttons/css/buttons.bootstrap4.min.css">
+
 </head>
 
 <body>
@@ -83,6 +87,21 @@
     <script src="{{ asset('frontend/lib/tempusdominus/js/moment.min.js')}}"></script>
     <script src="{{ asset('frontend/lib/tempusdominus/js/moment-timezone.min.js')}}"></script>
     <script src="{{ asset('frontend/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js')}}"></script>
+
+    {{-- DataTables --}}
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ asset('assets/vendor/datatables/Responsive-2.2.9/js/dataTables.responsive.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/vendor/datatables/Buttons-1.7.1/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/datatables/Buttons-1.7.1/js/buttons.bootstrap4.min.js') }}"></script> --}}
+    <script src="https://nightly.datatables.net/buttons/js/dataTables.buttons.min.js"></script>
+    <script src="https://nightly.datatables.net/buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="{{ asset('assets/vendor/datatables/JSZip-2.5.0/jszip.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/datatables/pdfmake-0.1.36/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/datatables/pdfmake-0.1.36/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('assets/vendor/datatables/Buttons-1.7.1/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/datatables/Buttons-1.7.1/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/datatables/Buttons-1.7.1/js/buttons.colVis.min.js') }}"></script>
 
     <!-- Template Javascript -->
     <script src="{{ asset('frontend/js/main.js')}}"></script>

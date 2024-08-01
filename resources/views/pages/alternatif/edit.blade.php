@@ -26,7 +26,7 @@
                     @csrf
                     @method('PUT')
                     <div class="row mb-3">
-                       <div class="col-md-12 mt-2">
+                       <div class="col-md-4 mt-2">
                             <label for="restaurant">Restaurant</label>
                             <select  class="select2-single form-control"
                             data-toggle="select" id="restaurant" name="restaurant_id" width="100%" aria-readonly="true" disabled>
@@ -36,31 +36,38 @@
                             </select>
                             <small class="text-danger" id="error_restaurant_id"></small>
                        </div>
-                       <div class="col-md-12 mt-2">
-                            <label class="form-label">Harga Makanan</label>
-                            <input type="text" class="form-control" id="v_harga_makanan" name="v_harga_makanan" value="{{ $data->v_harga_makanan }}">
-                            <small class="text-danger" id="error_v_harga_makanan"></small>
-                       </div>
-                       <div class="col-md-12 mt-2">
-                            <label class="form-label">Jarak</label>
-                            <input type="text" class="form-control" id="v_jarak" name="v_jarak" value="{{ $data->v_jarak }}">
-                            <small class="text-danger" id="error_v_jarak"></small>
-                       </div>
-                       <div class="col-md-12 mt-2">
-                            <label class="form-label">Fasilitas</label>
-                            <input type="text" class="form-control" id="v_fasilitas" name="v_fasilitas" value="{{ $data->v_fasilitas }}">
-                            <small class="text-danger" id="error_v_fasilitas"></small>
-                       </div>
-                       <div class="col-md-12 mt-2">
-                            <label class="form-label">Jam Operasional</label>
-                            <input type="text" class="form-control" id="v_rasa_makanan" name="v_rasa_makanan" value="{{ $data->v_rasa_makanan }}">
-                            <small class="text-danger" id="error_v_rasa_makanan"></small>
-                       </div>
-                       <div class="col-md-12 mt-2">
-                            <label class="form-label">Variasi Menu</label>
-                            <input type="text" class="form-control" id="v_variasi_makanan" name="v_variasi_makanan" value="{{ $data->v_variasi_makanan }}">
-                            <small class="text-danger" id="error_v_variasi_makanan"></small>
-                       </div>
+                     <div class="col-md-4 mb-2">
+                            <label for="">Kriteria Fasilitas <span class="text-danger">*</span></label>
+                            <select name="v_fasilitas" id="v_fasilitas" class="form-control">
+                                @foreach($getFasilitas as $item)
+                                    <option value="{{ $item->id }}" {{ $item->id == $data->v_fasilitas ? 'selected' : '' }}>({{ $item->skala }}) {{ $item->standard_value }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="">Kriteria Jam Operasional <span class="text-danger">*</span></label>
+                            <select name="v_jam_operasional" id="v_jam_operasional" class="form-control">
+                                @foreach($getJamOperasional as $item)
+                                    <option value="{{ $item->id }}" {{ $item->id == $data->v_jam_operasional ? 'selected' : '' }}>({{ $item->standard_value }}) {{ $item->range_value }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="">Kriteria Variasi Menu <span class="text-danger">*</span></label>
+                            <select name="v_variasi_menu" id="v_variasi_menu" class="form-control">
+                                @foreach($getVariasiMenu as $item)
+                                    <option value="{{ $item->id }}" {{ $item->id == $data->v_variasi_menu ? 'selected' : '' }}>({{ $item->skala }}) {{ $item->standard_value }} ({{ $item->range_value }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="">Kriteria Harga Makanan <span class="text-danger">*</span></label>
+                            <select name="v_harga_makanan" id="v_harga_makanan" class="form-control">
+                                @foreach($getHarga as $item)
+                                    <option value="{{ $item->id }}" {{ $item->id == $data->v_harga_makanan ? 'selected' : '' }}>({{ $item->skala }}) {{ $item->standard_value }} ({{ $item->range_value }})</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-10">
@@ -79,24 +86,24 @@
             $('#restaurant').select2({
                 placeholder: "cari restaurant",
                 allowClear: true,
-                // ajax: {
-                //     url: "{{ route('get-restaurant') }}",
-                //     dataType: 'json',
-                //     type: "POST",
-                //     delay: 250,
-                //     data: function(params) {
-                //         return {
-                //             "_token": "{{ csrf_token() }}",
-                //             search: params.term // search term
-                //         };
-                //     },
-                //     processResults: function(response) {
-                //         return {
-                //             results: response
-                //         };
-                //     },
-                //     cache: false
-                // }
+                ajax: {
+                    url: "{{ route('specify.restaurant', $data->restaurant->id) }}",
+                    dataType: 'json',
+                    type: "POST",
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            "_token": "{{ csrf_token() }}",
+                            search: params.term // search term
+                        };
+                    },
+                    processResults: function(response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: false
+                }
             });
 
             $('#form_alternatif').on('submit', function(event) {

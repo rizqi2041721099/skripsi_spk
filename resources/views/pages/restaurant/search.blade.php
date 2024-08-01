@@ -128,7 +128,7 @@
             placeholder: "cari restaurant",
             allowClear: true,
             ajax: {
-                url: "{{ route('get-restaurant') }}",
+                url: "{{ route('get.restaurant') }}",
                 dataType: 'json',
                 type: "POST",
                 delay: 250,
@@ -196,7 +196,7 @@
                                                 // '<td>' + (response.index + 1)+ '</td>' +
                                                 '<td>' +
                                                     '<a href="/restaurants/' + id + '">' +
-                                                     response.alternatif['name'] +
+                                                    response.alternatif.restaurant['name'] +
                                                 '</a>' + '</td>' +
                                                 '<td>' + response.v_harga_makanan + '</td>' +
                                                 '<td>' + response.v_jarak + '</td>' +

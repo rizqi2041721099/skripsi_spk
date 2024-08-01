@@ -10,30 +10,70 @@
     <div class="container">
         <div class="row g-5 align-items-center">
             <h6>Data Bobot Kriteria</h6>
-            <table class="table table-striped" width="100%" id="bobot_kriteria_table">
-                <thead class="thead-light">
-                    <tr>
-                        <th>No</th>
-                        <th>Harga Makanan</th>
-                        <th>Bobot Jarak</th>
-                        <th>Fasilitas</th>
-                        <th>Jam Operasional</th>
-                        <th>Variasi Menu</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                        <th>No</th>
-                        <th>Harga Makanan</th>
-                        <th>Bobot Jarak</th>
-                        <th>Fasilitas</th>
-                        <th>Jam Operasional</th>
-                        <th>Variasi Menu</th>
-                        <th>Action</th>
-                    </tr>
-                </tfoot>
-            </table>
+            @if (Auth::check())
+                    <table class="table table-striped" width="100%" id="bobot_kriteria_table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>No</th>
+                                <th>Harga Makanan</th>
+                                <th>Bobot Jarak</th>
+                                <th>Fasilitas</th>
+                                <th>Jam Operasional</th>
+                                <th>Variasi Menu</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>No</th>
+                                <th>Harga Makanan</th>
+                                <th>Bobot Jarak</th>
+                                <th>Fasilitas</th>
+                                <th>Jam Operasional</th>
+                                <th>Variasi Menu</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                @else
+                <table class="table table-striped" width="100%">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>No</th>
+                            <th>Harga Makanan</th>
+                            <th>Bobot Jarak</th>
+                            <th>Fasilitas</th>
+                            <th>Jam Operasional</th>
+                            <th>Variasi Menu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $data = App\Models\BobotKriteria::get();
+                        @endphp
+                        @foreach ($data as $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->bobot_harga_makanan.'%' }}</td>
+                                <td>{{ $item->bobot_jarak.'%' }}</td>
+                                <td>{{ $item->bobot_fasilitas.'%' }}</td>
+                                <td>{{ $item->bobot_jam_operasional.'%' }}</td>
+                                <td>{{ $item->bobot_variasi_menu.'%' }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>No</th>
+                            <th>Harga Makanan</th>
+                            <th>Bobot Jarak</th>
+                            <th>Fasilitas</th>
+                            <th>Jam Operasional</th>
+                            <th>Variasi Menu</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            @endif
         </div>
     </div>
 </div>
@@ -241,14 +281,13 @@
                             // });
                             $('#data-restaurants').removeClass("d-none");
                             response.alternatif_hasil.forEach(function(response) {
-                                // console.log([response.v_jarak,response,v_jam_operasional,response.v_fasilitas,response.variasi_menu]);
                                 // var sum = 0;
                                 // var count = restaurant.comments.length;
                                 // for (var i = 0; i < count; i++) {
                                 //     sum += restaurant.comments[i].star_rating;
                                 // }
                                 // var average = count > 0 ? sum / count : 0;
-                                id = response.alternatif['id'];
+                                id = response.alternatif.restaurant['id'];
 
                                 // var starColor = average > 0 ? '#ffcd3c' : '#aaa';
                                 // var starHtml = '';
@@ -263,8 +302,8 @@
                                 var row = '<tr>' +
                                             // '<td>' + (response.index + 1)+ '</td>' +
                                             '<td>' +
-                                                '<a href="/restaurants/' + id + '">' +
-                                                 response.alternatif['name'] +
+                                                '<a href="/detail-restaurant/' + id + '">' +
+                                                 response.alternatif.restaurant['name'] +
                                                 '</a>' + '</td>' +
                                             '<td>' + response.v_harga_makanan + '</td>' +
                                             '<td>' + response.v_jarak + '</td>' +

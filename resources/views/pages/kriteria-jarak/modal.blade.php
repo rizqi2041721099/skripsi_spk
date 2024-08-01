@@ -17,6 +17,11 @@
                             <input type="text" class="form-control" id="value" name="value">
                             <small class="text-danger" id="error_value"></small>
                           </div>
+                        <div class="col-md-12 mb-2 col-xs-12">
+                            <label class="form-label" for="address">SKala</label>
+                            <input type="text" class="form-control" id="skala" name="skala">
+                            <small class="text-danger" id="error_skala"></small>
+                          </div>
                           <div class="col-md-12">
                               <label for="">Standar Value</label>
                               <input type="text" class="form-control" name="standard_value" id="standard_value">
@@ -59,6 +64,11 @@
                           <label class="form-label" for="address">Nilai</label>
                           <input type="text" class="form-control" id="edit_value" name="value">
                           <small class="text-danger" id="error_edit_value"></small>
+                        </div>
+                        <div class="col-md-12 mb-2 col-xs-12">
+                            <label class="form-label" for="address">SKala</label>
+                            <input type="text" class="form-control" id="edit_skala" name="skala">
+                            <small class="text-danger" id="error_edit_skala"></small>
                         </div>
                         <div class="col-md-12">
                             <label for="">Standar Value</label>

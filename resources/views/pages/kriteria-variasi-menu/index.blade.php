@@ -23,6 +23,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nilai</th>
+                                <th>Skala</th>
                                 <th>Standar Nilai</th>
                                 <th>Rentang Variasi Menu</th>
                                 <th>Action</th>
@@ -32,6 +33,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nilai</th>
+                                <th>Skala</th>
                                 <th>Standar Nilai</th>
                                 <th>Rentang Variasi Menu</th>
                                 <th>Action</th>
@@ -67,6 +69,9 @@
                 },
                 {
                     data: 'value',
+                },
+                {
+                    data: 'skala',
                 },
                 {
                     data: 'standard_value',
@@ -112,6 +117,7 @@
                 },
                 error: function (response) {
                     $('#error_value').text(response.responseJSON.errors.value);
+                    $('#error_skala').text(response.responseJSON.errors.skala);
                     $('#error_standard_value').text(response.responseJSON.errors.standard_value);
                     $('#error_range_value').text(response.responseJSON.errors.range_value);
                 },
@@ -143,6 +149,7 @@
                 },
                 error: function (response) {
                     $('#error_edit_value').text(response.responseJSON.errors.value);
+                    $('#error_skala').text(response.responseJSON.errors.skala);
                     $('#error_edit_standard_value').text(response.responseJSON.errors.standard_value);
                     $('#error_edit_range_value').text(response.responseJSON.errors.range_value);
                 },
@@ -160,6 +167,7 @@
             success: function (response) {
                 $('#id').val(response.id);
                 $('#edit_value').val(response.value);
+                $('#edit_skala').val(response.skala);
                 $('#edit_standard_value').val(response.standard_value);
                 $('#edit_range_value').val(response.range_value);
                 $('#edit-modal').modal('show');

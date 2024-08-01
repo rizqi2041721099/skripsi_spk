@@ -59,7 +59,8 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::resource('food-variaties',    FoodVariatyController::class);
     Route::resource('facilities',        FacilityController::class);
     Route::resource('restaurants',       RestaurantController::class);
-    Route::post('get-restaurant',        [RestaurantController::class, 'getRestaurant'])->name('get-restaurant');
+    Route::post('get-restaurant',        [RestaurantController::class, 'getRestaurant'])->name('get.restaurant');
+    Route::post('specify-restaurant/{$id}',        [RestaurantController::class, 'specifyRestaurant'])->name('specify.restaurant');
 
     Route::resource('kriterias',                    KriteriaController::class);
     Route::resource('kriteria-variasi-menu',        KriteriaVariasiMenuController::class);

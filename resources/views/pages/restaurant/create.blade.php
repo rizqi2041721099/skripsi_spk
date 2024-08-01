@@ -54,7 +54,29 @@
                             <input type="text" class="form-control" name="map_link">
                             <small class="text-danger" id="error_map_link"></small>
                         </div>
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-4">
+                            <label for="">Jumlah Variasi Menu</label>
+                            <input type="text" name="qty_variasi_makanan" class="form-control">
+                            <small class="text-danger" id="error_qty_variasi_makanan"></small>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">Rata-rata harga</label>
+                            <input type="text" name="averange" class="form-control" data-type="currency" value="0">
+                            <small class="text-danger" id="error_averange"></small>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">Fasilitas</label>
+                            <input type="text" name="facility" class="form-control">
+                            <small class="text-danger" id="error_facility"></small>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">Jam Operasional</label>
+                            <input type="text" name="jam_operasional" class="form-control">
+                            <small class="text-danger" id="error_jam_operasional"></small>
+                        </div>
+
+
+                        {{-- <div class="col-md-4 mb-2">
                             <label for="">Kriteria Fasilitas <span class="text-danger">*</span></label>
                             <select name="kriteria_fasilitas_id" id="kriteria_fasilitas_id" class="form-control">
                                 <option value="">pilih</option>
@@ -90,7 +112,7 @@
                                     <option value="{{ $item->id }}">{{ $item->standard_value }} ({{ $item->range_value }})</option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
                     </div>
                     <hr>
                     {{-- <div class="form-check mb-2">

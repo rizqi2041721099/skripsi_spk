@@ -29,6 +29,9 @@ class KriteriaJarakController extends Controller
                 ->addColumn('value', function ($row) {
                     return $row->value;
                 })
+                ->addColumn('skala', function ($row) {
+                    return $row->skala;
+                })
                 ->addColumn('standard_value', function ($row) {
                     return $row->standard_value;
                 })
@@ -72,10 +75,12 @@ class KriteriaJarakController extends Controller
     {
         $validated = $this->validate($request,[
             'value' => 'required',
+            'skala' => 'required',
             'standard_value' => 'required',
             'range_value' => 'required',
         ],[
             'value.required'  => 'Nilai harus diisi.',
+            'skala.required'  => 'Skala harus diisi.',
             'standard_value.required' => 'Standar nilai harus diisi',
             'range_value'   => 'Rentang rata-rata harga harus diisi'
         ]);
@@ -108,10 +113,12 @@ class KriteriaJarakController extends Controller
     {
         $validated = $this->validate($request,[
             'value' => 'nullable',
+            'skala' => 'nullable',
             'standard_value' => 'nullable',
             'range_value' => 'nullable',
         ],[
             'value.required'  => 'Nilai harus diisi.',
+            'skala.required'  => 'Skala harus diisi.',
             'standard_value.required' => 'Standar nilai harus diisi',
             'range_value'   => 'Rentang rata-rata harga harus diisi'
         ]);

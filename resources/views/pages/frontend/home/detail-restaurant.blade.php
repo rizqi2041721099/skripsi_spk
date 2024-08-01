@@ -39,30 +39,52 @@
                             @endif
                         </td>
                     </tr> --}}
-                    <tr>
-                        <th>Jarak</th>
-                        <td class="text-end">{{ $restaurant->distance }}</td>
-                    </tr>
-                    <tr>
-                        <th>Kriteria Jarak</th>
-                        <td class="text-end">{{ $restaurant->jarak->standard_value.' | '.$restaurant->jarak->range_value }}</td>
-                    </tr>
-                    <tr>
-                        <th>Kriteria Variasi Menu</th>
-                        <td class="text-end">{{ $restaurant->variasiMenu->standard_value.' | '.$restaurant->variasiMenu->range_value }}</td>
-                    </tr>
-                    <tr>
-                        <th>Kriteria Harga Makanan</th>
-                        <td class="text-end">{{ $restaurant->harga->standard_value.' | '.$restaurant->harga->range_value }}</td>
-                    </tr>
-                    <tr>
-                        <th>Kriteria Fasilitas</th>
-                        <td class="text-end">{{ $restaurant->fasilitas->standard_value }}</td>
-                    </tr>
-                    <tr>
-                        <th>Kriteria Jam Operasional</th>
-                        <td class="text-end">{{ $restaurant->jamOperasional->standard_value.' | '.$restaurant->jamOperasional->range_value }}</td>
-                    </tr>
+                    @if (!is_null($restaurant->distance))
+                        <tr>
+                            <th>Jarak</th>
+                            <td class="text-end">{{ $restaurant->distance }}</td>
+                        </tr>
+                    @endif
+                    @if (!is_null($restaurant->facility))
+                        <tr>
+                            <th>Fasilitas</th>
+                            <td class="text-end">{{ $restaurant->facility }}</td>
+                        </tr>
+                    @endif
+                    @if (!is_null($restaurant->qty_variasi_menu))
+                        <tr>
+                            <th>Qty Variasi Menu</th>
+                            <td class="text-end">{{ $restaurant->qty_variasi_menu }}</td>
+                        </tr>
+                    @endif
+                    @if (!is_null($restaurant->average))
+                        <tr>
+                            <th>Rata-rata harga</th>
+                            <td class="text-end">{{ number_format($restaurant->average) }}</td>
+                        </tr>
+                    @endif
+                    @if (!is_null($alternatif))
+                        <tr>
+                            <th>Kriteria Jarak</th>
+                            <td class="text-end">{{ $alternatif->jarak->standard_value.' | '.$alternatif->jarak->range_value }}</td>
+                        </tr>
+                        <tr>
+                            <th>Kriteria Variasi Menu</th>
+                            <td class="text-end">{{ $alternatif->variasiMenu->standard_value.' | '.$alternatif->variasiMenu->range_value }}</td>
+                        </tr>
+                        <tr>
+                            <th>Kriteria Harga Makanan</th>
+                            <td class="text-end">{{ $alternatif->harga->standard_value.' | '.$alternatif->harga->range_value }}</td>
+                        </tr>
+                        <tr>
+                            <th>Kriteria Fasilitas</th>
+                            <td class="text-end">{{ $alternatif->fasilitas->standard_value }}</td>
+                        </tr>
+                        <tr>
+                            <th>Kriteria Jam Operasional</th>
+                            <td class="text-end">{{ $alternatif->jamOperasional->standard_value.' | '.$alternatif->jamOperasional->range_value }}</td>
+                        </tr>
+                    @endif
                     <tr>
                         <th>Link Gmaps</th>
                         <td class="text-end">
@@ -113,44 +135,46 @@
                     </tfoot>
                 </table>
             </div> --}}
-            <div class="col-md-12">
-                <h4>Data Alternatif</h4>
-                <table class="table table-bordered" width="100%" id="alternatif_table">
-                    <thead>
-                        <tr>
-                            <th rowspan="2" width="15%">Restaurant</th>
-                            <th colspan="5" class="text-center">Kriteria</th>
-                        </tr>
-                        <tr>
-                            <th>Harga Makanan</th>
-                            <th>Jarak</th>
-                            <th>Fasilitas</th>
-                            <th>Jam Operasional</th>
-                            <th>Variasi Makanan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ $restaurant->name }}</td>
-                            <td>{{ $restaurant->harga->value }}</td>
-                            <td>{{ $restaurant->jarak->value }}</td>
-                            <td>{{ $restaurant->fasilitas->value }}</td>
-                            <td>{{ $restaurant->jamOperasional->value }}</td>
-                            <td>{{ $restaurant->variasiMenu->value }}</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Restaurant</th>
-                            <th>Harga Makanan</th>
-                            <th>Jarak</th>
-                            <th>Fasilitas</th>
-                            <th>Jam Operasional</th>
-                            <th>Variasi Makanan</th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+            @if (!is_null($alternatif))
+                <div class="col-md-12">
+                    <h4>Data Alternatif</h4>
+                    <table class="table table-bordered" width="100%" id="alternatif_table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" width="15%">Restaurant</th>
+                                <th colspan="5" class="text-center">Kriteria</th>
+                            </tr>
+                            <tr>
+                                <th>Harga Makanan</th>
+                                <th>Jarak</th>
+                                <th>Fasilitas</th>
+                                <th>Jam Operasional</th>
+                                <th>Variasi Makanan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ $alternatif->name }}</td>
+                                <td>{{ $alternatif->harga->value }}</td>
+                                <td>{{ $alternatif->jarak->value }}</td>
+                                <td>{{ $alternatif->fasilitas->value }}</td>
+                                <td>{{ $alternatif->jamOperasional->value }}</td>
+                                <td>{{ $alternatif->variasiMenu->value }}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Restaurant</th>
+                                <th>Harga Makanan</th>
+                                <th>Jarak</th>
+                                <th>Fasilitas</th>
+                                <th>Jam Operasional</th>
+                                <th>Variasi Makanan</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            @endif
         </div>
         <div class="row">
             <div class="card mb-4">

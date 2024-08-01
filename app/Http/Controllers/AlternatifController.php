@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Alternatif,Restaurant,BobotKriteria};
+use App\Models\{Alternatif,Restaurant,BobotKriteria,KriteriaHarga,
+    KategoriJamOperasional,KriteriavariasiMenu,KriteriaFasilitas,KriteriaJarak};
 use Illuminate\Http\Request;
 use DataTables;
 
@@ -19,53 +20,55 @@ class AlternatifController extends Controller
     public function index(Request $request)
     {
         $page = 'alternatif';
-        $data = Restaurant::orderBy('name')->get();
-
+        // $data = Alternatif::get();
+        $data = Alternatif::join('restaurants', 'alternatifs.restaurant_id', '=', 'restaurants.id')
+                ->orderBy('restaurants.name')
+                ->get(['alternatifs.*', 'restaurants.name']);
         $auth  = auth()->user();
 
         if ($request->ajax()) {
             return DataTables::of($data)
                 ->addColumn('restaurant', function ($row) {
-                    return $row->name;
+                    return $row->restaurant ? $row->restaurant->name : '-';
                 })
                 ->addColumn('v_harga_makanan', function ($row) {
-                    return $row->harga->value;
+                    return $row->harga ? $row->harga->value : 0;
                 })
                 ->addColumn('v_jarak', function ($row) {
-                    return $row->jarak->value;
+                    return $row->jarak ? $row->jarak->value : 0;
                 })
                 ->addColumn('v_fasilitas', function ($row) {
-                    return $row->fasilitas->value;
+                    return $row->fasilitas ? $row->fasilitas->value : 0;
                 })
                 ->addColumn('v_jam_operasional', function ($row) {
-                    return $row->jamOperasional->value;
+                    return $row->jamOperasional ? $row->jamOperasional->value : 0;
                 })
                 ->addColumn('v_variasi_makan', function ($row) {
-                    return $row->variasiMenu->value;
+                    return $row->variasiMenu ? $row->variasiMenu->value : 0;
                 })
-                // ->addColumn('action', function ($row)use($auth) {
-                //     $btn = '';
-                //     if ($auth->can('edit-alternatif')) {
-                //         $btn .= '&nbsp;&nbsp';
-                //         $btn .=   '<a href="'.route('alternatif.edit',$row->id).'" onclick="updateItem(this)" data-id="'.$row->id.'" class="btn btn-icon btn-primary btn-icon-only rounded">
-                //                 <span class="btn-inner--icon"><i class="fas fa-pen-square"></i></span>
-                //                 </a>';
-                //     }
-                //     if ($auth->can('delete-alternatif')) {
-                //         $btn .= '&nbsp;&nbsp';
-                //         $btn .=
-                //             '<a class="btn btn-icon btn-danger btn-icon-only" href="#" onclick="deleteItem(this)" data-name="' .
-                //             $row->name .
-                //             '" data-id="' .
-                //             $row->id .
-                //             '">
-                //                 <span class="btn-inner--icon"><i class="fas fa-trash-alt text-white"></i></span>
-                //             </a>';
-                //     }
+                ->addColumn('action', function ($row)use($auth) {
+                    $btn = '';
+                    if ($auth->can('edit-alternatif')) {
+                        $btn .= '&nbsp;&nbsp';
+                        $btn .=   '<a href="'.route('alternatif.edit',$row->id).'" onclick="updateItem(this)" data-id="'.$row->id.'" class="btn btn-icon btn-primary btn-icon-only rounded">
+                                <span class="btn-inner--icon"><i class="fas fa-pen-square"></i></span>
+                                </a>';
+                    }
+                    if ($auth->can('delete-alternatif')) {
+                        $btn .= '&nbsp;&nbsp';
+                        $btn .=
+                            '<a class="btn btn-icon btn-danger btn-icon-only" href="#" onclick="deleteItem(this)" data-name="' .
+                            $row->name .
+                            '" data-id="' .
+                            $row->id .
+                            '">
+                                <span class="btn-inner--icon"><i class="fas fa-trash-alt text-white"></i></span>
+                            </a>';
+                    }
 
-                //     return $btn;
-                // })
-                // ->rawColumns(['action'])
+                    return $btn;
+                })
+                ->rawColumns(['action'])
                 ->addIndexColumn()
                 ->make(true);
             }
@@ -75,7 +78,12 @@ class AlternatifController extends Controller
     public function create()
     {
         $page = 'alternatif';
-        return view('pages.alternatif.create',compact('page'));
+        $getJamOperasional = KategoriJamOperasional::get();
+        $getFasilitas = KriteriaFasilitas::get();
+        $getJarak = KriteriaJarak::get();
+        $getVariasiMenu = KriteriaVariasiMenu::get();
+        $getHarga = KriteriaHarga::get();
+        return view('pages.alternatif.create',compact('page','getJamOperasional','getFasilitas','getVariasiMenu','getFasilitas','getHarga','getJarak'));
     }
 
     public function store(Request $request)
@@ -97,6 +105,11 @@ class AlternatifController extends Controller
             'v_jam_operasional'         => 'Value jam operasional harus diisi.',
         ]);
         // dd($request->all());
+        $restaurant = Restuarant::where('id', '=', $request->restaurant_id)->first();
+        $restaurant->update([
+            'active' => 1,
+        ]);
+
         $data = Alternatif::create($validated);
 
         if($data){
@@ -112,12 +125,18 @@ class AlternatifController extends Controller
         }
     }
 
-    public function edit(Alternatif $alternatif)
+    public function edit(int $id)
     {
         $page = 'alternatif';
         $restaurant = Restaurant::get();
-        $data = Alternatif::findOrFail($alternatif->id);
-        return view('pages.alternatif.edit',compact('data', 'restaurant', 'page'));
+        $data = Alternatif::find($id);
+
+        $getJamOperasional = KategoriJamOperasional::get();
+        $getFasilitas = KriteriaFasilitas::get();
+        $getJarak = KriteriaJarak::get();
+        $getVariasiMenu = KriteriaVariasiMenu::get();
+        $getHarga = KriteriaHarga::get();
+        return view('pages.alternatif.edit',compact('data', 'restaurant', 'page','getJamOperasional', 'getFasilitas', 'getJarak', 'getVariasiMenu', 'getHarga'));
     }
 
     public function update(Request $request, Alternatif $alternatif)
@@ -156,6 +175,11 @@ class AlternatifController extends Controller
 
     public function destroy(Alternatif $alternatif)
     {
+        $restuarant = Restaurant::where('id', $alternatif->restaurant_id)->first();
+        $restaurant->update([
+            'active' => 0
+        ]);
+
         $alternatif->delete();
 
         return response()->json([
@@ -167,7 +191,9 @@ class AlternatifController extends Controller
     public function perhitunganSaw(Request $request)
     {
         $page = 'alternatif';
-        $data = Restaurant::orderBy('name')->get();
+        $data = Alternatif::join('restaurants', 'alternatifs.restaurant_id', '=', 'restaurants.id')
+        ->orderBy('restaurants.name')
+        ->get(['alternatifs.*', 'restaurants.name']);
 
         $auth  = auth()->user();
         $alternatif_hasil = [];
@@ -209,7 +235,7 @@ class AlternatifController extends Controller
         if ($request->ajax()) {
             return DataTables::of($data)
                 ->addColumn('restaurant', function ($row) {
-                    return $row->name;
+                    return $row->restaurant->name;
                 })
                 ->addColumn('v_harga_makanan', function ($row) use ($min_v_harga_makanan) {
                     $v_harga_makanan = $min_v_harga_makanan / $row->harga->value;
@@ -240,7 +266,9 @@ class AlternatifController extends Controller
     public function normalisasiAlternatif(Request $request)
     {
         $page = 'alternatif';
-        $data = Restaurant::orderBy('name')->get();
+        $data = Alternatif::join('restaurants', 'alternatifs.restaurant_id', '=', 'restaurants.id')
+        ->orderBy('restaurants.name')
+        ->get(['alternatifs.*', 'restaurants.name']);
 
         $auth  = auth()->user();
         $alternatif_hasil = [];
@@ -304,7 +332,7 @@ class AlternatifController extends Controller
         if ($request->ajax()) {
             return DataTables::of($data)
                 ->addColumn('restaurant', function ($row) {
-                    return $row->name;
+                    return $row->restaurant->name;
                 })
                 ->addColumn('v_harga_makanan', function ($row) use ($min_v_harga_makanan) {
                     $v_harga_makanan = $min_v_harga_makanan / $row->harga->value;
@@ -334,7 +362,10 @@ class AlternatifController extends Controller
     public function dataRanking(Request $request)
     {
         $page = 'alternatif';
-        $data = Restaurant::get();
+        $data = Alternatif::join('restaurants', 'alternatifs.restaurant_id', '=', 'restaurants.id')
+        ->orderBy('restaurants.name')
+        ->get(['alternatifs.*', 'restaurants.name']);
+
         $alternatif_hasil = [];
         $sum_v_harga_makanan = [];
         $sum_v_variasi_makanan = [];

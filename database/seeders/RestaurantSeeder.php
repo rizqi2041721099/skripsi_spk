@@ -25,6 +25,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_fasilitas_id' => 2,
                 'kriteria_jam_operasional_id' => 2,
                 'variasi_menu_id' => 5,
+                'active' => 1,
             ],
             [
                 'name' => 'Dapur Sedep',
@@ -41,6 +42,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_fasilitas_id' => 3,
                 'kriteria_jam_operasional_id' => 1,
                 'variasi_menu_id' => 4,
+                'active' => 1,
             ],
             [
                 'name' => 'Lalapan Tosa',
@@ -57,6 +59,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_fasilitas_id' => 3,
                 'kriteria_jam_operasional_id' => 2,
                 'variasi_menu_id' => 4,
+                'active' => 1,
             ],
             [
                 'name' => 'Warung Mama',
@@ -73,6 +76,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_fasilitas_id' => 2,
                 'kriteria_jam_operasional_id' => 2,
                 'variasi_menu_id' => 2,
+                'active' => 1,
             ],
             [
                 'name' => 'Ayam Penyet Banyuangi',
@@ -89,6 +93,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_fasilitas_id' => 3,
                 'kriteria_jam_operasional_id' => 4,
                 'variasi_menu_id' => 3,
+                'active' => 1,
             ],
             [
                 'name' => 'Rawon Cak Wott',
@@ -105,6 +110,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_fasilitas_id' => 2,
                 'kriteria_jam_operasional_id' => 4,
                 'variasi_menu_id' => 3,
+                'active' => 1,
             ],
             [
                 'name' => 'Warung EWK Lapapan Aneka Sambel',
@@ -121,6 +127,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_fasilitas_id' => 3,
                 'kriteria_jam_operasional_id' => 4,
                 'variasi_menu_id' => 4,
+                'active' => 1,
             ],
             [
                 'name' => 'Kedai Makcik',
@@ -137,6 +144,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_fasilitas_id' => 2,
                 'kriteria_jam_operasional_id' => 4,
                 'variasi_menu_id' => 2,
+                'active' => 1,
             ],
             [
                 'name' => 'Lalapan Ayam Qodir',
@@ -153,6 +161,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_fasilitas_id' => 2,
                 'kriteria_jam_operasional_id' => 4,
                 'variasi_menu_id' => 3,
+                'active' => 1,
             ],
             [
                 'name' => 'Warung Ijo',
@@ -169,6 +178,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_fasilitas_id' => 2,
                 'kriteria_jam_operasional_id' => 4,
                 'variasi_menu_id' => 4,
+                'active' => 1,
             ],
             [
                 'name' => 'Warung Geprek Ragil',
@@ -185,6 +195,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_fasilitas_id' => 3,
                 'kriteria_jam_operasional_id' => 4,
                 'variasi_menu_id' => 5,
+                'active' => 1,
             ],
             [
                 'name' => 'Ayam Goreng Nelongso',
@@ -201,6 +212,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_fasilitas_id' => 3,
                 'kriteria_jam_operasional_id' => 5,
                 'variasi_menu_id' => 4,
+                'active' => 1,
             ],
             [
                 'name' => 'Soto Ayam Cak Man',
@@ -217,6 +229,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_fasilitas_id' => 1,
                 'kriteria_jam_operasional_id' => 1,
                 'variasi_menu_id' => 5,
+                'active' => 1,
             ],
             [
                 'name' => 'Warung Soto Madura Cak Mad',
@@ -233,6 +246,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_fasilitas_id' => 3,
                 'kriteria_jam_operasional_id' => 3,
                 'variasi_menu_id' => 4,
+                'active' => 1,
             ],
             [
                 'name' => 'Warung Makan & Kopi "Tegar"',
@@ -249,6 +263,7 @@ class RestaurantSeeder extends Seeder
                 'kriteria_fasilitas_id' => 2,
                 'kriteria_jam_operasional_id' => 4,
                 'variasi_menu_id' => 4,
+                'active' => 1,
             ],
         ];
 

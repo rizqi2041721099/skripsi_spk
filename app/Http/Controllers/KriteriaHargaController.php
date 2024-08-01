@@ -29,6 +29,9 @@ class KriteriaHargaController extends Controller
                 ->addColumn('value', function ($row) {
                     return $row->value;
                 })
+                ->addColumn('skala', function ($row) {
+                    return $row->skala;
+                })
                 ->addColumn('standard_value', function ($row) {
                     return $row->standard_value;
                 })
@@ -73,10 +76,12 @@ class KriteriaHargaController extends Controller
         $validated = $this->validate($request,[
             'value' => 'required',
             'standard_value' => 'required',
+            'skala' => 'required',
             'range_value' => 'required',
         ],[
             'value.required'  => 'Nilai harus diisi.',
             'standard_value.required' => 'Standar nilai harus diisi',
+            'skala.required' => 'Skala harus diisi',
             'range_value'   => 'Rentang rata-rata harga harus diisi'
         ]);
 
@@ -109,10 +114,12 @@ class KriteriaHargaController extends Controller
         $validated = $request->validate([
             'value' => 'nullable',
             'standard_value' => 'nullable',
+            'skala' => 'nullable',
             'range_value' => 'nullable',
         ],[
             'value.required'  => 'Nilai harus diisi.',
             'standard_value.required' => 'Standar nilai harus diisi',
+            'skala.required' => 'Skala harus diisi',
             'range_value'   => 'Rentang rata-rata harga harus diisi'
         ]);
 

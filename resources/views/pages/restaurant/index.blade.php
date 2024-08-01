@@ -28,7 +28,6 @@
                                 {{-- <th>Qty Fasilitas</th>
                                 <th>Qty Variasi Makanan</th>
                                 <th>Rata-Rata Harga Makanan</th> --}}
-                                <th>Jam Operasional</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -42,7 +41,6 @@
                                 <th>Image</th>
                                 {{-- <th>Qty Fasilitas</th>
                                 <th>Qty Variasi Makanan</th> --}}
-                                <th>Jam Operasional</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -97,9 +95,6 @@
                 // {
                 //     data: 'average',
                 // },
-                {
-                    data: 'jam_operasional',
-                },
                 {
                     data: 'status',
                 },

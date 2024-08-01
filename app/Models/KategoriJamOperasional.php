@@ -16,4 +16,9 @@ class KategoriJamOperasional extends Model
     {
         return $this->hasMany(Restaurant::class);
     }
+
+    public function alternatif()
+    {
+        return $this->hasMany(Alternatif::class);
+    }
 }

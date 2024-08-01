@@ -48,9 +48,11 @@
                             type="button" role="tab" aria-controls="nav-home" aria-selected="true">Detail</button>
                         <button class="nav-link" id="nav-profile-tab" data-toggle="tab" data-target="#nav-profile"
                             type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Alamat</button>
+                        @if (!is_null($alternatif))
                         <button class="nav-link" id="nav-contact-tab" data-toggle="tab" data-target="#nav-contact"
                             type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Data
                             Alternatif</button>
+                        @endif
                         {{-- <button class="nav-link" id="nav-menu-tab" data-toggle="tab" data-target="#nav-menu" type="button"
                             role="tab" aria-controls="nav-menu" aria-selected="false">Variasi Menu</button> --}}
                     </div>
@@ -70,7 +72,18 @@
                             <div class="col-sm-10">
                                 <p class="mt-3 mb-0"> <span class="font-weight-bold">Alamat</span> :
                                     {{ $restaurant->address }}</p>
-                                <p class="mb-0"><span class="font-weight-bold">Jarak</span> : {{ $restaurant->distance }}
+                                @if (!is_null($restaurant->distance))
+                                    <p class="mb-0"><span class="font-weight-bold">Jarak</span> : {{ $restaurant->distance }}
+                                @endif
+                                @if (!is_null($restaurant->average))
+                                    <p class="mb-0"><span class="font-weight-bold">Rata-rata harga</span> : {{ number_format($restaurant->average) }}
+                                @endif
+                                @if (!is_null($restaurant->qty_variasi_menu))
+                                    <p class="mb-0"><span class="font-weight-bold">Qty Variasi Menu</span> : {{ $restaurant->qty_varisi_menu }}
+                                @endif
+                                @if ($restaurant->facility)
+                                    <p class="mb-0"><span class="font-weight-bold">Fasilitas</span> : {{ $restaurant->facility }}
+                                @endif
                                 </p>
                                 {{-- <p class="mb-0"><span class="font-weight-bold">Fasilitas</span> :
                                     @if (!$restaurant->facilities)
@@ -126,45 +139,47 @@
                                 check location</a>
                         @endif
                     </div>
-                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                        <div class="table-responsive my-5">
-                            <table class="table table-bordered" width="100%" id="alternatif_table">
-                                <thead>
-                                    <tr>
-                                        <th rowspan="2" width="15%">Restaurant</th>
-                                        <th colspan="5" class="text-center">Kriteria</th>
-                                    </tr>
-                                    <tr>
-                                        <th>Harga Makanan</th>
-                                        <th>Jarak</th>
-                                        <th>Fasilitas</th>
-                                        <th>Jam Operasional</th>
-                                        <th>Variasi Makanan</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>{{ $restaurant->name }}</td>
-                                        <td>{{ $restaurant->harga->value }}</td>
-                                        <td>{{ $restaurant->jarak->value }}</td>
-                                        <td>{{ $restaurant->fasilitas->value }}</td>
-                                        <td>{{ $restaurant->jamOperasional->value }}</td>
-                                        <td>{{ $restaurant->variasiMenu->value }}</td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>Restaurant</th>
-                                        <th>Harga Makanan</th>
-                                        <th>Jarak</th>
-                                        <th>Fasilitas</th>
-                                        <th>Jam Operasional</th>
-                                        <th>Variasi Makanan</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                    @if (!is_null($alternatif))
+                        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                            <div class="table-responsive my-5">
+                                <table class="table table-bordered" width="100%" id="alternatif_table">
+                                    <thead>
+                                        <tr>
+                                            <th rowspan="2" width="15%">Restaurant</th>
+                                            <th colspan="5" class="text-center">Kriteria</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Harga Makanan</th>
+                                            <th>Jarak</th>
+                                            <th>Fasilitas</th>
+                                            <th>Jam Operasional</th>
+                                            <th>Variasi Makanan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ $alternatif->name }}</td>
+                                            <td>{{ $alternatif->harga->value }}</td>
+                                            <td>{{ $alternatif->jarak->value }}</td>
+                                            <td>{{ $alternatif->fasilitas->value }}</td>
+                                            <td>{{ $alternatif->jamOperasional->value }}</td>
+                                            <td>{{ $alternatif->variasiMenu->value }}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Restaurant</th>
+                                            <th>Harga Makanan</th>
+                                            <th>Jarak</th>
+                                            <th>Fasilitas</th>
+                                            <th>Jam Operasional</th>
+                                            <th>Variasi Makanan</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                     {{-- <div class="tab-pane fade" id="nav-menu" role="tabpanel" aria-labelledby="nav-menu-tab">
                         <div class="table-responsive my-5">
                             <table class="table table-bordered" width="100%" id="alternatif_table">

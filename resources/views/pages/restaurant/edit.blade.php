@@ -55,7 +55,28 @@
                             <input type="text" class="form-control" name="map_link" value="{{ $restaurant->map_link }}">
                             <small class="text-danger" id="error_map_link"></small>
                         </div>
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-4">
+                            <label for="">Jumlah Variasi Menu</label>
+                            <input type="text" name="qty_variasi_makanan" class="form-control" value="{{ $restaurant->qty_variasi_makanan }}">
+                            <small class="text-danger" id="error_qty_variasi_makanan"></small>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">Rata-rata harga</label>
+                            <input type="text" name="averange" class="form-control" data-type="currency" value="0" value="{{ number_format($restaurant->averange) }}">
+                            <small class="text-danger" id="error_averange"></small>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">Fasilitas</label>
+                            <input type="text" name="facility" class="form-control" value="{{ $restaurant->facility }}">
+                            <small class="text-danger" id="error_facility"></small>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">Jam Operasional</label>
+                            <input type="text" name="jam_operasional" class="form-control" value="{{ $restaurant->jam_operasioanl }}">
+                            <small class="text-danger" id="error_jam_operasional"></small>
+                        </div>
+
+                        {{-- <div class="col-md-4 mb-2">
                             <label for="">Kriteria Fasilitas <span class="text-danger">*</span></label>
                             <select name="kriteria_fasilitas_id" id="kriteria_fasilitas_id" class="form-control">
                                 @foreach($getFasilitas as $item)
@@ -86,7 +107,8 @@
                                     <option value="{{ $item->id }}" {{ $item->id == $restaurant->kriteria_harga_id ? 'selected' : '' }}>{{ $item->standard_value }}</option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
+
                         {{-- <div class="col-md-4 mb-2">
                             <label for="">Kriteria Rasa <span class="text-danger">*</span></label>
                             <select name="kriteria_rasa_id" id="kriteria_rasa_id" class="form-control">

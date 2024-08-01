@@ -16,46 +16,52 @@
                 </h6>
             </div>
             <div class="card-body">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Catatan</strong> Nilai minimum 0 dan maksimum 100, Gunakan (.) jika input desimal!
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
                 <form id="form_alternatif">
                     @csrf
                     <div class="row mb-3">
-                       <div class="col-md-12 mt-2">
+                       <div class="col-md-4 mt-2">
                             <label for="restaurant">Restaurant</label>
                             <select  class="select2-single form-control"
                             data-toggle="select" id="restaurant" name="restaurant_id" width="100%"></select>
                             <small class="text-danger" id="error_restaurant_id"></small>
                        </div>
-                       <div class="col-md-12 mt-2">
-                            <label class="form-label">Harga Makanan</label>
-                            <input type="text" class="form-control" id="v_harga_makanan" name="v_harga_makanan">
-                            <small class="text-danger" id="error_v_harga_makanan"></small>
-                       </div>
-                       <div class="col-md-12 mt-2">
-                            <label class="form-label">Jarak</label>
-                            <input type="text" class="form-control" id="v_jarak" name="v_jarak">
-                            <small class="text-danger" id="error_v_jarak"></small>
-                       </div>
-                       <div class="col-md-12 mt-2">
-                            <label class="form-label">Fasilitas</label>
-                            <input type="text" class="form-control" id="v_fasilitas" name="v_fasilitas">
+                        <div class="col-md-4 mb-2">
+                            <label for="">Kriteria Fasilitas <span class="text-danger">*</span></label>
+                            <select name="v_fasilitas" id="v_fasilitas" class="form-control">
+                                <option value="">pilih</option>
+                                @foreach ($getFasilitas as $item)
+                                    <option value="{{ $item->id }}"> ({{ $item->skala }}) {{ $item->standard_value }}</option>
+                                @endforeach
+                            </select>
                             <small class="text-danger" id="error_v_fasilitas"></small>
-                       </div>
-                       <div class="col-md-12 mt-2">
-                            <label class="form-label">Jam Operasional</label>
-                            <input type="text" class="form-control" id="v_rasa_makanan" name="v_rasa_makanan">
-                            <small class="text-danger" id="error_v_rasa_makanan"></small>
-                       </div>
-                       <div class="col-md-12 mt-2">
-                            <label class="form-label">Variasi Menu</label>
-                            <input type="text" class="form-control" id="v_variasi_makanan" name="v_variasi_makanan">
-                            <small class="text-danger" id="error_v_variasi_makanan"></small>
-                       </div>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="">Kriteria Jam Operasional <span class="text-danger">*</span></label>
+                            <select name="v_jam_operasional" id="v_jam_operasional" class="form-control">
+                                <option value="">pilih</option>
+                                @foreach ($getJamOperasional as $item)
+                                    <option value="{{ $item->id }}">{{ $item->standard_value }} ({{ $item->range_value }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="">Kriteria Variasi Menu <span class="text-danger">*</span></label>
+                            <select name="v_variasi_menu" id="kriteria_v_variasi_menu" class="form-control">
+                                <option value="">pilih</option>
+                                @foreach ($getVariasiMenu as $item)
+                                    <option value="{{ $item->id }}">({{ $item->skala }}) {{ $item->standard_value }} ({{ $item->range_value }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="">Kriteria Harga Makanan <span class="text-danger">*</span></label>
+                            <select name="v_harga_makanan" id="v_harga_makanan" class="form-control">
+                                <option value="">pilih</option>
+                                @foreach ($getHarga as $item)
+                                    <option value="{{ $item->id }}">({{ $item->skala }}) {{ $item->standard_value }} ({{ $item->range_value }})</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-10">
@@ -75,7 +81,7 @@
                 placeholder: "cari restaurant",
                 allowClear: true,
                 ajax: {
-                    url: "{{ route('get-restaurant') }}",
+                    url: "{{ route('get.restaurant') }}",
                     dataType: 'json',
                     type: "POST",
                     delay: 250,
@@ -124,7 +130,7 @@
                         btn.text('Submit');
                         $('#error_restaurant_id').text(response.responseJSON.errors.restaurant_id);
                         $('#error_v_harga_makanan').text(response.responseJSON.errors.v_harga_makanan);
-                        $('#error_v_rasa_makanan').text(response.responseJSON.errors.v_rasa_makanan);
+                        $('#error_v_jam_operasional').text(response.responseJSON.errors.v_jam_operasional);
                         $('#error_v_variasi_makanan').text(response.responseJSON.errors.v_variasi_makanan);
                         $('#error_jarak').text(response.responseJSON.errors.jarak);
                         $('#error_fasilitas').text(response.responseJSON.errors.fasilitas);

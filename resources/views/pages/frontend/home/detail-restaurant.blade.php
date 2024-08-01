@@ -63,6 +63,12 @@
                             <td class="text-end">{{ number_format($restaurant->average) }}</td>
                         </tr>
                     @endif
+                    @if (!is_null($restaurant->jam_operasional))
+                        <tr>
+                            <th>Jam Operaasional</th>
+                            <td class="text-end">{{ $restaurant->jam_operasional }}</td>
+                        </tr>
+                    @endif
                     @if (!is_null($alternatif))
                         <tr>
                             <th>Kriteria Jarak</th>

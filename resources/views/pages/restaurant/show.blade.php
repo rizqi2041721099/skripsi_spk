@@ -74,17 +74,24 @@
                                     {{ $restaurant->address }}</p>
                                 @if (!is_null($restaurant->distance))
                                     <p class="mb-0"><span class="font-weight-bold">Jarak</span> : {{ $restaurant->distance }}
+                                    </p>
                                 @endif
                                 @if (!is_null($restaurant->average))
                                     <p class="mb-0"><span class="font-weight-bold">Rata-rata harga</span> : {{ number_format($restaurant->average) }}
+                                    </p>
                                 @endif
                                 @if (!is_null($restaurant->qty_variasi_menu))
                                     <p class="mb-0"><span class="font-weight-bold">Qty Variasi Menu</span> : {{ $restaurant->qty_varisi_menu }}
+                                    </p>
                                 @endif
-                                @if ($restaurant->facility)
+                                @if (!is_null($restaurant->facility))
                                     <p class="mb-0"><span class="font-weight-bold">Fasilitas</span> : {{ $restaurant->facility }}
+                                    </p>
                                 @endif
-                                </p>
+                                @if (!is_null($restaurant->jam_operasional))
+                                    <p class="mb-0"><span class="font-weight-bold">Jam Operasional</span> : {{ $restaurant->jam_operasional }}
+                                    </p>
+                                @endif
                                 {{-- <p class="mb-0"><span class="font-weight-bold">Fasilitas</span> :
                                     @if (!$restaurant->facilities)
                                         -

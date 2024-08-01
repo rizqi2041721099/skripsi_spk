@@ -162,13 +162,6 @@
                         toastr.success(response.message);
                         if(response.length != 0)
                         {
-                            toastr.success('Data restuarants ditemukan',{
-                                fadeOut: 1000,
-                                swing: 300,
-                                fadeIn: 5000,
-                                linear: 1000,
-                                timeOut: 3000,
-                            });
                             $('#data-restaurants tbody').empty();
                             $('#data-restaurants').removeClass("d-none");
                             response.alternatif_hasil.forEach(function(response) {
@@ -212,6 +205,7 @@
                     } else if(response.success == false){
                         toastr.error(response.message);
                     }
+                }
                 }
             });
         }

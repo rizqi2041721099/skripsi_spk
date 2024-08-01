@@ -36,6 +36,16 @@
                             <small class="text-danger" id="error_v_fasilitas"></small>
                         </div>
                         <div class="col-md-4 mb-2">
+                            <label for="">Kriteria Jarak <span class="text-danger">*</span></label>
+                            <select name="v_jarak" id="v_jarak" class="form-control">
+                                <option value="">pilih</option>
+                                @foreach ($getJarak as $item)
+                                    <option value="{{ $item->id }}">({{ $item->skala }}) {{ $item->standard_value }} ({{ $item->range_value }})</option>
+                                @endforeach
+                            </select>
+                            <small class="text-danger" id="error_v_jarak"></small>
+                        </div>
+                        <div class="col-md-4 mb-2">
                             <label for="">Kriteria Jam Operasional <span class="text-danger">*</span></label>
                             <select name="v_jam_operasional" id="v_jam_operasional" class="form-control">
                                 <option value="">pilih</option>
@@ -43,15 +53,17 @@
                                     <option value="{{ $item->id }}">{{ $item->standard_value }} ({{ $item->range_value }})</option>
                                 @endforeach
                             </select>
+                            <span class="text-danger" id="error_v_jam_operasional"></span>
                         </div>
                         <div class="col-md-4 mb-2">
                             <label for="">Kriteria Variasi Menu <span class="text-danger">*</span></label>
-                            <select name="v_variasi_menu" id="kriteria_v_variasi_menu" class="form-control">
+                            <select name="v_variasi_makanan" id="kriteria_v_variasi_makanan" class="form-control">
                                 <option value="">pilih</option>
                                 @foreach ($getVariasiMenu as $item)
                                     <option value="{{ $item->id }}">({{ $item->skala }}) {{ $item->standard_value }} ({{ $item->range_value }})</option>
                                 @endforeach
                             </select>
+                            <span class="text-danger" id="error_v_variasi_makanan"></span>
                         </div>
                         <div class="col-md-4 mb-2">
                             <label for="">Kriteria Harga Makanan <span class="text-danger">*</span></label>
@@ -61,6 +73,7 @@
                                     <option value="{{ $item->id }}">({{ $item->skala }}) {{ $item->standard_value }} ({{ $item->range_value }})</option>
                                 @endforeach
                             </select>
+                            <span class="text-danger" id="error_v_harga_makanan"></span>
                         </div>
                     </div>
                     <div class="row mb-3">

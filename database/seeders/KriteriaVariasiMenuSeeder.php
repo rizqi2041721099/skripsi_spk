@@ -12,13 +12,13 @@ class KriteriaVariasiMenuSeeder extends Seeder
         $data = [
             [
                 'value' => 5,
-                'skala' => 'Skala 1',
+                'skala' => 'Skala 5',
                 'standard_value' => 'Sangat Beragam',
                 'range_value'   => '> 20',
             ],
             [
                 'value' => 4,
-                'skala' => 'Skala 2',
+                'skala' => 'Skala 4',
                 'standard_value' => 'Beragam',
                 'range_value'   => '15 - 20',
             ],
@@ -30,13 +30,13 @@ class KriteriaVariasiMenuSeeder extends Seeder
             ],
             [
                 'value' => 2,
-                'skala' => 'Skala 4',
+                'skala' => 'Skala 22',
                 'standard_value' => 'Kurang Beragam',
                 'range_value'   => '5 - 10',
             ],
             [
                 'value' => 1,
-                'skala' => 'Skala 5',
+                'skala' => 'Skala 1',
                 'standard_value' => 'Sangat Kurang Beragam',
                 'range_value'   => '< 5',
             ],

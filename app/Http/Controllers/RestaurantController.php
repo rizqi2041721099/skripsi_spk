@@ -306,7 +306,7 @@ class RestaurantController extends Controller
             'name'                         => $request->restaurant_name,
             'distance'                     => $request->distance,
             'qty_variasi_makanan'          => $request->qty_variasi_makanan,
-            'average'                      => $request->average,
+            'average'                      => (int) str_replace([",", "."], "", $request->average),
             'facility'                     => $request->facility,
             'jam_operasional'              => $request->jam_operasional,
             'added_by'                     => auth()->user()->name,
@@ -560,20 +560,41 @@ class RestaurantController extends Controller
         //         $v_harga = 3;
         //         break;
         // }
-        $restaurant->update([
-            'name'      => $request->restaurant_name,
-            'distance'  => $request->distance,
-            'address'   => $request->address,
-            // 'facility'   => $request->facility,
+
+        // $restaurant->update([
+        //     'name'      => $request->restaurant_name,
+        //     'distance'  => $request->distance,
+        //     'address'   => $request->address,
+        //     'facility'   => $request->facility,
+        //     'images'    => $request->hasFile('image') ? $originalFileName : $restaurant->images,
+        //     'kriteria_fasilitas_id' => $request->kriteria_fasilitas_id,
+        //     'kriteria_jam_operasional_id' => $request->kriteria_jam_operasional_id,
+        //     'kriteria_jarak_id' => $v_jarak,
+        //     'map_link'  => $request->map_link,
+        //     'average'                      => (int) str_replace([",", "."], "", $request->average),
+        //     'qty_variasi_makanan' => $totalData,
+        //     'average' => $averagePrice,
+        //     'variasi_menu_id' => $request->variasi_menu_id,
+        //     'kriteria_harga_id' => $request->kriteria_harga_id,
+        // ]);
+
+        $data = Restaurant::update([
+            'name'                         => $request->restaurant_name,
+            'distance'                     => $request->distance,
+            'qty_variasi_makanan'          => $request->qty_variasi_makanan,
+            'average'                      => (int) str_replace([",", "."], "", $request->average),
+            'facility'                     => $request->facility,
+            'jam_operasional'              => $request->jam_operasional,
+            'added_by'                     => auth()->user()->name,
+            'address'                      => $request->address,
+            'facility'                     => $request->facility,
             'images'    => $request->hasFile('image') ? $originalFileName : $restaurant->images,
-            'kriteria_fasilitas_id' => $request->kriteria_fasilitas_id,
-            'kriteria_jam_operasional_id' => $request->kriteria_jam_operasional_id,
-            'kriteria_jarak_id' => $v_jarak,
-            'map_link'  => $request->map_link,
-            // 'qty_variasi_makanan' => $totalData,
-            // 'average' => $averagePrice,
-            'variasi_menu_id' => $request->variasi_menu_id,
-            'kriteria_harga_id' => $request->kriteria_harga_id,
+            // 'kriteria_fasilitas_id'        => $request->kriteria_fasilitas_id,
+            // 'kriteria_jam_operasional_id'  => $request->kriteria_jam_operasional_id,
+            // 'kriteria_harga_id'            => $request->kriteria_harga_id,
+            // 'variasi_menu_id'              => $request->variasi_menu_id,
+            // 'kriteria_jarak_id'            => $v_jarak,
+            'map_link'                     => $request->map_link,
         ]);
 
         if ($restaurant) {

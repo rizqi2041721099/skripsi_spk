@@ -61,8 +61,8 @@
                         </div>
                         <div class="col-md-4">
                             <label for="">Rata-rata harga</label>
-                            <input type="text" name="averange" class="form-control" data-type="currency" value="0">
-                            <small class="text-danger" id="error_averange"></small>
+                            <input type="text" name="average" class="form-control" data-type="currency" value="0">
+                            <small class="text-danger" id="error_average"></small>
                         </div>
                         <div class="col-md-4">
                             <label for="">Fasilitas</label>

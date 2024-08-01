@@ -105,7 +105,7 @@ class AlternatifController extends Controller
             'v_jam_operasional'         => 'Value jam operasional harus diisi.',
         ]);
         // dd($request->all());
-        $restaurant = Restuarant::where('id', '=', $request->restaurant_id)->first();
+        $restaurant = Restaurant::where('id', '=', $request->restaurant_id)->first();
         $restaurant->update([
             'active' => 1,
         ]);
@@ -173,9 +173,10 @@ class AlternatifController extends Controller
         }
     }
 
-    public function destroy(Alternatif $alternatif)
+    public function destroy(int $id)
     {
-        $restuarant = Restaurant::where('id', $alternatif->restaurant_id)->first();
+        $alternatif = Alternatif::findOrFail($id);
+        $restaurant = Restaurant::where('id', $alternatif->restaurant_id)->first();
         $restaurant->update([
             'active' => 0
         ]);

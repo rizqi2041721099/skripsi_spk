@@ -12,7 +12,7 @@ class KriteriaHargaSeeder extends Seeder
         $data = [
             [
                 'value' => 5,
-                'skala' => 'Skala 1',
+                'skala' => 'Skala 3',
                 'standard_value' => 'Murah',
                 'range_value' => 'Rp. 2.000,00 - Rp. 15.000,00'
             ],
@@ -24,7 +24,7 @@ class KriteriaHargaSeeder extends Seeder
             ],
             [
                 'value' => 1,
-                'skala' => 'Skala 3',
+                'skala' => 'Skala 1',
                 'standard_value' => 'Muhal',
                 'range_value' => ' > Rp. 25.000,00'
             ],

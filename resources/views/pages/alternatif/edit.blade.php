@@ -16,12 +16,6 @@
                 </h6>
             </div>
             <div class="card-body">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Catatan</strong> Nilai minimum 0 dan maksimum 100, Gunakan (.) jika input desimal!
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
                 <form id="form_alternatif">
                     @csrf
                     @method('PUT')
@@ -36,13 +30,23 @@
                             </select>
                             <small class="text-danger" id="error_restaurant_id"></small>
                        </div>
-                     <div class="col-md-4 mb-2">
+                        <div class="col-md-4 mb-2">
                             <label for="">Kriteria Fasilitas <span class="text-danger">*</span></label>
                             <select name="v_fasilitas" id="v_fasilitas" class="form-control">
                                 @foreach($getFasilitas as $item)
                                     <option value="{{ $item->id }}" {{ $item->id == $data->v_fasilitas ? 'selected' : '' }}>({{ $item->skala }}) {{ $item->standard_value }}</option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="">Kriteria Jarak <span class="text-danger">*</span></label>
+                            <select name="v_jarak" id="v_jarak" class="form-control">
+                                <option value="">pilih</option>
+                                @foreach ($getJarak as $item)
+                                    <option value="{{ $item->id }}" {{ $item->id == $data->v_jarak ? 'selected' : '' }}>({{ $item->skala }}) {{ $item->standard_value }} ({{ $item->range_value }})</option>
+                                @endforeach
+                            </select>
+                            <small class="text-danger" id="error_v_jarak"></small>
                         </div>
                         <div class="col-md-4 mb-2">
                             <label for="">Kriteria Jam Operasional <span class="text-danger">*</span></label>
@@ -54,9 +58,9 @@
                         </div>
                         <div class="col-md-4 mb-2">
                             <label for="">Kriteria Variasi Menu <span class="text-danger">*</span></label>
-                            <select name="v_variasi_menu" id="v_variasi_menu" class="form-control">
+                            <select name="v_variasi_makanan" id="v_variasi_makanan" class="form-control">
                                 @foreach($getVariasiMenu as $item)
-                                    <option value="{{ $item->id }}" {{ $item->id == $data->v_variasi_menu ? 'selected' : '' }}>({{ $item->skala }}) {{ $item->standard_value }} ({{ $item->range_value }})</option>
+                                    <option value="{{ $item->id }}" {{ $item->id == $data->v_variasi_makanan ? 'selected' : '' }}>({{ $item->skala }}) {{ $item->standard_value }} ({{ $item->range_value }})</option>
                                 @endforeach
                             </select>
                         </div>

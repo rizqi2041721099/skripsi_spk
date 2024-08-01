@@ -578,7 +578,7 @@ class RestaurantController extends Controller
         //     'kriteria_harga_id' => $request->kriteria_harga_id,
         // ]);
 
-        $data = Restaurant::update([
+        $data = Restaurant::findOrFail($restaurant->id)->update([
             'name'                         => $request->restaurant_name,
             'distance'                     => $request->distance,
             'qty_variasi_makanan'          => $request->qty_variasi_makanan,

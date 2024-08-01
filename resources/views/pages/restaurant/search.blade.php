@@ -158,57 +158,59 @@
                 url: '{{ route("filter.restaurants") }}',
                 data: formData,
                 success: function(response) {
-                    console.log(response);
-                    if(response.length != 0)
-                    {
-                        toastr.success('Data restuarants ditemukan',{
-                            fadeOut: 1000,
-                            swing: 300,
-                            fadeIn: 5000,
-                            linear: 1000,
-                            timeOut: 3000,
-                        });
-                        $('#data-restaurants tbody').empty();
-                        $('#data-restaurants').removeClass("d-none");
-                        response.forEach(function(response) {
-                            // console.log([response.v_jarak,response,v_jam_operasional,response.v_fasilitas,response.variasi_menu]);
-                            // var sum = 0;
-                            // var count = restaurant.comments.length;
-                            // for (var i = 0; i < count; i++) {
-                            //     sum += restaurant.comments[i].star_rating;
-                            // }
-                            // var average = count > 0 ? sum / count : 0;
-                            id = response.alternatif['id'];
+                    if(response.success == true){
+                        toastr.success(response.message);
+                        if(response.length != 0)
+                        {
+                            toastr.success('Data restuarants ditemukan',{
+                                fadeOut: 1000,
+                                swing: 300,
+                                fadeIn: 5000,
+                                linear: 1000,
+                                timeOut: 3000,
+                            });
+                            $('#data-restaurants tbody').empty();
+                            $('#data-restaurants').removeClass("d-none");
+                            response.alternatif_hasil.forEach(function(response) {
 
-                            // var starColor = average > 0 ? '#ffcd3c' : '#aaa';
-                            // var starHtml = '';
-                            // if (average > 0) {
-                            //     for (var i = 0; i < parseInt(average); i++) {
-                            //         starHtml += '<i class="fa fa-star fa-xs" style="color: ' + starColor + '; font-size: 16px" aria-hidden="true"></i>';
-                            //     }
-                            // } else {
-                            //     starHtml += '<i class="fa fa-star fa-xs" style="color: ' + starColor + '; font-size: 16px" aria-hidden="true"></i>';
-                            // }
+                                    // console.log([response.v_jarak,response,v_jam_operasional,response.v_fasilitas,response.variasi_menu]);
+                                    // var sum = 0;
+                                    // var count = restaurant.comments.length;
+                                    // for (var i = 0; i < count; i++) {
+                                    //     sum += restaurant.comments[i].star_rating;
+                                    // }
+                                    // var average = count > 0 ? sum / count : 0;
+                                    id = response.alternatif['id'];
 
-                            var row = '<tr>' +
-                                        // '<td>' + (response.index + 1)+ '</td>' +
-                                        '<td>' +
-                                            '<a href="/restaurants/' + id + '">' +
-                                             response.alternatif['name'] +
-                                        '</a>' + '</td>' +
-                                        '<td>' + response.v_harga_makanan + '</td>' +
-                                        '<td>' + response.v_jarak + '</td>' +
-                                        '<td>' + response.v_fasilitas + '</td>' +
-                                        '<td>' + response.v_jam_operasional + '</td>' +
-                                        '<td>' + response.v_variasi_makanan + '</td>' +
-                                        '<td>' + response.jumlah_nilai + '</td>' +
-                                    '</tr>';
+                                    // var starColor = average > 0 ? '#ffcd3c' : '#aaa';
+                                    // var starHtml = '';
+                                    // if (average > 0) {
+                                    //     for (var i = 0; i < parseInt(average); i++) {
+                                    //         starHtml += '<i class="fa fa-star fa-xs" style="color: ' + starColor + '; font-size: 16px" aria-hidden="true"></i>';
+                                    //     }
+                                    // } else {
+                                    //     starHtml += '<i class="fa fa-star fa-xs" style="color: ' + starColor + '; font-size: 16px" aria-hidden="true"></i>';
+                                    // }
 
-                            $('#data-restaurants').append(row);
+                                    var row = '<tr>' +
+                                                // '<td>' + (response.index + 1)+ '</td>' +
+                                                '<td>' +
+                                                    '<a href="/restaurants/' + id + '">' +
+                                                     response.alternatif['name'] +
+                                                '</a>' + '</td>' +
+                                                '<td>' + response.v_harga_makanan + '</td>' +
+                                                '<td>' + response.v_jarak + '</td>' +
+                                                '<td>' + response.v_fasilitas + '</td>' +
+                                                '<td>' + response.v_jam_operasional + '</td>' +
+                                                '<td>' + response.v_variasi_makanan + '</td>' +
+                                                '<td>' + response.jumlah_nilai + '</td>' +
+                                            '</tr>';
 
-                        });
-                    } else {
-                        toastr.warning('warning','Data tidak ditemukan');
+                                    $('#data-restaurants').append(row);
+
+                            });
+                    } else if(response.success == false){
+                        toastr.error(response.message);
                     }
                 }
             });

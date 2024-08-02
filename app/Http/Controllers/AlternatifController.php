@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\{Alternatif,Restaurant,BobotKriteria,KriteriaHarga,
-    KategoriJamOperasional,KriteriavariasiMenu,KriteriaFasilitas,KriteriaJarak};
+    KategoriJamOperasional,KriteriavariasiMenu,
+    AlternatifUser,
+    KriteriaFasilitas,KriteriaJarak};
 use Illuminate\Http\Request;
 use DataTables;
 
@@ -85,6 +87,79 @@ class AlternatifController extends Controller
         $getHarga = KriteriaHarga::get();
         return view('pages.alternatif.create',compact('page','getJamOperasional','getFasilitas','getVariasiMenu','getFasilitas','getHarga','getJarak'));
     }
+
+    public function tambahPerhitunganSaw()
+    {
+        $getJamOperasional = KategoriJamOperasional::get();
+        $getFasilitas = KriteriaFasilitas::get();
+        $getJarak = KriteriaJarak::get();
+        $getVariasiMenu = KriteriaVariasiMenu::get();
+        $getHarga = KriteriaHarga::get();
+        return view('pages.frontend.home.tambah-perhitungan-saw',compact('getJamOperasional','getFasilitas','getVariasiMenu','getFasilitas','getHarga','getJarak'));
+    }
+
+    public function storePerhitunganSaw(Request $request)
+    {
+       $validated =  $this->validate($request,[
+            'name_restaurant'           => 'required',
+            'user_id'                   => 'nullable',
+            'v_harga_makanan'           => 'required',
+            'v_variasi_makanan'         => 'required',
+            'v_jam_operasional'         => 'required',
+            'v_jarak'                   => 'required',
+            'v_fasilitas'               => 'required',
+            'bobot_harga_makanan'       => 'required|numeric|between:0,100',
+            'bobot_jarak'               => 'required|numeric|between:0,100',
+            'bobot_fasilitas'           => 'required|numeric|between:0,100',
+            'bobot_jam_operasional'     => 'required|numeric|between:0,100',
+            'bobot_variasi_menu'        => 'required|numeric|between:0,100',
+        ],[
+            'name_restaurant.required'          => 'Nama restaurant harus diisi.',
+            'v_jara.required'                   => 'Value jarak harus diisi.',
+            'v_harga_makanan.required'          => 'Value harga makanan harus diisi.',
+            'v_variasi_makanan.required'        => 'Value variasi makanan harus diisi.',
+            'v_fasilitas.required'              => 'Value fasilitas harus diisi.',
+            'v_jam_operasional.required'        => 'Value jam operasional harus diisi.',
+            'bobot_harga_makanan.numeric'       => 'Format input harus berupa angka.',
+            'bobot_harga_makanan.between'       => 'Format input minimal 0 dan maksimal 100.',
+            'bobot_jarak.numeric'               => 'Format input harus berupa angka.',
+            'bobot_jarak.between'               => 'Format input minimal 0 dan maksimal 100.',
+            'bobot_fasilitas.numeric'           => 'Format input harus berupa angka.',
+            'bobot_fasilitas.between'           => 'Format input minimal 0 dan maksimal 100.',
+            'bobot_jam_operasional.numeric'     => 'Format input harus berupa angka.',
+            'bobot_jam_operasional.between'     => 'Format input minimal 0 dan maksimal 100.',
+            'bobot_variasi_menu.numeric'        => 'Format input harus berupa angka.',
+            'bobot_variasi_menu.between'        => 'Format input minimal 0 dan maksimal 100.',
+        ]);
+
+        $data = AlternatifUser::create([
+            'name_restaurant'           => $request->name_restaurant,
+            'user_id'                   => auth()->user()->id,
+            'v_harga_makanan'           => $request->v_harga_makanan,
+            'v_variasi_makanan'         => $request->v_variasi_makanan,
+            'v_jam_operasional'         => $request->v_jam_operasional,
+            'v_jarak'                   => $request->v_jarak,
+            'v_fasilitas'               => $request->v_fasilitas,
+            'bobot_harga_makanan'       => $request->bobot_harga_makanan,
+            'bobot_jarak'               => $request->bobot_jarak,
+            'bobot_fasilitas'           => $request->bobot_fasilitas,
+            'bobot_jam_operasional'     => $request->bobot_jam_operasional,
+            'bobot_variasi_menu'        => $request->bobot_variasi_menu,
+        ]);
+
+        if($data){
+            return response()->json([
+                'success'   => true,
+                'message'   => 'Data berhasil ditambahkan'
+            ]);
+        }else{
+            return response()->json([
+                'success'   => fasle,
+                'message'   => 'Data gagal ditambahkan'
+            ]);
+        }
+    }
+
 
     public function store(Request $request)
     {
@@ -480,5 +555,185 @@ class AlternatifController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
+    }
+
+    public function listPerhitunganSaw()
+    {
+        return view('pages.frontend.home.list-perhitungan-saw');
+    }
+
+    public function dataRankingV2(Request $request)
+    {
+        $data = AlternatifUser::where('user_id', auth()->user()->id)->get();
+
+        $alternatif_hasil = [];
+        $sum_v_harga_makanan = [];
+        $sum_v_variasi_makanan = [];
+        $sum_v_jam_operasional = [];
+        $sum_v_jarak = [];
+        $sum_v_fasilitas = [];
+        $bobot_v_harga = 0;
+        $bobot_v_jarak = 0;
+        $bobot_v_jam_operasional = 0;
+        $bobot_v_variasi = 0;
+        $bobot_v_fasilitas = 0;
+
+        foreach ($data as $item) {
+            $v_harga_makanan = round($item->harga->value, 2);
+            $sum_v_harga_makanan[] = $v_harga_makanan;
+
+            $v_variasi_makanan = round($item->variasiMenu->value, 2);
+            $sum_v_variasi_makanan[] = $v_variasi_makanan;
+
+            $v_jam_operasional = round($item->jamOperasional->value, 2);
+            $sum_v_jam_operasional[] = $v_jam_operasional;
+
+            $v_jarak = round($item->jarak->value, 2);
+            $sum_v_jarak[] = $v_jarak;
+
+            $v_fasilitas = round($item->fasilitas->value, 2);
+            $sum_v_fasilitas[] = $v_fasilitas;
+        }
+
+        $min_v_harga_makanan = min($sum_v_harga_makanan);
+        $min_v_jarak = min($sum_v_jarak);
+        $max_v_fasilitas = max($sum_v_fasilitas);
+        $max_v_jam_operasional = max($sum_v_jam_operasional);
+        $max_v_variasi_makanan = max($sum_v_variasi_makanan);
+
+        foreach ($data as $item) {
+            $b_harga_makanan = $item->bobot_harga_makanan / 100;
+            $b_jarak = $item->bobot_jarak / 100;
+            $b_fasilitas = $item->bobot_fasilitas / 100;
+            $b_jam_operasional = $item->bobot_jam_operasional / 100;
+            $b_variasi_menu = $item->bobot_variasi_menu / 100;
+
+            $v_harga_makanan = $min_v_harga_makanan / $item->harga->value;
+            $v_jarak = $min_v_jarak / $item->jarak->value;
+            $v_fasilitas = $item->fasilitas->value / $max_v_fasilitas;
+            $v_jam_operasional = $item->jamOperasional->value / $max_v_jam_operasional;
+            $v_variasi_makanan =  $item->variasiMenu->value / $max_v_variasi_makanan;
+
+            $bobot_v_harga =  round($v_harga_makanan,2) * number_format($b_harga_makanan,2);
+            $bobot_v_variasi = round($v_variasi_makanan,2) * number_format($b_variasi_menu,2);
+            $bobot_v_jam_operasional = round($v_jam_operasional,2) * number_format($b_jam_operasional,2);
+            $bobot_v_jarak = round($v_jarak,2) * number_format($b_jam_operasional,2);
+            $bobot_v_fasilitas = round($v_fasilitas,2) * number_format($b_fasilitas,2);
+
+
+            $jumlah = round($bobot_v_harga, 2) + round($bobot_v_variasi, 2) + round($bobot_v_jam_operasional, 2) + round($bobot_v_jarak, 2) + round($bobot_v_fasilitas, 2);
+
+            $alternatif_hasil[] = [
+                'alternatif' => $item,
+                'v_harga_makanan' => $bobot_v_harga,
+                'v_variasi_makanan' => $bobot_v_variasi,
+                'v_jam_operasional'    => $bobot_v_jam_operasional,
+                'v_jarak'           => $bobot_v_jarak,
+                'v_fasilitas'       => $bobot_v_fasilitas,
+                'jumlah_nilai'      => $jumlah,
+            ];
+        }
+
+        usort($alternatif_hasil, function ($a, $b) {
+            if ($a['jumlah_nilai'] == $b['jumlah_nilai']) {
+                return strcasecmp($a['alternatif']->name, $b['alternatif']->name);
+            }
+
+            return $b['jumlah_nilai'] <=> $a['jumlah_nilai'];
+        });
+
+        if ($request->ajax()) {
+            return DataTables::of($alternatif_hasil)
+                ->addColumn('name', function ($row) {
+                    return $row['alternatif']->name_restaurant;
+                })
+                ->addColumn('v_harga_makanan', function ($row) {
+                  return round($row['v_harga_makanan'],2);
+                })
+                ->addColumn('v_jarak', function ($row) {
+                    return round($row['v_jarak'],2);
+                })
+                ->addColumn('v_fasilitas', function ($row) {
+                    return round($row['v_fasilitas'],2);
+                })
+                ->addColumn('v_jam_operasional', function ($row) {
+                    return round($row['v_jam_operasional'],2);
+                })
+                ->addColumn('v_variasi_makanan', function ($row) {
+                    return round($row['v_variasi_makanan'],2);
+                })
+                ->addColumn('jumlah', function ($row) {
+                  return round($row['jumlah_nilai'],2);
+                })
+                ->addIndexColumn()
+                ->make(true);
+        }
+    }
+
+    public function dataNormalisasiV2(Request $request)
+    {
+        $page = 'alternatif';
+        $data = AlternatifUser::where('user_id', auth()->user()->id)->get();
+
+        $auth  = auth()->user();
+        $alternatif_hasil = [];
+        $sum_v_harga_makanan = [];
+        $sum_v_variasi_makanan = [];
+        $sum_v_jam_operasional = [];
+        $sum_v_jarak = [];
+        $sum_v_fasilitas = [];
+
+        foreach ($data as $item) {
+
+            $v_harga_makanan = round($item->harga->value, 2);
+            $sum_v_harga_makanan[] = $v_harga_makanan;
+
+            $v_variasi_makanan = round($item->variasiMenu->value, 2);
+            $sum_v_variasi_makanan[] = $v_variasi_makanan;
+
+            $v_jam_operasional = round($item->jamOperasional->value, 2);
+            $sum_v_jam_operasional[] = $v_jam_operasional;
+
+            $v_jarak = round($item->jarak->value, 2);
+            $sum_v_jarak[] = $v_jarak;
+
+            $v_fasilitas = round($item->fasilitas->value, 2);
+            $sum_v_fasilitas[] = $v_fasilitas;
+        }
+
+        $min_v_harga_makanan = min($sum_v_harga_makanan);
+        $min_v_jarak = min($sum_v_jarak);
+        $max_v_fasilitas = max($sum_v_fasilitas);
+        $max_v_jam_operasional = max($sum_v_jam_operasional);
+        $max_v_variasi_makanan = max($sum_v_variasi_makanan);
+
+        if ($request->ajax()) {
+            return DataTables::of($data)
+                ->addColumn('restaurant', function ($row) {
+                    return $row->name_restaurant;
+                })
+                ->addColumn('v_harga_makanan', function ($row) use ($min_v_harga_makanan) {
+                    $v_harga_makanan = $min_v_harga_makanan / $row->harga->value;
+                    return $min_v_harga_makanan.' / '.$row->harga->value.' = '.round($v_harga_makanan,2);
+                })
+                ->addColumn('v_jarak', function ($row) use ($min_v_jarak){
+                    $v_jarak = $min_v_jarak / $row->jarak->value;
+                    return $min_v_jarak.' / '.$row->jarak->value.' = '.round($v_jarak,2);
+                })
+                ->addColumn('v_fasilitas', function ($row) use ($max_v_fasilitas) {
+                    $v_fasilitas = $row->fasilitas->value / $max_v_fasilitas;
+                    return $row->fasilitas->value.' / '.$max_v_fasilitas.' = '.round($v_fasilitas,2);
+                })
+                ->addColumn('v_jam_operasional', function ($row) use ($max_v_jam_operasional) {
+                    $v_jam_operasional = $row->jamOperasional->value / $max_v_jam_operasional;
+                    return $row->jamOperasional->value.' / '.$max_v_jam_operasional.' = '.round($v_jam_operasional,2);
+                })
+                ->addColumn('variasi_makanan', function ($row) use ($max_v_variasi_makanan) {
+                    $v_variasi_makanan =  $row->variasiMenu->value / $max_v_variasi_makanan ;
+                    return $row->variasiMenu->value.' / '.$max_v_variasi_makanan.' = '.round($v_variasi_makanan,2);
+                })
+                ->addIndexColumn()
+                ->make(true);
+            }
     }
 }

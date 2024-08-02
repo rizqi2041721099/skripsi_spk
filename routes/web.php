@@ -94,4 +94,11 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::get('comment/{id}/likes',        [CommentController::class, 'getLikes']);
     Route::get('comment-restaurant/{id}',   [RestaurantController::class, 'commentRestaurant'])->name('comment.restaurant');
     Route::delete('delete-comment/{id}',    [RestaurantController::class, 'destroyComment'])->name('delete.comment');
+
+
+    Route::get('tambah-perhitungan-saw',         [AlternatifController::class, 'tambahPerhitunganSaw'])->name('tambah.perhitungan.saw');
+    Route::get('list-perhitungan-saw',           [AlternatifController::class, 'listPerhitunganSaw'])->name('list.perhitungan.saw');
+    Route::post('store-perhitungan-saw',         [AlternatifController::class, 'storePerhitunganSaw'])->name('store.perhitungan.saw');
+    Route::get('data-ranking-v2',                [AlternatifController::class, 'dataRankingV2'])->name('data.ranking.v2');
+    Route::get('data-noormalisasi-v2',           [AlternatifController::class, 'dataNormalisasiV2'])->name('data.normalisasi.v2');
 });

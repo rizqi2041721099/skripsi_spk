@@ -139,6 +139,20 @@
             </a>
         </li>
     @endif
+    @if (auth()->user()->hasRole('USER'))
+        <li class="nav-item {{ $page == 'approve-restaurants' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('list.approve') }}">
+                <i class="fa fa-building"></i>
+                <span>Perhitungan Saw</span>
+            </a>
+        </li>
+        <li class="nav-item {{ $page == 'approve-restaurants' ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('list.approve') }}">
+                <i class="fa fa-building"></i>
+                <span>Perhitungan Saw & Normalisi</span>
+            </a>
+        </li>
+    @endif
     @if (auth()->user()->can('filter-restaurant'))
         <li class="nav-item {{ $page == 'search' ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('search.restaurants') }}">

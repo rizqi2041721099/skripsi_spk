@@ -21,4 +21,9 @@ class KriteriaHarga extends Model
     {
         return $this->hasMany(Alternatif::class);
     }
+
+    public function alternatifUser()
+    {
+        return $this->hasMany(AlternatifUser::class);
+    }
 }

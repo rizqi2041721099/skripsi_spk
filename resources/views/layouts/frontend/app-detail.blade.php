@@ -103,6 +103,8 @@
     <script src="{{ asset('assets/vendor/datatables/Buttons-1.7.1/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/datatables/Buttons-1.7.1/js/buttons.colVis.min.js') }}"></script>
 
+    <script src="{{ asset('assets/js/toastr.min.js') }}"></script>
+
     <!-- Template Javascript -->
     <script src="{{ asset('frontend/js/main.js')}}"></script>
     @yield('scripts')

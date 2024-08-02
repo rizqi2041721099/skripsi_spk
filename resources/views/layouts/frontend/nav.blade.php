@@ -9,10 +9,14 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto py-0 pe-4">
                 <a href="/" class="nav-item nav-link {{ Route::is('landing-page') ? 'active' : '' }}">Home</a>
-                <a href="#about-us" class="nav-item nav-link">About</a>
-                <a href="#service" class="nav-item nav-link">Service</a>
+                {{-- <a href="#about-us" class="nav-item nav-link">About</a>
+                <a href="#service" class="nav-item nav-link">Service</a> --}}
                 <a href="{{ route('cari.restaurant') }}" class="nav-item nav-link {{ Route::is('cari.restaurant') ? 'active' : '' }}">Search</a>
-                {{-- <a href="{{ route('login') }}" class="nav-item nav-link">Add Restaurant</a> --}}
+                @if (auth()->check())
+                    <a href="{{ route('tambah.perhitungan.saw') }}" class="nav-item nav-link">Perhitungan Saw</a>
+                @else
+                    <a href="{{ route('auth.login') }}" class="nav-item nav-link">Perhitungan Saw</a>
+                @endif
                 <a href="{{ route('ranking.restaurants') }}" class="nav-item nav-link">Ranking Restaurants</a>
             </div>
             @if (Auth::check())

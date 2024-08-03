@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\{Alternatif,Restaurant,BobotKriteria,KriteriaHarga,
     KategoriJamOperasional,KriteriavariasiMenu,
-    AlternatifUser,
+    AlternatifUser,BobotUser,
     KriteriaFasilitas,KriteriaJarak};
 use Illuminate\Http\Request;
 use DataTables;
@@ -108,11 +108,6 @@ class AlternatifController extends Controller
             'v_jam_operasional'         => 'required',
             'v_jarak'                   => 'required',
             'v_fasilitas'               => 'required',
-            'bobot_harga_makanan'       => 'required|numeric|between:0,100',
-            'bobot_jarak'               => 'required|numeric|between:0,100',
-            'bobot_fasilitas'           => 'required|numeric|between:0,100',
-            'bobot_jam_operasional'     => 'required|numeric|between:0,100',
-            'bobot_variasi_menu'        => 'required|numeric|between:0,100',
         ],[
             'name_restaurant.required'          => 'Nama restaurant harus diisi.',
             'v_jara.required'                   => 'Value jarak harus diisi.',
@@ -120,16 +115,6 @@ class AlternatifController extends Controller
             'v_variasi_makanan.required'        => 'Value variasi makanan harus diisi.',
             'v_fasilitas.required'              => 'Value fasilitas harus diisi.',
             'v_jam_operasional.required'        => 'Value jam operasional harus diisi.',
-            'bobot_harga_makanan.numeric'       => 'Format input harus berupa angka.',
-            'bobot_harga_makanan.between'       => 'Format input minimal 0 dan maksimal 100.',
-            'bobot_jarak.numeric'               => 'Format input harus berupa angka.',
-            'bobot_jarak.between'               => 'Format input minimal 0 dan maksimal 100.',
-            'bobot_fasilitas.numeric'           => 'Format input harus berupa angka.',
-            'bobot_fasilitas.between'           => 'Format input minimal 0 dan maksimal 100.',
-            'bobot_jam_operasional.numeric'     => 'Format input harus berupa angka.',
-            'bobot_jam_operasional.between'     => 'Format input minimal 0 dan maksimal 100.',
-            'bobot_variasi_menu.numeric'        => 'Format input harus berupa angka.',
-            'bobot_variasi_menu.between'        => 'Format input minimal 0 dan maksimal 100.',
         ]);
 
         $data = AlternatifUser::create([
@@ -140,11 +125,6 @@ class AlternatifController extends Controller
             'v_jam_operasional'         => $request->v_jam_operasional,
             'v_jarak'                   => $request->v_jarak,
             'v_fasilitas'               => $request->v_fasilitas,
-            'bobot_harga_makanan'       => $request->bobot_harga_makanan,
-            'bobot_jarak'               => $request->bobot_jarak,
-            'bobot_fasilitas'           => $request->bobot_fasilitas,
-            'bobot_jam_operasional'     => $request->bobot_jam_operasional,
-            'bobot_variasi_menu'        => $request->bobot_variasi_menu,
         ]);
 
         if($data){
@@ -602,11 +582,13 @@ class AlternatifController extends Controller
         $max_v_variasi_makanan = max($sum_v_variasi_makanan);
 
         foreach ($data as $item) {
-            $b_harga_makanan = $item->bobot_harga_makanan / 100;
-            $b_jarak = $item->bobot_jarak / 100;
-            $b_fasilitas = $item->bobot_fasilitas / 100;
-            $b_jam_operasional = $item->bobot_jam_operasional / 100;
-            $b_variasi_menu = $item->bobot_variasi_menu / 100;
+            $bobotUser = BobotUser::where('user_id', auth()->user()->id)->first();
+
+            $b_harga_makanan    = $bobotUser ? $bobotUser->bobot_harga_makanan : 0 / 100;
+            $b_jarak            = $bobotUser ? $bobotUser->bobot_jarak : 0 / 100;
+            $b_fasilitas        = $bobotUser ? $bobotUser->bobot_fasilitas : 0 / 100;
+            $b_jam_operasional  = $bobotUser ? $bobotUser->bobot_jam_operasional : 0 / 100;
+            $b_variasi_menu     = $bobotUser ? $bobotUser->bobot_variasi_menu : 0 / 100;
 
             $v_harga_makanan = $min_v_harga_makanan / $item->harga->value;
             $v_jarak = $min_v_jarak / $item->jarak->value;
@@ -735,5 +717,279 @@ class AlternatifController extends Controller
                 ->addIndexColumn()
                 ->make(true);
             }
+    }
+
+    public function alternatifUser(Request $request)
+    {
+        $data = AlternatifUser::where('user_id', auth()->user()->id)->get();
+
+        $auth  = auth()->user();
+
+        if ($request->ajax()) {
+        return DataTables::of($data)
+            ->addColumn('restaurant', function ($row) {
+                return $row->name_restaurant;
+            })
+            ->addColumn('v_harga_makanan', function ($row) {
+                return $row->harga ? $row->harga->value : 0;
+            })
+            ->addColumn('v_jarak', function ($row) {
+                return $row->jarak ? $row->jarak->value : 0;
+            })
+            ->addColumn('v_fasilitas', function ($row) {
+                return $row->fasilitas ? $row->fasilitas->value : 0;
+            })
+            ->addColumn('v_jam_operasional', function ($row) {
+                return $row->jamOperasional ? $row->jamOperasional->value : 0;
+            })
+            ->addColumn('v_variasi_makan', function ($row) {
+                return $row->variasiMenu ? $row->variasiMenu->value : 0;
+            })
+            ->addColumn('action', function ($row) {
+                $btn = '';
+                $btn .= '&nbsp;&nbsp';
+                $btn .=   '<a href="'.route('edit.alternatif.user',$row->id).'" target="_blank" class="btn btn-sm btn-icon btn-primary btn-icon-only rounded">
+                        <span class="btn-inner--icon"><i class="fas fa-pen-square"></i></span>
+                        </a>';
+                $btn .= '&nbsp;&nbsp';
+                $btn .=
+                    '<a class="btn btn-icon btn-sm btn-danger btn-icon-only" href="#" onclick="deleteItem(this)" data-name="' .
+                    $row->name_restaurant .
+                    '" data-id="' .
+                    $row->id .
+                    '">
+                        <span class="btn-inner--icon"><i class="fas fa-trash-alt text-white"></i></span>
+                    </a>';
+
+                return $btn;
+            })
+            ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+        }
+    }
+
+    public function editAlternatifUser(int $id)
+    {
+        $data = AlternatifUser::findOrFail($id);
+
+        $getJamOperasional = KategoriJamOperasional::get();
+        $getFasilitas = KriteriaFasilitas::get();
+        $getJarak = KriteriaJarak::get();
+        $getVariasiMenu = KriteriaVariasiMenu::get();
+        $getHarga = KriteriaHarga::get();
+
+        return view('pages.frontend.home.edit-perhitungan-saw',compact('data','getJamOperasional', 'getFasilitas', 'getJarak', 'getVariasiMenu', 'getHarga'));
+    }
+
+    public function updateAlternatifUser(Request $request, int $id)
+    {
+        $validated = $this->validate($request,[
+            'name_restaurant'      => 'nullable',
+            'v_harga_makanan'    => 'nullable',
+            'v_variasi_makanan'  => 'nullable',
+            'v_jam_operasional'     => 'nullable',
+            'v_jarak'            => 'nullable',
+            'v_fasilitas'        => 'nullable',
+        ],[
+            'restaurant_id.required'    => 'Restaurant harus diisi.',
+            'restaurant_id.unique'      => 'Restaurant sudah ada.',
+            'v_jarak'                   => 'Value jarak harus diisi.',
+            'v_harga_makanan'           => 'Value harga makanan harus diisi.',
+            'v_variasi_makanan'         => 'Value variasi makanan harus diisi.',
+            'v_fasilitas'               => 'Value fasilitas harus diisi.',
+            'v_jam_operasional'         => 'Value jam operasional harus diisi.',
+        ]);
+
+        $data = alternatifUser::findOrFail($id);
+        $data->update($validated);
+
+        if($data){
+            return response()->json([
+                'success'   => true,
+                'message'   => 'Data berhasil diupdate'
+            ]);
+        }else{
+            return response()->json([
+                'success'   => fasle,
+                'message'   => 'Data gagal diupdate'
+            ]);
+        }
+    }
+
+    public function destoryAlternatifUser(int $id)
+    {
+        $alternatif = AlternatifUser::findOrFail($id);
+
+        $alternatif->delete();
+
+        return response()->json([
+            'success'   => true,
+            'message'  => "Data berhasil dihapus"
+        ]);
+    }
+
+    public function listBobotUser(Request $request)
+    {
+        $data = BobotUser::where('user_id',auth()->user()->id)->get();
+
+        $auth  = auth()->user();
+
+        if ($request->ajax()) {
+            return DataTables::of($data)
+                ->addColumn('b_harga_makanan', function ($row) {
+                    return $row->bobot_harga_makanan.'%';
+                })
+                ->addColumn('b_jarak', function ($row) {
+                    return $row->bobot_jarak.'%';
+                })
+                ->addColumn('b_fasilitas', function ($row) {
+                    return $row->bobot_fasilitas.'%';
+                })
+                ->addColumn('b_jam_operasional', function ($row) {
+                    return $row->bobot_jam_operasional.'%';
+                })
+                ->addColumn('b_variasi_menu', function ($row) {
+                    return $row->bobot_variasi_menu.'%';
+                })
+                ->addColumn('action', function ($row)use($auth) {
+                    $btn = '';
+                    $btn .= '&nbsp;&nbsp';
+                    $btn .=   '<a  href="javascript:void(0)" onclick="updateItem(this)" data-id="'.$row->id.'" class="btn btn-sm btn-icon btn-primary btn-icon-only rounded">
+                            <span class="btn-inner--icon"><i class="fas fa-pen-square"></i></span>
+                            </a>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+    }
+
+    public function storeBobotUser(Request $request)
+    {
+        $validated = $this->validate($request,[
+            'bobot_harga_makanan' => 'required|numeric|between:0,100',
+            'bobot_jarak'         => 'required|numeric|between:0,100',
+            'bobot_fasilitas'     => 'required|numeric|between:0,100',
+            'bobot_jam_operasional'  => 'required|numeric|between:0,100',
+            'bobot_variasi_menu'  => 'required|numeric|between:0,100',
+        ],[
+            'bobot_harga_makanan.numeric'       => 'Format input harus berupa angka.',
+            'bobot_harga_makanan.between'       => 'Format input minimal 0 dan maksimal 100.',
+            'bobot_jarak.numeric'               => 'Format input harus berupa angka.',
+            'bobot_jarak.between'               => 'Format input minimal 0 dan maksimal 100.',
+            'bobot_fasilitas.numeric'           => 'Format input harus berupa angka.',
+            'bobot_fasilitas.between'           => 'Format input minimal 0 dan maksimal 100.',
+            'bobot_jam_operasional.numeric'     => 'Format input harus berupa angka.',
+            'bobot_jam_operasional.between'     => 'Format input minimal 0 dan maksimal 100.',
+            'bobot_variasi_menu.numeric'        => 'Format input harus berupa angka.',
+            'bobot_variasi_menu.between'        => 'Format input minimal 0 dan maksimal 100.',
+        ]);
+
+        $b_harga_makanan =$request->bobot_harga_makanan / 100;
+        $b_jarak =$request->bobot_jarak / 100;
+        $b_fasilitas =$request->bobot_fasilitas / 100;
+        $b_jam_operasional =$request->bobot_jam_operasional / 100;
+        $b_variasi_menu =$request->bobot_variasi_menu / 100;
+
+        $sum = $b_harga_makanan + $b_jarak + $b_fasilitas + $b_jam_operasional + $b_variasi_menu;
+        if($sum != 1.0){
+            return response()->json([
+                'success'   => false,
+                'message'   => 'Total bobot harus 100%'
+            ]);
+        } else {
+            $data = BobotUser::create([
+                'user_id'                    => auth()->user()->id,
+                'bobot_harga_makanan'       => $request->bobot_harga_makanan,
+                'bobot_jarak'               => $request->bobot_jarak,
+                'bobot_fasilitas'           => $request->bobot_fasilitas,
+                'bobot_jam_operasional'     => $request->bobot_jam_operasional,
+                'bobot_variasi_menu'        => $request->bobot_variasi_menu,
+            ]);
+
+            return response()->json([
+                'success'   => true,
+                'message'   => 'Data berhasil ditambahkan'
+            ]);
+        }
+    }
+
+
+    public function editBobotUser(int $id)
+    {
+        $data = BobotUser::findOrFail($id);
+        return response()->json($data);
+    }
+
+    public function updateBobotUser(Request $request, int $id)
+    {
+        $validated = $this->validate($request,[
+            'bobot_harga_makanan' => 'nullable|numeric|between:0,100',
+            'bobot_jarak'           => 'nullable|numeric|between:0,100',
+            'bobot_fasilitas'       => 'nullable|numeric|between:0,100',
+            'bobot_jam_operasional' => 'nullable|numeric|between:0,100',
+            'bobot_variasi_menu'    => 'nullable|numeric|between:0,100',
+        ],[
+
+            'bobot_harga_makanan.numeric'       => 'Format input harus berupa angka.',
+            'bobot_harga_makanan.between'       => 'Format input minimal 0 dan maksimal 100.',
+            'bobot_jarak.numeric'               => 'Format input harus berupa angka.',
+            'bobot_jarak.between'               => 'Format input minimal 0 dan maksimal 100.',
+            'bobot_fasilitas.numeric'           => 'Format input harus berupa angka.',
+            'bobot_fasilitas.between'           => 'Format input minimal 0 dan maksimal 100.',
+            'bobot_jam_operasional.numeric'     => 'Format input harus berupa angka.',
+            'bobot_jam_operasional.between'     => 'Format input minimal 0 dan maksimal 100.',
+            'bobot_variasi_menu.numeric'        => 'Format input harus berupa angka.',
+            'bobot_variasi_menu.between'        => 'Format input minimal 0 dan maksimal 100.',
+        ]);
+
+        $b_harga_makanan =$request->bobot_harga_makanan / 100;
+        $b_jarak =$request->bobot_jarak / 100;
+        $b_fasilitas =$request->bobot_fasilitas / 100;
+        $b_jam_operasional =$request->bobot_jam_operasional / 100;
+        $b_variasi_menu =$request->bobot_variasi_menu / 100;
+
+        $sum = $b_harga_makanan + $b_jarak + $b_fasilitas + $b_jam_operasional + $b_variasi_menu;
+
+        if($sum != 1.0){
+            return response()->json([
+                'success'   => false,
+                'message'   => 'Total bobot harus 100%'
+            ]);
+        } else {
+            $data = BobotUser::findOrFail($id)->update([
+                'user_id'                   => auth()->user()->id,
+                'bobot_harga_makanan'       => $request->bobot_harga_makanan,
+                'bobot_jarak'               => $request->bobot_jarak,
+                'bobot_fasilitas'           => $request->bobot_fasilitas,
+                'bobot_jam_operasional'     => $request->bobot_jam_operasional,
+                'bobot_variasi_menu'        => $request->bobot_variasi_menu,
+            ]);
+
+            return response()->json([
+                'success'   => true,
+                'message'   => 'Data berhasil ditambahkan'
+            ]);
+        }
+    }
+
+    public function destroyAlternatifUser(int $id)
+    {
+        $data = AlternatifUser::findOrFail($id);
+
+        if($data) {
+            $data->delete();
+            return response()->json([
+                'success'   => true,
+                'message'  => "Data berhasil dihapus"
+            ]);
+        } else {
+            return response()->json([
+                'success'   => false,
+                'message'  => "Data gagal dihapus"
+            ]);
+        }
     }
 }

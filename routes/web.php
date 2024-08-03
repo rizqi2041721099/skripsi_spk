@@ -86,7 +86,7 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::get('list-restaurants-rejected',  [RestaurantController::class, 'listRejected'])->name('list.rejected');
     Route::get('approve-restaurant/{id}',    [RestaurantController::class, 'approve'])->name('list.approve.restaurant');
 
-    Route::get('clear',                       [CacheController::class, 'clear'])->name('clear');
+    // Route::get('clear',                       [CacheController::class, 'clear'])->name('clear');
     Route::get('search-restaurants',          [RestaurantController::class, 'search'])->name('search.restaurants');
 
     Route::post('coment/store',             [CommentController::class, 'store'])->name('comment.store');
@@ -96,9 +96,20 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::delete('delete-comment/{id}',    [RestaurantController::class, 'destroyComment'])->name('delete.comment');
 
 
-    Route::get('tambah-perhitungan-saw',         [AlternatifController::class, 'tambahPerhitunganSaw'])->name('tambah.perhitungan.saw');
-    Route::get('list-perhitungan-saw',           [AlternatifController::class, 'listPerhitunganSaw'])->name('list.perhitungan.saw');
-    Route::post('store-perhitungan-saw',         [AlternatifController::class, 'storePerhitunganSaw'])->name('store.perhitungan.saw');
-    Route::get('data-ranking-v2',                [AlternatifController::class, 'dataRankingV2'])->name('data.ranking.v2');
-    Route::get('data-noormalisasi-v2',           [AlternatifController::class, 'dataNormalisasiV2'])->name('data.normalisasi.v2');
+    // Data Alternatif User
+    Route::get('tambah-perhitungan-saw',                [AlternatifController::class, 'tambahPerhitunganSaw'])->name('tambah.perhitungan.saw');
+    Route::get('list-perhitungan-saw',                  [AlternatifController::class, 'listPerhitunganSaw'])->name('list.perhitungan.saw');
+    Route::post('store-perhitungan-saw',                [AlternatifController::class, 'storePerhitunganSaw'])->name('store.perhitungan.saw');
+    Route::get('data-ranking-v2',                       [AlternatifController::class, 'dataRankingV2'])->name('data.ranking.v2');
+    Route::get('data-noormalisasi-v2',                  [AlternatifController::class, 'dataNormalisasiV2'])->name('data.normalisasi.v2');
+    Route::get('alternatif-user',                       [AlternatifController::class, 'alternatifUser'])->name('alternatif.user');
+    Route::get('edit-alternatif-user/{id}',            [AlternatifController::class, 'editAlternatifUser'])->name('edit.alternatif.user');
+    Route::put('update-alternatif-user/{id}',          [AlternatifController::class, 'updateAlternatifUser'])->name('update.alternatif.user');
+    Route::delete('destroy-alternatif-user/{id}',      [AlternatifController::class, 'destroyAlternatifUser'])->name('destroy.alternatif.user');
+
+    // Bobot User
+    Route::get('list-bobot-user',                       [AlternatifController::class, 'listBobotUser'])->name('list.bobot.user');
+    Route::post('store-bobot-user',                     [AlternatifController::class, 'storeBobotUser'])->name('store.bobot.user');
+    Route::get('edit-bobot-user/{id}/edit',             [AlternatifController::class, 'editBobotUser'])->name('edit.bobot.user');
+    Route::put('update-bobot-user/{id}',                [AlternatifController::class, 'updateBobotUser'])->name('update.bobot.user');
 });

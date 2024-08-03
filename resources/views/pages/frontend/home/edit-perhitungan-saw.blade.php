@@ -1,9 +1,9 @@
 @extends('layouts.frontend.app-detail')
 @section('title-head')
-    Tambah
+    Edit
 @endsection
 @section('list')
-    <li class="breadcrumb-item text-white active" aria-current="page">Perhitungan Saw</li>
+    <li class="breadcrumb-item text-white active" aria-current="page">Edit Perhitungan Saw</li>
 @endsection
 @section('content')
 <div class="container-xxl py-5 px-0 wow fadeInUp" data-wow-delay="0.1s">
@@ -12,15 +12,15 @@
             <div class="p-5 wow fadeInUp" data-wow-delay="0.2s">
                 <div class="d-flex justify-content-between">
                     <h5 class="section-title ff-secondary text-start text-primary fw-normal">Perhitungan Saw</h5>
-                    <a href="{{ route('list.perhitungan.saw') }}" class="btn btn-outline-warning text-capitalize" target="_blank">Check Data Perhitungan Saw Anda</a>
                 </div>
-                <h1 class="text-white mb-4">Anda dapat menambahkan perhitungan sendiri!</h1>
+                <h1 class="text-white mb-4">Anda dapat edit perhitungan!</h1>
                 <form id="form_alternatif">
                     @csrf
+                    @method('PUT')
                     <div class="row g-3">
                         <div class="col-md-4">
                             <div class="form-floating">
-                               <input type="text" class="form-control" name="name_restaurant" value="{{ old('name_restaurant') }}" required>
+                               <input type="text" class="form-control" name="name_restaurant" value="{{ $data->name_restaurant }}" required>
                                 <label for="range-variasi-makanan">Nama Restaurant</label>
                             </div>
                             <span class="text-danger" id="error_name_restaurant"></span>
@@ -29,8 +29,8 @@
                             <div class="form-floating">
                                 <select name="v_variasi_makanan" id="" class="form-control" required>
                                     <option value="">Pilih</option>
-                                    @foreach ($getVariasiMenu as $item)
-                                        <option value="{{ $item->id }}">({{ $item->skala }}) {{ $item->standard_value }} ({{ $item->range_value }})</option>
+                                    @foreach($getVariasiMenu as $item)
+                                        <option value="{{ $item->id }}" {{ $item->id == $data->v_variasi_makanan ? 'selected' : '' }}>({{ $item->skala }}) {{ $item->standard_value }} ({{ $item->range_value }})</option>
                                     @endforeach
                                 </select>
                                 <label for="range-variasi-makanan">Kriteria Variasi Menu</label>
@@ -42,7 +42,7 @@
                                 <select name="v_jarak" id="jarak" class="form-control" required>
                                     <option value="">Pilih</option>
                                     @foreach ($getJarak as $item)
-                                        <option value="{{ $item->id }}">({{ $item->skala }}) {{ $item->standard_value }} ({{ $item->range_value }})</option>
+                                        <option value="{{ $item->id }}" {{ $item->id == $data->v_jarak ? 'selected' : '' }}>({{ $item->skala }}) {{ $item->standard_value }} ({{ $item->range_value }})</option>
                                     @endforeach
                                 </select>
                                 <label for="rentang-jarak">Kriteria Jarak</label>
@@ -53,8 +53,8 @@
                             <div class="form-floating">
                                 <select name="v_harga_makanan" id="harga" class="form-control" required>
                                     <option value="">Pilih</option>
-                                    @foreach ($getHarga as $item)
-                                        <option value="{{ $item->id }}">({{ $item->skala }}) {{ $item->standard_value }} ({{ $item->range_value }})</option>
+                                    @foreach($getHarga as $item)
+                                        <option value="{{ $item->id }}" {{ $item->id == $data->v_harga_makanan ? 'selected' : '' }}>({{ $item->skala }}) {{ $item->standard_value }} ({{ $item->range_value }})</option>
                                     @endforeach
                                 </select>
                                 <label for="range-harga">Kriteria Harga Makanan</label>
@@ -65,8 +65,8 @@
                             <div class="form-floating">
                                 <select name="v_jam_operasional" id="jam_operasional" class="form-control" required>
                                     <option value="">Pilih</option>
-                                    @foreach ($getJamOperasional as $item)
-                                        <option value="{{ $item->id }}">{{ $item->standard_value }} ({{ $item->range_value }})</option>
+                                    @foreach($getJamOperasional as $item)
+                                        <option value="{{ $item->id }}" {{ $item->id == $data->v_jam_operasional ? 'selected' : '' }}>({{ $item->standard_value }}) {{ $item->range_value }}</option>
                                     @endforeach
                                 </select>
                                 <label for="select1">Kriteria Jam Operasional</label>
@@ -77,16 +77,19 @@
                             <div class="form-floating">
                                 <select name="v_fasilitas" id="fasilitas" class="form-control" required>
                                     <option value="">Pilih</option>
-                                    @foreach ($getFasilitas as $item)
-                                        <option value="{{ $item->id }}"> ({{ $item->skala }}) {{ $item->standard_value }}</option>
+                                    @foreach($getFasilitas as $item)
+                                        <option value="{{ $item->id }}" {{ $item->id == $data->v_fasilitas ? 'selected' : '' }}>({{ $item->skala }}) {{ $item->standard_value }}</option>
                                     @endforeach
                                 </select>
                                 <label for="select1">Kriteria Fasilitas</label>
                             </div>
                             <span class="text-danger" id="error_v_fasilitas"></span>
                         </div>
-                        <div class="col-md-12">
-                            <button class="btn btn-primary w-100 py-3" type="submit" id="submit-button">Tambah</button>
+                        <div class="col-md-6">
+                            <button class="btn btn-secondary w-100 py-3" type="button" href="{{ route('list.perhitungan.saw') }}" id="submit-button">Cancel</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-primary w-100 py-3" type="submit" id="submit-button">Submit</button>
                         </div>
                     </div>
                 </form>
@@ -146,7 +149,7 @@
                 btn.val(btn.data("loading-text"));
 
                 $.ajax({
-                    url: "{{ route('store.perhitungan.saw') }}",
+                    url: "{{ route('update.alternatif.user', $data->id) }}",
                     type: "POST",
                     data: formData,
                     cache: false,
@@ -154,7 +157,7 @@
                     processData: false,
                     success: function(response) {
                         if (response.success == true) {
-                            window.location.href = 'tambah-perhitungan-saw';
+                            window.location.href = "{{ route('list.perhitungan.saw') }}";
                             sessionStorage.setItem('success', response.message);
                         } else if (response.success == false) {
                             btn.attr('disabled', false);
@@ -167,15 +170,10 @@
                         btn.text('Submit');
                         $('#error_name_restaurant').text(response.responseJSON.errors.name_restaurant);
                         $('#error_v_harga_makanan').text(response.responseJSON.errors.v_harga_makanan);
-                        $('#error_v_jam_operasional').text(response.responseJSON.errors.v_jam_operasional);
+                        $('#error_v_rasa_makanan').text(response.responseJSON.errors.v_rasa_makanan);
                         $('#error_v_variasi_makanan').text(response.responseJSON.errors.v_variasi_makanan);
-                        $('#error_v_jarak').text(response.responseJSON.errors.v_jarak);
-                        $('#error_v_fasilitas').text(response.responseJSON.errors.v_fasilitas);
-                        $('#error_bobot_harga_makanan').text(response.responseJSON.errors.bobot_harga_makanan);
-                        $('#error_bobot_harga_jarak').text(response.responseJSON.errors.bobot_harga_jarak);
-                        $('#error_bobot_harga_fasilitas').text(response.responseJSON.errors.bobot_harga_fasilitas);
-                        $('#error_bobot_jam_operasional').text(response.responseJSON.errors.bobot_jam_operasional);
-                        $('#error_bobot_variasi_menu').text(response.responseJSON.errors.bobot_variasi_menu);
+                        $('#error_jarak').text(response.responseJSON.errors.jarak);
+                        $('#error_fasilitas').text(response.responseJSON.errors.fasilitas);
                     }
                 });
             });

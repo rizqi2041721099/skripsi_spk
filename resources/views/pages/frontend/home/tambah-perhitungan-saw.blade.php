@@ -103,7 +103,7 @@
                         <th rowspan="2" width="15%">No</th>
                         <th rowspan="2" width="15%">Restaurant</th>
                         <th colspan="5" class="text-center">Kriteria</th>
-                        {{-- <th rowspan="2" width="15%">Action</th> --}}
+                        <th rowspan="2" width="15%">Action</th>
                     </tr>
                     <tr>
                         <th>Harga Makanan</th>
@@ -122,7 +122,7 @@
                         <th>Fasilitas</th>
                         <th>Jam Operasional</th>
                         <th>Variasi Menu</th>
-                        {{-- <th>Action</th> --}}
+                        <th>Action</th>
                     </tr>
                 </tfoot>
             </table>
@@ -251,9 +251,9 @@
                         {
                             data: 'v_variasi_makan',
                         },
-                        // {
-                        //     data: 'action',
-                        // },
+                        {
+                            data: 'action',
+                        },
                     ],
                 });
         });

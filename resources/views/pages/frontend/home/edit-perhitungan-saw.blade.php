@@ -157,7 +157,7 @@
                     processData: false,
                     success: function(response) {
                         if (response.success == true) {
-                            window.location.href = "{{ route('list.perhitungan.saw') }}";
+                            window.location.href = "{{ route('tambah.perhitungan.saw') }}";
                             sessionStorage.setItem('success', response.message);
                         } else if (response.success == false) {
                             btn.attr('disabled', false);

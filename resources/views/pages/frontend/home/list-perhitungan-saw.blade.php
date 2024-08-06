@@ -12,6 +12,7 @@
     <div class="container-xxl py-5" id="about-us">
         @php
             $bobotUser = App\Models\BobotUser::where('user_id',auth()->user()->id)->first();
+            // dd($bobotUser->bobot_harga_makanan / 100);
         @endphp
         @if (is_null($bobotUser))
             <div class="row g-0 mb-5">

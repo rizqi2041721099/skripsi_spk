@@ -103,6 +103,7 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::get('data-ranking-v2',                       [AlternatifController::class, 'dataRankingV2'])->name('data.ranking.v2');
     Route::get('data-noormalisasi-v2',                  [AlternatifController::class, 'dataNormalisasiV2'])->name('data.normalisasi.v2');
     Route::get('alternatif-user',                       [AlternatifController::class, 'alternatifUser'])->name('alternatif.user');
+    Route::get('get-data-alternatif-user',                       [AlternatifController::class, 'getDataAlterntifUser'])->name('get.data.alternatif.user');
     Route::get('edit-alternatif-user/{id}',            [AlternatifController::class, 'editAlternatifUser'])->name('edit.alternatif.user');
     Route::put('update-alternatif-user/{id}',          [AlternatifController::class, 'updateAlternatifUser'])->name('update.alternatif.user');
     Route::delete('destroy-alternatif-user/{id}',      [AlternatifController::class, 'destroyAlternatifUser'])->name('destroy.alternatif.user');

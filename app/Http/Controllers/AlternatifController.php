@@ -584,11 +584,11 @@ class AlternatifController extends Controller
         foreach ($data as $item) {
             $bobotUser = BobotUser::where('user_id', auth()->user()->id)->first();
 
-            $b_harga_makanan    = $bobotUser ? $bobotUser->bobot_harga_makanan : 0 / 100;
-            $b_jarak            = $bobotUser ? $bobotUser->bobot_jarak : 0 / 100;
-            $b_fasilitas        = $bobotUser ? $bobotUser->bobot_fasilitas : 0 / 100;
-            $b_jam_operasional  = $bobotUser ? $bobotUser->bobot_jam_operasional : 0 / 100;
-            $b_variasi_menu     = $bobotUser ? $bobotUser->bobot_variasi_menu : 0 / 100;
+            $b_harga_makanan    = $bobotUser ? ($bobotUser->bobot_harga_makanan / 100) : 0;
+            $b_jarak            = $bobotUser ? ($bobotUser->bobot_jarak / 100) : 0;
+            $b_fasilitas        = $bobotUser ? ($bobotUser->bobot_fasilitas / 100) : 0;
+            $b_jam_operasional  = $bobotUser ? ($bobotUser->bobot_jam_operasional / 100) : 0;
+            $b_variasi_menu     = $bobotUser ? ($bobotUser->bobot_variasi_menu / 100) : 0;
 
             $v_harga_makanan = $min_v_harga_makanan / $item->harga->value;
             $v_jarak = $min_v_jarak / $item->jarak->value;
@@ -596,18 +596,18 @@ class AlternatifController extends Controller
             $v_jam_operasional = $item->jamOperasional->value / $max_v_jam_operasional;
             $v_variasi_makanan =  $item->variasiMenu->value / $max_v_variasi_makanan;
 
-            $bobot_v_harga =  round($v_harga_makanan,2) * number_format($b_harga_makanan,2);
-            $bobot_v_variasi = round($v_variasi_makanan,2) * number_format($b_variasi_menu,2);
-            $bobot_v_jam_operasional = round($v_jam_operasional,2) * number_format($b_jam_operasional,2);
-            $bobot_v_jarak = round($v_jarak,2) * number_format($b_jam_operasional,2);
-            $bobot_v_fasilitas = round($v_fasilitas,2) * number_format($b_fasilitas,2);
+            $bobot_v_harga =  round($v_harga_makanan,2) * $b_harga_makanan;
+            $bobot_v_variasi = round($v_variasi_makanan,2) * $b_variasi_menu;
+            $bobot_v_jam_operasional = round($v_jam_operasional,2) * $b_jam_operasional;
+            $bobot_v_jarak = round($v_jarak,2) * $b_jarak;
+            $bobot_v_fasilitas = round($v_fasilitas,2) * $b_fasilitas;
 
 
             $jumlah = round($bobot_v_harga, 2) + round($bobot_v_variasi, 2) + round($bobot_v_jam_operasional, 2) + round($bobot_v_jarak, 2) + round($bobot_v_fasilitas, 2);
 
             $alternatif_hasil[] = [
                 'alternatif' => $item,
-                'v_harga_makanan' => $bobot_v_harga,
+                'v_harga_makanan' => round($bobot_v_harga,2),
                 'v_variasi_makanan' => $bobot_v_variasi,
                 'v_jam_operasional'    => $bobot_v_jam_operasional,
                 'v_jarak'           => $bobot_v_jarak,
@@ -764,6 +764,37 @@ class AlternatifController extends Controller
                 return $btn;
             })
             ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->make(true);
+        }
+    }
+
+    public function getDataAlternatifUser(Request $request)
+    {
+        $data = AlternatifUser::where('user_id', auth()->user()->id)->get();
+
+        $auth  = auth()->user();
+
+        if ($request->ajax()) {
+        return DataTables::of($data)
+            ->addColumn('restaurant', function ($row) {
+                return $row->name_restaurant;
+            })
+            ->addColumn('v_harga_makanan', function ($row) {
+                return $row->harga ? $row->harga->value : 0;
+            })
+            ->addColumn('v_jarak', function ($row) {
+                return $row->jarak ? $row->jarak->value : 0;
+            })
+            ->addColumn('v_fasilitas', function ($row) {
+                return $row->fasilitas ? $row->fasilitas->value : 0;
+            })
+            ->addColumn('v_jam_operasional', function ($row) {
+                return $row->jamOperasional ? $row->jamOperasional->value : 0;
+            })
+            ->addColumn('v_variasi_makan', function ($row) {
+                return $row->variasiMenu ? $row->variasiMenu->value : 0;
+            })
             ->addIndexColumn()
             ->make(true);
         }

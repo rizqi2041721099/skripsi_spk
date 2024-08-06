@@ -12,7 +12,7 @@
             <div class="p-5 wow fadeInUp" data-wow-delay="0.2s">
                 <div class="d-flex justify-content-between">
                     <h5 class="section-title ff-secondary text-start text-primary fw-normal">Perhitungan Saw</h5>
-                    <a href="{{ route('list.perhitungan.saw') }}" class="btn btn-outline-warning text-capitalize" target="_blank">Check Data Perhitungan Saw Anda</a>
+                    <a href="{{ route('list.perhitungan.saw') }}" class="btn btn-outline-warning text-capitalize" target="_blank">Data Perhitungan Saw Anda</a>
                 </div>
                 <h1 class="text-white mb-4">Anda dapat menambahkan perhitungan sendiri!</h1>
                 <form id="form_alternatif">
@@ -91,6 +91,41 @@
                     </div>
                 </form>
             </div>
+        </div>
+    </div>
+
+    <div class="container my-4">
+        <div class="row g-5 align-items-center mb-5">
+            <h5>Data Alternatif Anda</h5>
+            <table class="table table-striped" width="100%" id="alternatif_table">
+                <thead>
+                    <tr>
+                        <th rowspan="2" width="15%">No</th>
+                        <th rowspan="2" width="15%">Restaurant</th>
+                        <th colspan="5" class="text-center">Kriteria</th>
+                        {{-- <th rowspan="2" width="15%">Action</th> --}}
+                    </tr>
+                    <tr>
+                        <th>Harga Makanan</th>
+                        <th>Jarak</th>
+                        <th>Fasilitas</th>
+                        <th>Jam Operasional</th>
+                        <th>Variasi Menu</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>No</th>
+                        <th>Restaurant</th>
+                        <th>Harga Makanan</th>
+                        <th>Jarak</th>
+                        <th>Fasilitas</th>
+                        <th>Jam Operasional</th>
+                        <th>Variasi Menu</th>
+                        {{-- <th>Action</th> --}}
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
 </div>
@@ -179,6 +214,48 @@
                     }
                 });
             });
+
+            $('#alternatif_table').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: "{{ route('get.data.alternatif.user') }}",
+                        type: 'GET',
+                    },
+                    "responsive": false,
+                    "lengthMenu": [ [10, 25, 50,100, -1], [10, 25, 50,100, "All"] ],
+                    "language": {
+                        "oPaginate": {
+                            "sNext": "<i class='fas fa-angle-right'>",
+                            "sPrevious": "<i class='fas fa-angle-left'>",
+                        },
+                    },
+                    columns: [{
+                            data: 'DT_RowIndex',
+                        },
+                        {
+                            data: 'restaurant',
+                        },
+                        {
+                            data: 'v_harga_makanan',
+                        },
+                        {
+                            data: 'v_jarak',
+                        },
+                        {
+                            data: 'v_fasilitas',
+                        },
+                        {
+                            data: 'v_jam_operasional',
+                        },
+                        {
+                            data: 'v_variasi_makan',
+                        },
+                        // {
+                        //     data: 'action',
+                        // },
+                    ],
+                });
         });
 
     </script>

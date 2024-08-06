@@ -12,7 +12,6 @@
             <div class="p-5 wow fadeInUp" data-wow-delay="0.2s">
                 <div class="d-flex justify-content-between">
                     <h5 class="section-title ff-secondary text-start text-primary fw-normal">Perhitungan Saw</h5>
-                    <a href="{{ route('list.perhitungan.saw') }}" class="btn btn-outline-warning text-capitalize" target="_blank">Data Perhitungan Saw Anda</a>
                 </div>
                 <h1 class="text-white mb-4">Anda dapat menambahkan perhitungan sendiri!</h1>
                 <form id="form_alternatif">
@@ -127,6 +126,9 @@
                 </tfoot>
             </table>
         </div>
+    </div>
+    <div class="text-center">
+        <a href="{{ route('list.perhitungan.saw') }}" class="btn btn-warning text-capitalize" target="_blank">Data Perhitungan Saw Anda</a>
     </div>
 </div>
 

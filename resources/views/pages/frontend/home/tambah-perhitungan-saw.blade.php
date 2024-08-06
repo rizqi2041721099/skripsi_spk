@@ -219,7 +219,7 @@
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: "{{ route('get.data.alternatif.user') }}",
+                        url: "{{ route('alternatif.user') }}",
                         type: 'GET',
                     },
                     "responsive": false,

@@ -769,37 +769,6 @@ class AlternatifController extends Controller
         }
     }
 
-    public function getDataAlternatifUser(Request $request)
-    {
-        $data = AlternatifUser::where('user_id', auth()->user()->id)->get();
-
-        $auth  = auth()->user();
-
-        if ($request->ajax()) {
-        return DataTables::of($data)
-            ->addColumn('restaurant', function ($row) {
-                return $row->name_restaurant;
-            })
-            ->addColumn('v_harga_makanan', function ($row) {
-                return $row->harga ? $row->harga->value : 0;
-            })
-            ->addColumn('v_jarak', function ($row) {
-                return $row->jarak ? $row->jarak->value : 0;
-            })
-            ->addColumn('v_fasilitas', function ($row) {
-                return $row->fasilitas ? $row->fasilitas->value : 0;
-            })
-            ->addColumn('v_jam_operasional', function ($row) {
-                return $row->jamOperasional ? $row->jamOperasional->value : 0;
-            })
-            ->addColumn('v_variasi_makan', function ($row) {
-                return $row->variasiMenu ? $row->variasiMenu->value : 0;
-            })
-            ->addIndexColumn()
-            ->make(true);
-        }
-    }
-
     public function editAlternatifUser(int $id)
     {
         $data = AlternatifUser::findOrFail($id);

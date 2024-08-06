@@ -258,6 +258,38 @@
                 });
         });
 
+        function deleteItem(e) {
+                let id = e.getAttribute('data-id');
+                let name = e.getAttribute('data-name');
+
+                Swal.fire({
+                    title: 'Anda yakin?',
+                    text: "Ingin menghapus " + name + "?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'DELETE',
+                            url:  'destroy-alternatif-user/' + id,
+                            data: {
+                                "_token": "{{ csrf_token() }}",
+                            },
+                            success: function (response) {
+                                if (response.success == true) {
+                                    toastr.success(response.message);
+                                    var oTable = $('#alternatif_table').DataTable(); //inialisasi datatable
+                                    oTable.ajax.reload(); //reset datatable
+                                }
+                            }
+                        })
+                    }
+                })
+            }
+
     </script>
 @endsection
 @endsection
